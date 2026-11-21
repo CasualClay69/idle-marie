@@ -1,0 +1,185 @@
+"use strict";
+// =====================================================
+//  START & STEUERUNG: Spielschleife, Knöpfe, Speichern, Update-Fenster
+// =====================================================
+
+// Tippen auf eine Tätigkeit: starten, oder anhalten, wenn sie schon läuft
+function tippeTaetigkeit(t) {
+  if (spiel.aktiv?.id === t.id) {
+    stoppe(); ton.klick(); melde(`⏸️ ${t.name} angehalten`);
+  } else {
+    const grund = hindernis(t);
+    if (grund) { ton.nein(); melde(`🙈 ${grund}`); return; }
+    starte(t); ton.klick();
+  }
+  speichern();
+  zeichneAktivLeiste();
+  zeichneSeite();
+}
+
+// Ergebnisse eines Ticks anzeigen (Meldungen, Stufen, Neuzeichnen)
+function verarbeite(ergebnis) {
+  if (!ergebnis.durchgaenge && !ergebnis.gestoppt) return;
+  for (const e of ergebnis.ereignisse) {
+    const f = fertigkeit(e.taetigkeit.fertigkeit);
+    if (e.neueStufe) {
+      ton.stufe();
+      melde(`🎉 ${f.icon} ${f.name}: Stufe ${e.neueStufe}!`, "gross");
+      const neu = taetigkeitenVon(f.id).filter(t => t.stufe === e.neueStufe);
+      for (const t of neu) melde(`🔓 Neu freigeschaltet: ${t.name}`, "gross");
+    }
+    if (e.neueUebung && e.neueUebung % 10 === 0) melde(`⭐ Übung ${e.neueUebung}: ${e.taetigkeit.name}`);
+    if (e.doppelt) {   // kein Text (käme sonst ständig) – die Leiste blitzt golden
+      const l = $("aktivLeiste");
+      l.classList.remove("doppelt"); void l.offsetWidth; l.classList.add("doppelt");
+    }
+  }
+  if (ergebnis.durchgaenge) ton.fertig();
+  if (ergebnis.gestoppt) { ton.nein(); melde(`⏸️ ${ergebnis.gestoppt}`); }
+  zeichneKopf();
+  zeichneAktivLeiste();
+  zeichneSeite();
+}
+
+// ----- Spielschleife -----
+function schleife() {
+  verarbeite(tick());
+  zeichneAktivBalken();
+  requestAnimationFrame(schleife);
+}
+
+// ----- Knöpfe -----
+function richteKnoepfeEin() {
+  for (const b of document.querySelectorAll("#untenNav button")) {
+    b.addEventListener("click", () => { ton.klick(); zeigeSeite(b.dataset.seite); });
+  }
+  $("zurueck").addEventListener("click", () => { ton.klick(); zeigeSeite("seiteFertigkeiten"); });
+  $("aktivStopp").addEventListener("click", () => {
+    if (!spiel.aktiv) return;
+    stoppe(); ton.klick(); speichern(); zeichneAktivLeiste(); zeichneSeite();
+  });
+  $("aktivLeiste").addEventListener("click", e => {
+    if (e.target.closest("#aktivStopp") || !spiel.aktiv) return;
+    offeneFertigkeit = taetigkeitNachId(spiel.aktiv.id).fertigkeit;
+    zeigeSeite("seiteFertigkeit");
+  });
+  $("figurKnopf").addEventListener("click", () => { ton.klick(); zeigeSeite("seiteIch"); });
+  $("offlineZu").addEventListener("click", () => { ton.klick(); $("offlineOverlay").hidden = true; });
+  $("gegenstandZu").addEventListener("click", () => { ton.klick(); $("gegenstandOverlay").hidden = true; });
+  $("gegenstandOverlay").addEventListener("click", e => { if (e.target.id === "gegenstandOverlay") $("gegenstandOverlay").hidden = true; });
+  $("tonAn").addEventListener("change", e => { ton.an = e.target.checked; ton.speichern(); ton.klick(); });
+  $("loeschen").addEventListener("click", () => { ton.klick(); $("loeschenOverlay").hidden = false; });
+  $("loeschenNein").addEventListener("click", () => { ton.klick(); $("loeschenOverlay").hidden = true; });
+  $("loeschenJa").addEventListener("click", () => {
+    try { localStorage.removeItem(SPEICHER_SCHLUESSEL); } catch (e) { /* egal */ }
+    spiel = neuerSpielstand();
+    location.reload();
+  });
+}
+
+function fragFigur() {
+  zeichneFigurAuswahl($("figurAuswahlStart"), id => {
+    ton.klick();
+    spiel.figur = id;
+    speichern();
+    $("figurOverlay").hidden = true;
+    zeichneKopf(); zeichneAktivLeiste(); zeichneSeite();
+    melde(`💖 Hallo ${figurName()}! Tippe auf eine Fertigkeit und leg los.`, "gross");
+  });
+  $("figurOverlay").hidden = false;
+}
+
+// ----- Versionen & Update -----
+function istNeuereVersion(a, b) {
+  const x = a.split(".").map(Number), y = b.split(".").map(Number);
+  for (let i = 0; i < Math.max(x.length, y.length); i++) {
+    if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0);
+  }
+  return false;
+}
+let updateSpaeter = false;
+async function pruefeAufUpdate() {
+  if (updateSpaeter || !location.protocol.startsWith("http") || !$("updateOverlay").hidden) return;
+  try {
+    const antwort = await fetch(`js/version.js?frisch=${Date.now()}`, { cache: "no-store" });
+    if (!antwort.ok) return;
+    const text = await antwort.text();
+    const version = (text.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1];
+    const neu = (text.match(/APP_NEU\s*=\s*"([^"]*)"/) || [])[1] || "";
+    if (version && istNeuereVersion(version, APP_VERSION)) {
+      $("updateVersionen").textContent = `Du spielst Version ${APP_VERSION} – neu ist Version ${version}.`;
+      $("updateNeu").textContent = neu ? `🆕 ${neu}` : "";
+      $("updateOverlay").hidden = false;
+    }
+  } catch (e) { /* offline -> später nochmal */ }
+}
+// Alle Dateien frisch holen, nur die eigenen Caches löschen, neu starten
+async function aktualisiereApp() {
+  const knopf = $("updateJetzt");
+  knopf.disabled = true;
+  knopf.textContent = "⏳ Einen Moment …";
+  speichern();
+  const dateien = new Set(["./", "index.html", "sw.js", "manifest.webmanifest"]);
+  for (const s of document.scripts) if (s.src) dateien.add(s.src.split("?")[0]);
+  for (const l of document.querySelectorAll('link[rel="stylesheet"]')) dateien.add(l.href.split("?")[0]);
+  try { await Promise.all([...dateien].map(d => fetch(d, { cache: "reload" }).catch(() => {}))); } catch (e) { /* offline */ }
+  try {
+    const regs = await navigator.serviceWorker?.getRegistrations() || [];
+    await Promise.all(regs.filter(r => r.scope.includes("/idle-marie/") || !location.pathname.includes("/idle-marie/")).map(r => r.unregister()));
+  } catch (e) { /* kein Service Worker */ }
+  try {
+    const namen = await caches.keys();
+    await Promise.all(namen.filter(n => n.startsWith("idle-marie")).map(n => caches.delete(n)));
+  } catch (e) { /* kein Cache */ }
+  location.reload();
+}
+function zeigeVersionen() {
+  $("versionenListe").innerHTML = VERSIONEN.map(v => {
+    const [j, m, t] = v.datum.split("-");
+    return `<section class="versionEintrag${v.v === APP_VERSION ? " aktuell" : ""}"><h3>Version ${v.v}${v.v === APP_VERSION ? ` <b class="versionMarke">deine Version</b>` : ""}<small>${Number(t)}.${Number(m)}.${j}</small></h3>
+      <ul>${v.neu.map(n => `<li>${n}</li>`).join("")}</ul></section>`;
+  }).join("");
+  $("versionenOverlay").hidden = false;
+}
+function richteVersionenEin() {
+  $("version").textContent = `v${APP_VERSION}`;
+  $("version").addEventListener("click", () => { ton.klick(); zeigeVersionen(); });
+  $("versionenZu").addEventListener("click", () => { ton.klick(); $("versionenOverlay").hidden = true; });
+  $("updateJetzt").addEventListener("click", aktualisiereApp);
+  $("updateSpaeter").addEventListener("click", () => { updateSpaeter = true; $("updateOverlay").hidden = true; });
+  setTimeout(pruefeAufUpdate, 4000);
+  setInterval(pruefeAufUpdate, 5 * 60 * 1000);
+}
+
+// ----- Start -----
+function starteSpiel() {
+  laden();
+  ton.laden();
+  richteKnoepfeEin();
+  richteVersionenEin();
+  const offline = holeOfflineNach();
+  zeichneKopf();
+  zeichneAktivLeiste();
+  zeigeSeite("seiteFertigkeiten");
+  if (!spiel.figur) fragFigur();
+  else if (offline && offline.durchgaenge) zeigeOffline(offline);
+  speichern();
+  requestAnimationFrame(schleife);
+
+  setInterval(speichern, 10 * 1000);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) speichern();
+    else {
+      const e = holeOfflineNach();
+      if (e && e.durchgaenge) { zeigeOffline(e); zeichneKopf(); zeichneAktivLeiste(); zeichneSeite(); }
+      pruefeAufUpdate();
+    }
+  });
+  window.addEventListener("pagehide", speichern);
+
+  if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  }
+}
+
+starteSpiel();
