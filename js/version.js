@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "0.4";
-const APP_NEU = "Neu: 14 Haustiere zum Finden und über 70 Erfolge mit Münzen-Belohnung!";
+const APP_VERSION = "0.4.1";
+const APP_NEU = "Kleine Verbesserung: Alles passt jetzt auch auf schmale Handys. Zaubertränke heißen jetzt einfach Tränke.";

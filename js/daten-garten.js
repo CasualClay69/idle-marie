@@ -11,7 +11,7 @@
 FERTIGKEITEN.splice(FERTIGKEITEN.findIndex(f => f.id === "kochen"), 0,
   { id: "garten", name: "Gärtnern", icon: "🌱", art: "sammeln", farbe: "#8fcf6a", tun: "gärtnert" });
 FERTIGKEITEN.splice(FERTIGKEITEN.findIndex(f => f.id === "schnitzen") + 1, 0,
-  { id: "traenke", name: "Zaubertränke", icon: "🧪", art: "machen", farbe: "#b48cff", tun: "braut" });
+  { id: "traenke", name: "Tränke", icon: "🧪", art: "machen", farbe: "#b48cff", tun: "braut" });
 
 const GARTEN = {
   startBeete: 3,

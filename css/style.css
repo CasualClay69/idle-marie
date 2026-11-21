@@ -33,6 +33,7 @@ body {
   overflow: hidden;
   overscroll-behavior: none;
 }
+html, body, #app { max-width: 100vw; overflow-x: hidden; }
 button { font: inherit; color: inherit; cursor: pointer; }
 button:disabled { cursor: default; }
 #untenNav, .fertigkeitKarte, .taetigkeit, .bankFeld, .figurKarte, .knopf {
@@ -116,7 +117,7 @@ button:disabled { cursor: default; }
 
 /* ----- Inhalt ----- */
 #inhalt {
-  flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch;
   padding: 0 12px 16px; overscroll-behavior: contain;
 }
 .seitenTitel { margin: 6px 4px 10px; font-size: 1.35rem; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
@@ -143,7 +144,7 @@ button:disabled { cursor: default; }
 .symbol.gross.emojiSymbol { font-size: 42px; }
 
 /* ----- Fertigkeiten-Übersicht ----- */
-.fertigkeitenRaster { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.fertigkeitenRaster { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .rasterTitel { grid-column: 1 / -1; margin: 6px 4px 0; font-size: 1rem; color: var(--text-sanft); }
 .fertigkeitKarte {
   position: relative; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto auto;
@@ -160,7 +161,8 @@ button:disabled { cursor: default; }
   background: color-mix(in srgb, var(--farbe) 25%, #fff);
 }
 .fIcon.gross { width: 64px; height: 64px; font-size: 36px; border-radius: 18px; flex: none; }
-.fName { font-weight: 900; font-size: 1rem; line-height: 1.1; }
+.fName { font-weight: 900; font-size: 1rem; line-height: 1.1; overflow-wrap: anywhere; hyphens: auto; }
+.fertigkeitKarte > span { min-width: 0; }
 .fStufe { font-size: 0.85rem; color: var(--text-sanft); }
 .fStufe b { color: var(--text); font-size: 1.05em; }
 .laeuftMarke {
@@ -185,7 +187,7 @@ button:disabled { cursor: default; }
 .fKopfText .balken { margin: 6px 0 4px; }
 .fKopfText small { color: var(--text-sanft); font-size: 0.78rem; line-height: 1.35; display: block; }
 
-.taetigkeitenRaster { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.taetigkeitenRaster { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .taetigkeitenRaster > .hinweis { grid-column: 1 / -1; }
 .taetigkeit {
   display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center;
@@ -194,7 +196,7 @@ button:disabled { cursor: default; }
 }
 .taetigkeit.laeuft { border-color: var(--farbe); background: color-mix(in srgb, var(--farbe) 10%, #fff); }
 .taetigkeit.gesperrt { opacity: 0.55; filter: grayscale(0.6); }
-.tName { font-weight: 900; font-size: 0.95rem; line-height: 1.15; }
+.tName { font-weight: 900; font-size: 0.95rem; line-height: 1.15; overflow-wrap: anywhere; hyphens: auto; max-width: 100%; }
 .tWerte { font-size: 0.75rem; color: var(--text-sanft); }
 .tSperre { font-size: 0.8rem; font-weight: 800; color: var(--text-sanft); }
 .tBraucht { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; font-size: 0.75rem; font-weight: 700; }
@@ -220,7 +222,7 @@ button:disabled { cursor: default; }
 .gKopf { display: flex; gap: 12px; align-items: center; text-align: left; }
 .gKopf h2 { margin: 0 0 4px; font-size: 1.2rem; }
 .gKopf p { margin: 0; color: var(--text-sanft); font-size: 0.88rem; }
-.verkaufKnoepfe { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 14px 0 4px; }
+.verkaufKnoepfe { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 14px 0 4px; }
 .verkaufKnoepfe .knopf { margin: 0; display: flex; flex-direction: column; align-items: center; }
 .verkaufKnoepfe small { font-size: 0.75rem; opacity: 0.9; }
 
@@ -235,7 +237,7 @@ button:disabled { cursor: default; }
 .knopf.kaufen { width: auto; margin: 0; padding: 8px 12px; white-space: nowrap; font-size: 0.9rem; }
 
 /* ----- Ich ----- */
-.figurAuswahl { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.figurAuswahl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 .figurKarte {
   display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 4px 8px;
   border: 3px solid #fff; border-radius: 18px; background: linear-gradient(160deg, #ffe0f0, #efe2ff);
@@ -287,7 +289,7 @@ button:disabled { cursor: default; }
 .ruheFeld .kBild { width: 84px; height: 84px; flex: none; }
 .ruheFeld p { margin: 4px 0 0; }
 .ruheFeld .hinweis { margin: 4px 0 0; }
-.stile { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.stile { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
 .stilKnopf {
   display: flex; flex-direction: column; align-items: center; padding: 6px 2px; border: 2px solid var(--rand);
   border-radius: 16px; background: #fff; font-weight: 800; font-size: 0.85rem;
@@ -296,7 +298,7 @@ button:disabled { cursor: default; }
 .stilKnopf small { font-weight: 600; color: var(--text-sanft); font-size: 0.7rem; }
 .stilKnopf.aktiv { border-color: var(--akzent); background: #ffe9f3; }
 .werte { margin: 10px 0 0; font-size: 0.85rem; line-height: 1.5; }
-.plaetze { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.plaetze { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
 .platz {
   display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 2px; min-width: 0;
   border: 2px dashed var(--rand); border-radius: 16px; background: #fff;
@@ -308,7 +310,7 @@ button:disabled { cursor: default; }
 .gebiet { margin-bottom: 12px; padding: 10px; border-radius: 22px; background: linear-gradient(180deg, color-mix(in srgb, var(--farbe) 30%, #fff), rgba(255, 255, 255, 0.6)); }
 .gebiet h3 { margin: 2px 4px 8px; font-size: 1.05rem; }
 .gebiet h3 small { display: block; font-size: 0.72rem; color: var(--text-sanft); font-weight: 700; }
-.monsterListe { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.monsterListe { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 .monsterKarte {
   display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 6px 2px; min-width: 0;
   border: 2px solid #fff; border-radius: 16px; background: #fff; box-shadow: var(--schatten); text-align: center;
@@ -330,7 +332,7 @@ button:disabled { cursor: default; }
 /* ----- Garten ----- */
 .taetigkeitenRaster.garten { display: block; }
 .gartenKopf .knopf { margin: 0 0 10px; }
-.beete { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.beete { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 12px; }
 .beet {
   display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 6px; min-width: 0;
   border: 2px solid #fff; border-radius: 20px; text-align: center; box-shadow: var(--schatten);
@@ -346,7 +348,7 @@ button:disabled { cursor: default; }
 .beet.leer b, .beet.leer small { color: var(--text-sanft); text-shadow: none; }
 .beet.reif { border-color: #ffd54f; box-shadow: 0 0 0 3px #fff3b0, var(--schatten); }
 .samenListe { display: grid; gap: 6px; margin-top: 6px; }
-.samenZeile { display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: #fff; border-radius: 16px; box-shadow: var(--schatten); }
+.samenZeile { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding: 6px 8px; background: #fff; border-radius: 16px; box-shadow: var(--schatten); }
 .samenZeile .symbol { width: 44px; height: 44px; }
 .samenZeile .knopf.kaufen { padding: 6px 10px; font-size: 0.8rem; }
 .samenZeile.gesperrt { opacity: 0.55; }
@@ -369,7 +371,7 @@ button:disabled { cursor: default; }
   background: #fff; box-shadow: 0 2px 6px rgba(214, 51, 132, 0.3);
 }
 .begleiterKopf[hidden] { display: none; }
-.haustierListe { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.haustierListe { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .haustierKarte {
   position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 6px;
   border: 2px solid #fff; border-radius: 18px; background: linear-gradient(160deg, #fff6fb, #f3eaff); text-align: center;
@@ -405,7 +407,7 @@ button:disabled { cursor: default; }
 
 /* ----- Navigation unten ----- */
 #untenNav {
-  display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px;
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px;
   padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
   background: rgba(255, 255, 255, 0.92); border-top: 2px solid var(--rand);
   box-shadow: 0 -4px 14px rgba(214, 51, 132, 0.12);
@@ -475,8 +477,8 @@ button:disabled { cursor: default; }
 
 /* Große Bildschirme (Tablet hochkant): drei Spalten */
 @media (min-width: 560px) {
-  .taetigkeitenRaster { grid-template-columns: repeat(3, 1fr); }
-  .fertigkeitenRaster { grid-template-columns: repeat(3, 1fr); }
+  .taetigkeitenRaster { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .fertigkeitenRaster { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -579,3 +581,6 @@ button:disabled { cursor: default; }
   .splashSymbol, .splashBalken span { animation: none; }
   .splashHerzen { display: none; }
 }
+
+.samenZeile .lText { flex: 1 1 120px; }
+.taetigkeit > * { max-width: 100%; }
