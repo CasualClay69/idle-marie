@@ -18,7 +18,7 @@ FASERN.forEach(([name, emoji], i) => {
   gegenstand(`faser${i}`, name, "emoji", TIER_FARBEN[i], Math.round(WERTE[i] * 1.5), { emoji });
   gegenstand(`samen-faser${i}`, `${name}-Samen`, "samen", TIER_FARBEN[i], Math.max(1, Math.round(SAMEN_PREIS[i] / 4)), { emoji, preis: SAMEN_PREIS[i] });
   PFLANZEN.push({ id: `faser${i}`, samen: `samen-faser${i}`, ertrag: `faser${i}`, name, emoji, art: "faser",
-    stufe: STUFEN[i], minuten: Math.round(WACHSZEIT[i] * 1.1), xp: XP[i] * 6, menge: [3, 6] });
+    stufe: STUFEN[i], minuten: Math.round(WACHSZEIT[i] * 1.1), xp: XP[i] * 24, menge: [12, 18] });
 });
 
 // ----- Stoff weben -----
@@ -26,7 +26,7 @@ const STOFFE = ["Baumwollstoff", "Leinen", "Bambusstoff", "Seide", "Wolkenstoff"
 STOFFE.forEach((name, i) => {
   gegenstand(`stoff${i}`, name, "stoff", TIER_FARBEN[i], WERTE[i] * 4);
   taetigkeit({ id: `naehen-stoff${i}`, fertigkeit: "naehen", name, stufe: STUFEN[i], xp: Math.round(XP[i] * 1.3), zeit: 3,
-    braucht: { [`faser${i}`]: 2 }, gibt: { [`stoff${i}`]: 1 } });
+    braucht: { [`faser${i}`]: 1 }, gibt: { [`stoff${i}`]: 1 } });
 });
 
 // ----- Kuscheltiere (bringen beim Verkaufen viele Münzen) -----

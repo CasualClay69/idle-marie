@@ -7,7 +7,8 @@
 
 function gartenStand() {
   if (!spiel.garten) spiel.garten = { beete: [], gekauft: 0 };
-  const anzahlBeete = GARTEN.startBeete + spiel.garten.gekauft;
+  const blumenkasten = spiel.baumhaus?.blumen || 0;   // ab Ahorn-Stufe je ein Beet mehr (bis zu 3)
+  const anzahlBeete = GARTEN.startBeete + spiel.garten.gekauft + Math.max(0, blumenkasten - 2);
   while (spiel.garten.beete.length < anzahlBeete) spiel.garten.beete.push(null);
   return spiel.garten;
 }

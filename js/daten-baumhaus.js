@@ -36,7 +36,7 @@ const BAUPLAETZE = [
   { id: "regal",     name: "Regal",     emoji: "📚", bonus: { art: "doppelt", werte: [1, 2, 3, 4, 5] }, text: "+{w} % doppelte Ausbeute" },
   { id: "kamin",     name: "Kamin",     emoji: "🔥", bonus: { art: "heilen", werte: [5, 10, 15, 20, 30] }, text: "Essen heilt {w} % mehr" },
   { id: "teleskop",  name: "Teleskop",  emoji: "🔭", bonus: { art: "tier", werte: [10, 20, 30, 40, 60] }, text: "Haustiere {w} % öfter finden" },
-  { id: "blumen",    name: "Blumenkasten", emoji: "🌷", bonus: { art: "garten", werte: [5, 10, 15, 20, 25] }, text: "Garten wächst {w} % schneller", ohneBarren: true },
+  { id: "blumen",    name: "Blumenkasten", emoji: "🌷", bonus: { art: "garten", werte: [5, 10, 15, 20, 25] }, text: "Garten wächst {w} % schneller", ohneBarren: true, extra: ["", "", " · +1 Beet", " · +2 Beete", " · +3 Beete"] },
   { id: "truhe",     name: "Schatztruhe", emoji: "🧰", bonus: { art: "muenzen", werte: [5, 10, 15, 20, 30] }, text: "+{w} % Münzen von Monstern" },
   { id: "puppe",     name: "Übungspuppe", emoji: "🎯", bonus: { art: "kampfxp", werte: [5, 10, 15, 20, 30] }, text: "+{w} % Kampf-Erfahrung" },
   { id: "haengematte", name: "Hängematte", emoji: "🪢", bonus: { art: "verschnaufen", werte: [2, 4, 6, 8, 10] }, text: "+{w} % Herzen nach jedem Sieg", ohneBarren: true },
@@ -50,7 +50,7 @@ function bauKosten(platz, k) {
   return { sachen, muenzen: s.muenzen, stufe: s.bauen, xp: s.xp };
 }
 const bauName = (platz, k) => `${BAU_STUFEN[k].vorsilbe}-${platz.name}`;
-const bauBonusText = (platz, k) => platz.text.replace("{w}", platz.bonus.werte[k]);
+const bauBonusText = (platz, k) => platz.text.replace("{w}", platz.bonus.werte[k]) + (platz.extra?.[k] || "");
 
 // ----- Neues Haustier fürs Bauen -----
 HAUSTIERE.push({ id: "klopfi", name: "Klopfi", tier: "Specht", emoji: "🐦", fertigkeit: "bauen", bonus: { art: "schneller", wert: 0.05 }, text: "Bauen 5 % schneller" });

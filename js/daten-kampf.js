@@ -16,7 +16,8 @@ const KAMPF = {
   herzenStartXp: 1154,     // Herzen beginnen auf Stufe 10
   hpProStufe: 10,          // Lebenspunkte = Herzen-Stufe × 10
   xpProSchaden: 0.5,       // Erfahrung für den gewählten Kampfstil je Schadenspunkt
-  herzenXpProSchaden: 0.133,
+  herzenXpProSchaden: 0.25,
+  herzenXpProTreffer: 0.1,   // auch eingesteckter Schaden bringt ein bisschen Herzen-Erfahrung
   essenUnter: 0.5,         // isst automatisch, wenn weniger als 50 % Herzen übrig sind
   pauseNachSieg: 1.5,      // Sekunden, bis das nächste Monster kommt
   ohneWaffeTempo: 2.2,
@@ -130,8 +131,8 @@ GEBIETE.forEach((g, gi) => g.monster.forEach(m => {
     tempo: chef ? 3.2 : 2.8,
     muenzen: [L * 2 * (chef ? 5 : 1), L * 6 * (chef ? 5 : 1)],
     beute: [
-      { id: g.beute[0], chance: 0.5, anzahl: [1, 2] },
-      { id: g.beute[1], chance: 0.2, anzahl: [1, 1] },
+      { id: g.beute[0], chance: 0.6, anzahl: [2, 4] },
+      { id: g.beute[1], chance: 0.3, anzahl: [1, 2] },
       { id: `fisch${Math.min(7, gi + 1)}`, chance: 0.15, anzahl: [1, 3] },
       { id: `erz${Math.min(7, gi + 1)}`, chance: 0.15, anzahl: [1, 3] },
       ...(chef ? [{ id: `pokal${gi}`, chance: 0.1, anzahl: [1, 1] }] : []),

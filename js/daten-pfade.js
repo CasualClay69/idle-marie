@@ -50,7 +50,7 @@ PFADE.forEach((p, i) => {
   p.truhe = {
     muenzen: [L * 8, L * 16],   // nicht zu viel – sonst wären Laden und Werkzeuge zu schnell gekauft
     sachen: [
-      { id: g.beute[0], anzahl: [5, 10] },
+      { id: g.beute[0], anzahl: [10, 20] },
       { id: g.beute[1], anzahl: [3, 6] },
       { id: `barren${Math.min(7, i + 1)}`, anzahl: [3, 8] },
       { id: `essen${Math.min(7, i + 1)}`, anzahl: [5, 10] },

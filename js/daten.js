@@ -81,6 +81,11 @@ for (let i = 0; i < 8; i++) {
     xp: Math.round(XP[i] * 1.8), zeit: 2.5, braucht: { [`holz${i}`]: 2 }, gibt: { [`schnitz${i}`]: 1 } });
 }
 
+// Balancing: Sammeln soll bis 99 ein echtes Ziel sein -> die hohen Stufen geben etwas weniger Erfahrung
+for (const t of TAETIGKEITEN) {
+  if (["holz", "angeln", "bergbau"].includes(t.fertigkeit) && t.stufe >= 45) t.xp = Math.round(t.xp * 0.7);
+}
+
 // ----- Werkzeuge (im Laden): jede Stufe macht die Sammel-Fertigkeit 5 % schneller -----
 const WERKZEUG_STUFEN = [
   { name: "Kupfer",   preis: 50,      stufe: 1 },

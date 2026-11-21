@@ -15,7 +15,8 @@ FERTIGKEITEN.splice(FERTIGKEITEN.findIndex(f => f.id === "schnitzen") + 1, 0,
 
 const GARTEN = {
   startBeete: 3,
-  beetPreise: [500, 2000, 8000, 30000, 100000, 300000, 1000000],   // Beet 4 … 10
+  beetPreise: [500, 2000, 8000, 30000, 100000, 300000, 1000000, 3000000, 8000000, 20000000],   // Beet 4 … 13
+  // Beet 14–16 gibt es mit dem Blumenkasten im Baumhaus (Ahorn-, Zauber- und Regenbogen-Stufe)
   samenZurueck: 0.3,       // Chance, beim Ernten einen Samen zurückzubekommen
 };
 
@@ -32,12 +33,12 @@ const WACHSZEIT = [5, 10, 15, 20, 30, 40, 50, 60];            // Minuten
 const SAMEN_PREIS = [5, 20, 60, 150, 400, 1000, 2500, 6000];
 
 const PFLANZEN = [];
-for (const [liste, art, menge] of [[GEMUESE, "gemuese", [4, 7]], [KRAEUTER, "kraut", [2, 4]]]) {
+for (const [liste, art, menge] of [[GEMUESE, "gemuese", [6, 10]], [KRAEUTER, "kraut", [8, 13]]]) {
   liste.forEach(([name, emoji], i) => {
     gegenstand(`${art}${i}`, name, "emoji", TIER_FARBEN[i], Math.round(WERTE[i] * (art === "kraut" ? 2 : 1.5)), { emoji });
     gegenstand(`samen-${art}${i}`, `${name}-Samen`, "samen", TIER_FARBEN[i], Math.max(1, Math.round(SAMEN_PREIS[i] / 4)), { emoji, preis: SAMEN_PREIS[i] });
     PFLANZEN.push({ id: `${art}${i}`, samen: `samen-${art}${i}`, ertrag: `${art}${i}`, name, emoji, art,
-      stufe: STUFEN[i], minuten: WACHSZEIT[i] * (art === "kraut" ? 1.2 : 1), xp: XP[i] * 6, menge });
+      stufe: STUFEN[i], minuten: WACHSZEIT[i] * (art === "kraut" ? 1.2 : 1), xp: XP[i] * 24, menge });
   });
 }
 
@@ -67,8 +68,8 @@ const TRAENKE = [
 TRAENKE.forEach((t, i) => {
   t.id = `trank${i}`;
   gegenstand(t.id, t.name, "trank", t.farbe, WERTE[i] * 12 + 20, { trank: t });
-  taetigkeit({ id: `traenke-${i}`, fertigkeit: "traenke", name: t.name, stufe: STUFEN[i], xp: Math.round(XP[i] * 2.5), zeit: 3,
-    braucht: { [`kraut${i}`]: 2, [t.beute]: 1 }, gibt: { [t.id]: 1 } });
+  taetigkeit({ id: `traenke-${i}`, fertigkeit: "traenke", name: t.name, stufe: STUFEN[i], xp: Math.round(XP[i] * 5), zeit: 3,
+    braucht: { [`kraut${i}`]: 1, [t.beute]: 1 }, gibt: { [t.id]: 1 } });
 });
 
 // Mehr Platz in der Bank – es gibt jetzt viel mehr Sorten

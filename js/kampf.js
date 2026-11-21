@@ -134,6 +134,8 @@ function kampfTick(jetzt, ergebnis) {
       if (Math.random() < trefferChance(m.genauigkeit, w.ausweichen)) {
         const schaden = Math.max(1, Math.round(zufall(1, m.maxSchlag) * (1 - w.weniger)));
         spiel.hp = Math.max(0, spiel.hp - schaden);
+        spiel.xp.herzen = (spiel.xp.herzen || 0) + schaden * KAMPF.herzenXpProTreffer;
+        ergebnis.xp.herzen = (ergebnis.xp.herzen || 0) + schaden * KAMPF.herzenXpProTreffer;
         logge(`🌀 ${m.name} schubst: −${schaden} ❤️`);
       } else logge(`✨ ${figurNameKurz()} weicht aus`);
       if (spiel.hp < maxHp() * KAMPF.essenUnter) isst(ergebnis);
