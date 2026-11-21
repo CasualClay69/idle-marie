@@ -1,5 +1,5 @@
 -- =====================================================
---  Idle Marie – Bestenliste, Admin-Menü, Belohnungs-Codes, Nachricht an alle, Lauftext
+--  Hannah Idle – Bestenliste, Admin-Menü, Belohnungs-Codes, Nachricht an alle, Lauftext
 --
 --  Einmal im Supabase-Dashboard unter "SQL Editor" einfügen und auf "Run" klicken.
 --  Kann gefahrlos mehrmals ausgeführt werden. Benutzt nur eigene Tabellen und Funktionen

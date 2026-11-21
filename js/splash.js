@@ -11,7 +11,7 @@ const SPLASH = {
     "Die Axt wird geschärft …",
     "Würmer für die Angel werden gesucht …",
     "Die Bank wird aufgeschlossen …",
-    "Los geht's! 💖",
+    "Hannah ist bereit! 💖",
   ],
 };
 

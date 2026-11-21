@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "0.9";
-const APP_NEU = "Neu: der Season-Pass! Jeden Monat ein neues Thema mit Aufgaben, Season-Monster, Season-Haustier und Kleidung.";
+const APP_VERSION = "1.0";
+const APP_NEU = "Aus Idle Marie wird Hannah Idle! Mit neuem Bild, neuem Namen und Hannah und Marie als Figuren.";

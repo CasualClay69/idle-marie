@@ -42,7 +42,7 @@ async function leseSicherung(code) {
     } else throw new Error("form");
   } catch (e) {
     if (e.message === "alt") throw new Error("Dieses Gerät kann den Code leider nicht lesen. Bitte ein neueres Gerät benutzen.");
-    throw new Error("Das ist kein gültiger Idle-Marie-Code. Bitte ganz und genau einfügen.");
+    throw new Error("Das ist kein gültiger Hannah-Idle-Code. Bitte ganz und genau einfügen.");
   }
   let stand;
   try { stand = JSON.parse(json); } catch (e) { throw new Error("Der Code ist beschädigt."); }
@@ -92,11 +92,11 @@ function richteSicherungEin() {
     ton.klick();
     const code = await sicherungsCode();
     const d = new Date();
-    const name = `idle-marie-${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}.txt`;
+    const name = `hannah-idle-${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}.txt`;
     const datei = new File([code], name, { type: "text/plain" });
     // Auf Handys: über "Teilen" speichern (z.B. in Dateien oder als Nachricht); sonst normal herunterladen
     if (navigator.canShare?.({ files: [datei] })) {
-      try { await navigator.share({ files: [datei], title: "Idle Marie – Spielstand" }); return; } catch (e) { if (e.name === "AbortError") return; }
+      try { await navigator.share({ files: [datei], title: "Hannah Idle – Spielstand" }); return; } catch (e) { if (e.name === "AbortError") return; }
     }
     const a = document.createElement("a");
     a.href = URL.createObjectURL(datei);

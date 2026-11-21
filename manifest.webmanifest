@@ -1,7 +1,7 @@
 {
-  "name": "Idle Marie",
-  "short_name": "Idle Marie",
-  "description": "Sammeln, kochen, schmieden, schnitzen – Idle Marie spielt weiter, auch wenn du weg bist.",
+  "name": "Hannah Idle",
+  "short_name": "Hannah Idle",
+  "description": "Sammeln, kochen, schmieden, schnitzen – Hannah Idle spielt weiter, auch wenn du weg bist.",
   "lang": "de",
   "start_url": "./",
   "scope": "./",

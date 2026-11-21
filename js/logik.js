@@ -9,7 +9,7 @@ const SPEICHER_SCHLUESSEL = "idleMarie-spielstand";
 function neuerSpielstand() {
   return {
     version: 1,
-    figur: null,                 // marie | hannah | stefan | jenny – wird beim ersten Start gewählt
+    figur: null,                 // hannah | marie – wird beim ersten Start gewählt
     muenzen: 0,
     xp: { herzen: KAMPF.herzenStartXp },   // fertigkeitId -> Erfahrung (Herzen beginnen auf Stufe 10)
     uebung: {},                  // taetigkeitId -> Übungs-Erfahrung
@@ -35,6 +35,7 @@ function laden() {
     const text = localStorage.getItem(SPEICHER_SCHLUESSEL);
     if (text) spiel = Object.assign(neuerSpielstand(), JSON.parse(text));
     if (!spiel.xp.herzen) spiel.xp.herzen = KAMPF.herzenStartXp;
+    if (spiel.figur && !FIGUREN.some(f => f.id === spiel.figur)) spiel.figur = null;   // Figur gibt es nicht mehr
   } catch (e) { /* kaputter oder gesperrter Speicher -> neues Spiel */ }
 }
 function speichern() {
