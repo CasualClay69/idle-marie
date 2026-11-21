@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.1", datum: "2026-11-21", neu: ["🏡 Hannahs Baumhaus: Mit der neuen Fertigkeit Bauen sägst du Bretter und richtest 12 Plätze ein – vom Bett bis zum Teleskop.", "Jedes Möbelstück hat 5 Stufen (Ast bis Regenbogen) und hilft dir für immer, z.B. längere Offline-Zeit oder mehr Bankfächer.", "Deine Haustiere wohnen jetzt sichtbar im Baumhaus. Neues Haustier: Specht Klopfi."] },
   { v: "1.0", datum: "2026-11-21", neu: ["Aus Idle Marie wird Hannah Idle – mit neuem App-Bild und Startbildschirm.", "Spielbar sind jetzt Hannah und Marie."] },
   { v: "0.9", datum: "2026-11-21", neu: ["🎟️ Season-Pass: Jeden Monat ein neues Thema (wie in Marie Clicker) mit 30 Stufen.", "Täglich 3 und wöchentlich 3 Aufgaben bringen Season-Punkte – verpasste Tagesaufgaben bleiben eine Woche offen.", "Jede Season hat ein eigenes Monster, das sich deiner Stärke anpasst, ein Season-Haustier sowie Hut, Kleidung und Rahmen."] },
   { v: "0.8", datum: "2026-11-21", neu: ["👗 Kleiderschrank (unter „Ich“): 15 Hüte, 12 Kleidungen und 10 Rahmen für deine Figur – zum Kaufen oder als Belohnung für Aufträge.", "In der Bestenliste sieht man jetzt auch, wie die anderen angezogen sind."] },

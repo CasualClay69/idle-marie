@@ -154,6 +154,8 @@ function zeichneFertigkeit() {
   const raster = $("taetigkeitenRaster");
   raster.textContent = "";
   raster.classList.toggle("garten", f.id === "garten");
+  $("baumhausBereich").hidden = f.id !== "bauen";
+  if (f.id === "bauen") zeichneBaumhaus($("baumhausBereich"));
   if (f.id === "garten") { zeichneGarten(raster); return; }
   for (const t of taetigkeitenVon(f.id).sort((x, y) => x.stufe - y.stufe)) {
     const gesperrt = l < t.stufe;

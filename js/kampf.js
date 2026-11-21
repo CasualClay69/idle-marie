@@ -76,7 +76,7 @@ function isst(ergebnis) {
   if (!id || anzahl(id) < 1) return false;
   nimmAusBank(id, 1);
   const vorher = spiel.hp;
-  spiel.hp = Math.min(maxHp(), spiel.hp + GEGENSTAENDE[id].heilt);
+  spiel.hp = Math.min(maxHp(), spiel.hp + Math.round(GEGENSTAENDE[id].heilt * (1 + baumhausBonus("heilen"))));
   ergebnis.verbraucht[id] = (ergebnis.verbraucht[id] || 0) + 1;
   logge(`😋 ${figurNameKurz()} isst ${GEGENSTAENDE[id].name}: +${spiel.hp - vorher} ❤️`);
   return true;
@@ -84,7 +84,7 @@ function isst(ergebnis) {
 
 function gibKampfXp(schaden, ergebnis) {
   const stil = spiel.kampfstil || "mut";
-  const f = trankFaktorXp();
+  const f = trankFaktorXp() * (1 + baumhausBonus("kampfxp"));
   for (const [fid, xp] of [[stil, schaden * KAMPF.xpProSchaden * f], ["herzen", schaden * KAMPF.herzenXpProSchaden * f]]) {
     const vorher = stufe(fid);
     spiel.xp[fid] = (spiel.xp[fid] || 0) + xp;
@@ -156,11 +156,11 @@ function besiegt(m, ergebnis) {
   trankNachSieg();
   spiel.besiegt = spiel.besiegt || {};
   spiel.besiegt[m.id] = (spiel.besiegt[m.id] || 0) + 1;
-  const muenzen = Math.round(zufall(m.muenzen[0], m.muenzen[1]) * (1 + haustierBonus("muenzen")));
+  const muenzen = Math.round(zufall(m.muenzen[0], m.muenzen[1]) * (1 + haustierBonus("muenzen") + baumhausBonus("muenzen")));
   if (m.chef) { const h = vielleichtHaustierBeiChef(m.id); if (h) ergebnis.ereignisse.push({ haustier: h }); }
   spiel.muenzen += muenzen;
   ergebnis.muenzen = (ergebnis.muenzen || 0) + muenzen;
-  spiel.hp = Math.min(maxHp(), spiel.hp + Math.round(maxHp() * KAMPF.verschnaufen));
+  spiel.hp = Math.min(maxHp(), spiel.hp + Math.round(maxHp() * (KAMPF.verschnaufen + baumhausBonus("verschnaufen"))));
   logge(`💤 ${m.name} schläft ein! +${muenzen} Münzen`);
   for (const b of m.beute) {
     if (Math.random() >= b.chance) continue;

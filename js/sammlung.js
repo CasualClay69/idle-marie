@@ -24,15 +24,15 @@ function gibHaustier(h) {
 function vielleichtHaustierBeiArbeit(fertigkeitId, sekunden) {
   const h = HAUSTIERE.find(x => x.fertigkeit === fertigkeitId);
   if (!h || hatHaustier(h.id)) return null;
-  return Math.random() < sekunden / HAUSTIER_REGEL.sekundenProFund ? gibHaustier(h) : null;
+  return Math.random() < sekunden / HAUSTIER_REGEL.sekundenProFund * (1 + baumhausBonus("tier")) ? gibHaustier(h) : null;
 }
 function vielleichtHaustierBeiErnte() {
   const h = HAUSTIERE.find(x => x.fertigkeit === "garten");
-  return !hatHaustier(h.id) && Math.random() < HAUSTIER_REGEL.gartenChance ? gibHaustier(h) : null;
+  return !hatHaustier(h.id) && Math.random() < HAUSTIER_REGEL.gartenChance * (1 + baumhausBonus("tier")) ? gibHaustier(h) : null;
 }
 function vielleichtHaustierBeiChef(monsterId) {
   const h = HAUSTIERE.find(x => x.chef === monsterId);
-  return h && !hatHaustier(h.id) && Math.random() < HAUSTIER_REGEL.chefChance ? gibHaustier(h) : null;
+  return h && !hatHaustier(h.id) && Math.random() < HAUSTIER_REGEL.chefChance * (1 + baumhausBonus("tier")) ? gibHaustier(h) : null;
 }
 
 // ----- Erfolge -----

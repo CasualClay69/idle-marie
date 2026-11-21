@@ -79,14 +79,16 @@ function dauer(t) {
   if (uebungStufe(t.id) >= SPIEL.maxStufe) faktor -= SPIEL.meisterSchneller;
   faktor -= trankSchneller(t);
   if (f.art === "machen") faktor -= haustierBonus("schneller", t.fertigkeit);
+  if (f.art === "sammeln") faktor -= baumhausBonus("sammeln");
+  if (f.art === "machen") faktor -= baumhausBonus("machen");
   return Math.max(0.5, t.zeit * faktor);
 }
 function doppeltChance(t) {
-  return Math.floor(uebungStufe(t.id) / 10) * SPIEL.uebungDoppeltProZehn + trankDoppelt(t) + haustierBonus("doppelt", t.fertigkeit);
+  return Math.floor(uebungStufe(t.id) / 10) * SPIEL.uebungDoppeltProZehn + trankDoppelt(t) + haustierBonus("doppelt", t.fertigkeit) + baumhausBonus("doppelt");
 }
 
 // ----- Bank -----
-function bankFaecher() { return SPIEL.bankStart + spiel.bankFaecherGekauft; }
+function bankFaecher() { return SPIEL.bankStart + spiel.bankFaecherGekauft + baumhausBonus("bank"); }
 function belegteFaecher() { return Object.keys(spiel.bank).filter(id => spiel.bank[id] > 0).length; }
 function anzahl(id) { return spiel.bank[id] || 0; }
 function passtInBank(id) { return anzahl(id) > 0 || belegteFaecher() < bankFaecher(); }
@@ -196,7 +198,7 @@ function holeOfflineNach() {
   const jetzt = Date.now();
   const weg = jetzt - spiel.letzteZeit;
   if (weg < 60 * 1000) return null;
-  const grenze = SPIEL.offlineMaxStunden * 3600 * 1000;
+  const grenze = (SPIEL.offlineMaxStunden + baumhausBonus("offline")) * 3600 * 1000;   // das Bett im Baumhaus verlängert
   const xpVorher = { ...spiel.xp };
   const stufenVorher = Object.fromEntries(FERTIGKEITEN.map(f => [f.id, stufe(f.id)]));
   let ergebnis;

@@ -594,6 +594,42 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .stTier { display: grid; place-items: center; font-size: 26px; }
 .stText { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
 
+/* ----- Baumhaus ----- */
+#baumhausBereich { margin-bottom: 12px; }
+.baumhaus { --bh: 340px; position: relative; width: 100%; max-width: 460px; margin: 0 auto; aspect-ratio: 360 / 380; border-radius: 24px; overflow: hidden; box-shadow: var(--schatten); border: 3px solid #fff; }
+.baumhaus > svg { width: 100%; height: 100%; display: block; }
+.bhMoebel, .bhLeer, .bhMarke {
+  position: absolute; transform: translate(-50%, -50%); border: 0; padding: 0; background: none; line-height: 1;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
+}
+.bhMoebel i { position: absolute; right: -6px; bottom: -4px; font-style: normal; font-size: 10px; font-weight: 900; color: #fff;
+  background: var(--akzent); border-radius: 999px; padding: 0 4px; }
+.bhLeer, .bhMarke {
+  width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-weight: 900; font-size: 16px;
+  background: rgba(255, 255, 255, 0.85); color: var(--akzent-dunkel); border: 2px dashed var(--akzent);
+  animation: pochen 1.6s ease-in-out infinite;
+}
+.bhMarke { border-style: solid; font-size: 12px; animation: none; }
+.bhTier { position: absolute; transform: translate(-50%, -50%); font-size: calc(var(--bh) * 0.07); animation: huepfen 2.6s ease-in-out infinite; pointer-events: none; }
+.bhFigur { position: absolute; left: 34%; top: 85%; width: 18%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; overflow: hidden;
+  background: linear-gradient(160deg, #ffd1e6, #e6ccff); border: 3px solid #fff; box-shadow: var(--schatten); }
+.bhFigur svg { width: 100%; height: 100%; display: block; }
+.bauListe { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin: 8px 0 4px; }
+.bauKarte { display: flex; align-items: center; gap: 6px; padding: 6px 8px; min-width: 0; text-align: left;
+  border: 2px dashed var(--rand); border-radius: 14px; background: rgba(255, 255, 255, 0.6); }
+.bauKarte.gebaut { border-style: solid; border-color: #fff; background: #fff; box-shadow: var(--schatten); }
+.bkEmoji { font-size: 22px; flex: none; }
+.bkText { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.bkText b { font-size: 0.75rem; line-height: 1.15; overflow-wrap: anywhere; }
+.bkText small { font-size: 0.62rem; color: var(--text-sanft); line-height: 1.2; }
+.bkSterne { font-size: 0.6rem; color: var(--gold); letter-spacing: -1px; flex: none; }
+.bauNaechstes { background: #fff; border-radius: 16px; padding: 10px 12px; text-align: left; display: flex; flex-direction: column; gap: 4px; }
+.bauNaechstes small { color: var(--text-sanft); font-weight: 700; }
+.bauKosten { list-style: none; padding: 0; margin: 6px 0; display: grid; gap: 4px; font-size: 0.85rem; }
+.bauKosten li { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.bauKosten li.fehlt { color: var(--gefahr); }
+.bauKosten small { color: var(--text-sanft); }
+
 /* ----- Navigation unten ----- */
 #untenNav {
   display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px;

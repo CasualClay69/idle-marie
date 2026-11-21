@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.0";
-const APP_NEU = "Aus Idle Marie wird Hannah Idle! Mit neuem Bild, neuem Namen und Hannah und Marie als Figuren.";
+const APP_VERSION = "1.1";
+const APP_NEU = "Neu: Hannahs Baumhaus! Säge Bretter, bau 12 Möbelstücke und bekomme tolle Boni.";

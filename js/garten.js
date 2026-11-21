@@ -13,12 +13,14 @@ function gartenStand() {
 }
 const pflanze = id => PFLANZEN.find(p => p.id === id);
 
+// Wachszeit in ms (der Blumenkasten im Baumhaus macht schneller)
+function wachsMs(beet) { return pflanze(beet.pflanze).minuten * 60000 * (1 - baumhausBonus("garten")); }
 function beetFortschritt(beet, jetzt = Date.now()) {
   if (!beet) return 0;
-  return Math.min(1, (jetzt - beet.start) / (pflanze(beet.pflanze).minuten * 60000));
+  return Math.min(1, (jetzt - beet.start) / wachsMs(beet));
 }
 function beetRestMs(beet, jetzt = Date.now()) {
-  return Math.max(0, beet.start + pflanze(beet.pflanze).minuten * 60000 - jetzt);
+  return Math.max(0, beet.start + wachsMs(beet) - jetzt);
 }
 
 function pflanzeEin(nr, pflanzenId) {
@@ -37,7 +39,7 @@ function ernte(nr) {
   if (!passtInBank(p.ertrag)) return "Die Bank ist voll";
   const uebungsId = `garten-${p.id}`;
   let menge = p.menge[0] + Math.floor(Math.random() * (p.menge[1] - p.menge[0] + 1));
-  if (Math.random() < Math.floor(stufeAusXp(spiel.uebung[uebungsId] || 0) / 10) * SPIEL.uebungDoppeltProZehn + haustierBonus("doppelt", "garten")) menge *= 2;
+  if (Math.random() < Math.floor(stufeAusXp(spiel.uebung[uebungsId] || 0) / 10) * SPIEL.uebungDoppeltProZehn + haustierBonus("doppelt", "garten") + baumhausBonus("doppelt")) menge *= 2;
   gibInBank(p.ertrag, menge);
   zaehle(p.ertrag, menge);
   let samen = 0;
@@ -106,7 +108,7 @@ function verbraucheTrank(t) {
   }
 }
 function trankFaktorXp() {   // Tränke und Haustiere zusammen
-  return 1 + haustierBonus("xp") + trankWirkung(w => w.art === "xp").reduce((s, t) => s + t.wirkung.wert, 0);
+  return 1 + haustierBonus("xp") + baumhausBonus("xp") + trankWirkung(w => w.art === "xp").reduce((s, t) => s + t.wirkung.wert, 0);
 }
 // Bonus für eine Tätigkeit (ohne zu verbrauchen)
 function trankDoppelt(t) {
