@@ -21,7 +21,7 @@ const STUFEN = [1, 10, 20, 30, 45, 60, 75, 90];
 const TIER_FARBEN = ["#c9a27a", "#e8d8b0", "#ff9fb8", "#f2a65a", "#8fcf7a", "#b48cff", "#ffd54f", "#7ad7f0"];
 
 const FERTIGKEITEN = [
-  { id: "holz",      name: "Holzsammeln", icon: "🌳", art: "sammeln", farbe: "#7cc36b", werkzeug: "axt",
+  { id: "holz",      name: "Holz­sammeln", icon: "🌳", art: "sammeln", farbe: "#7cc36b", werkzeug: "axt",
     tun: "sammelt Holz" },
   { id: "angeln",    name: "Angeln",      icon: "🎣", art: "sammeln", farbe: "#5fb7e8", werkzeug: "angel",
     tun: "angelt" },

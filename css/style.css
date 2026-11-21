@@ -24,6 +24,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 *, *::before, *::after { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; margin: 0; }
 body {
@@ -459,6 +460,46 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
 .adminEintrag span { flex: 1; }
 .adminEintrag button { border: 0; background: #ffe9f3; border-radius: 10px; padding: 4px 8px; }
 .logo { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+
+/* ----- Spielstand sichern ----- */
+.sicherKnoepfe { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 8px; }
+.sicherKnoepfe .knopf { margin: 0; padding: 10px 8px; font-size: 0.88rem; text-align: center; }
+.codeFeld { font-family: ui-monospace, monospace; font-size: 0.72rem; resize: vertical; margin-bottom: 8px; word-break: break-all; }
+.codeFeld[hidden] { display: none; }
+#sicherHinweis:empty { display: none; }
+#ladenBereich { margin-top: 10px; }
+#ladenBereich[hidden], .ladenFrage[hidden] { display: none; }
+.dateiKnopf { cursor: pointer; }
+.ladenFrage { background: #fff3f6; border-radius: 16px; padding: 10px; font-size: 0.88rem; }
+.ladenFrage p { margin: 0 0 6px; }
+
+/* ----- Einführung ----- */
+#einfuehrung[hidden] { display: none; }
+.tippRing {
+  position: fixed; z-index: 150; border-radius: 18px; pointer-events: none;
+  box-shadow: 0 0 0 4px #ffd54f, 0 0 0 9999px rgba(91, 42, 79, 0.45);
+  animation: tippLeuchten 1.4s ease-in-out infinite;
+}
+.tippRing[hidden] { display: none; }
+@keyframes tippLeuchten { 50% { box-shadow: 0 0 0 7px #ffd54f, 0 0 0 9999px rgba(91, 42, 79, 0.45); } }
+.tippBlase {
+  --pfeil-x: 50%;
+  position: fixed; z-index: 160; left: 50%; transform: translateX(-50%); width: min(92vw, 420px);
+  padding: 12px 14px 10px; border-radius: 20px; background: #fff; border: 3px solid #ffd54f;
+  box-shadow: 0 10px 30px rgba(91, 42, 79, 0.35);
+}
+.tippBlase p { margin: 0 0 8px; font-size: 1rem; line-height: 1.4; }
+.tippBlase[data-pfeil]::before {
+  content: ""; position: absolute; left: var(--pfeil-x); width: 16px; height: 16px; background: #fff;
+  border: 3px solid #ffd54f; transform: translateX(-50%) rotate(45deg);
+}
+.tippBlase[data-pfeil="oben"]::before { top: -11px; border-right: 0; border-bottom: 0; }
+.tippBlase[data-pfeil="unten"]::before { bottom: -11px; border-left: 0; border-top: 0; }
+.tippBlase[data-pfeil=""]::before { display: none; }
+.tippFuss { display: flex; align-items: center; gap: 8px; }
+.tippFuss small { color: var(--text-sanft); font-weight: 700; margin-right: auto; }
+.tippLeise { border: 0; background: none; color: var(--text-sanft); font-weight: 700; font-size: 0.82rem; text-decoration: underline; }
+.tippFuss .knopf { padding: 7px 14px; }
 
 /* ----- Navigation unten ----- */
 #untenNav {

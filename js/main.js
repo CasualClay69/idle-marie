@@ -111,7 +111,8 @@ function fragFigur() {
     speichern();
     $("figurOverlay").hidden = true;
     zeichneKopf(); zeichneAktivLeiste(); zeichneSeite();
-    melde(`💖 Hallo ${figurName()}! Tippe auf eine Fertigkeit und leg los.`, "gross");
+    melde(`💖 Hallo ${figurName()}!`, "gross");
+    if (!spiel.einfuehrung) setTimeout(starteEinfuehrung, 600);
   });
   $("figurOverlay").hidden = false;
 }
@@ -186,6 +187,8 @@ function starteSpiel() {
   richteVersionenEin();
   richteOnlineEin();
   richteAdminEin();
+  richteSicherungEin();
+  richteEinfuehrungEin();
   const offline = holeOfflineNach();
   ruheAus();
   zeichneKopf();

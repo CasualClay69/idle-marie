@@ -43,6 +43,8 @@ const DATEIEN = [
   "js/online.js",
   "js/online-anzeige.js",
   "js/admin.js",
+  "js/sicherung.js",
+  "js/einfuehrung.js",
   "js/main.js",
   "icons/icon-192.png",
   "icons/icon-512.png",

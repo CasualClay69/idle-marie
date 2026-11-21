@@ -111,6 +111,7 @@ function zeichneFertigkeiten() {
     const karte = el("button", "fertigkeitKarte" + (aktiv ? " laeuft" : ""));
     karte.type = "button";
     karte.style.setProperty("--farbe", f.farbe);
+    karte.dataset.id = f.id;
     karte.innerHTML = `<span class="fIcon">${f.icon}</span>
       <span class="fName">${f.name}</span>
       <span class="fStufe">Stufe <b>${stufeAusXp(xp)}</b> / ${SPIEL.maxStufe}</span>

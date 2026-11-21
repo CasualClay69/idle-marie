@@ -37,6 +37,8 @@
   <script src="js/online.js" defer></script>
   <script src="js/online-anzeige.js" defer></script>
   <script src="js/admin.js" defer></script>
+  <script src="js/sicherung.js" defer></script>
+  <script src="js/einfuehrung.js" defer></script>
   <script src="js/main.js" defer></script>
 </head>
 <body>
@@ -138,7 +140,32 @@
           <dl id="statistik" class="statistik"></dl>
         </div>
         <div class="karte">
+          <h3>💾 Spielstand sichern</h3>
+          <p class="hinweis">Damit nichts verloren geht – z.B. wenn du ein neues Handy bekommst. Heb den Code oder die Datei gut auf!</p>
+          <div class="sicherKnoepfe">
+            <button type="button" class="knopf" id="sicherCode">📋 Als Code kopieren</button>
+            <button type="button" class="knopf" id="sicherDatei">📄 Als Datei speichern</button>
+          </div>
+          <textarea id="sicherFeld" class="codeFeld" rows="3" readonly hidden></textarea>
+          <p id="sicherHinweis"></p>
+          <button type="button" class="knopf leise" id="ladenKnopf">📥 Spielstand wiederherstellen</button>
+          <div id="ladenBereich" hidden>
+            <textarea id="ladenFeld" class="codeFeld" rows="3" placeholder="Code hier einfügen (beginnt mit IM1)"></textarea>
+            <div class="sicherKnoepfe">
+              <button type="button" class="knopf kaufen" id="ladenPruefen">Code prüfen</button>
+              <label class="knopf leise dateiKnopf">📄 Datei wählen<input type="file" id="ladenDatei" accept=".txt,text/plain" hidden></label>
+            </div>
+            <p class="fehlerText" id="ladenFehler"></p>
+            <div id="ladenFrage" class="ladenFrage" hidden>
+              <p id="ladenVergleich"></p>
+              <p><b>⚠️ Der Spielstand auf diesem Gerät wird dabei ersetzt.</b></p>
+              <button type="button" class="knopf gefahr" id="ladenJa">Ja, wiederherstellen</button>
+            </div>
+          </div>
+        </div>
+        <div class="karte">
           <h3>⚙️ Optionen</h3>
+          <button id="einfuehrungNochmal" class="knopf leise" type="button">🎓 Einführung nochmal ansehen</button>
           <label class="schalter"><input type="checkbox" id="tonAn"> 🔊 Töne</label>
           <button id="loeschen" class="knopf gefahr" type="button">🗑️ Spielstand löschen</button>
         </div>
@@ -245,6 +272,19 @@
       <h2>📜 Was ist neu?</h2>
       <div id="versionenListe" class="versionenListe"></div>
       <button id="versionenZu" class="knopf" type="button">Schließen</button>
+    </div>
+  </div>
+
+  <!-- Einführung (Leuchtrahmen + Sprechblase) -->
+  <div id="einfuehrung" hidden>
+    <div id="tippRing" class="tippRing"></div>
+    <div id="tippBlase" class="tippBlase">
+      <p id="tippText"></p>
+      <div class="tippFuss">
+        <small id="tippZaehler"></small>
+        <button type="button" id="tippUeberspringen" class="tippLeise">Überspringen</button>
+        <button type="button" id="tippWeiter" class="knopf kaufen">Weiter ›</button>
+      </div>
     </div>
   </div>
 

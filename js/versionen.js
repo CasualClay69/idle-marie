@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "0.6", datum: "2026-11-21", neu: ["Spielstand sichern und wiederherstellen – als Code zum Kopieren oder als Datei (unter „Ich“).", "Eine Einführung zeigt neuen Spielern Schritt für Schritt, wie alles geht. Unter „Ich“ kann man sie nochmal ansehen."] },
   { v: "0.5", datum: "2026-11-21", neu: ["Bestenliste mit Spitznamen (unter „Ich“): Gesamtstufe und Wochen-Wettbewerb – die Wochensieger tragen eine 👑.", "Belohnungs-Codes einlösen: Münzen, Glücks-Tränke oder Samen.", "Ab und zu gibt es Nachrichten für alle und einen Lauftext über dem Logo."] },
   { v: "0.4.1", datum: "2026-11-21", neu: ["Alles passt jetzt auch auf schmale Handys – nichts lässt sich mehr zur Seite schieben.", "Zaubertränke heißen jetzt einfach Tränke."] },
   { v: "0.4", datum: "2026-11-21", neu: ["14 Haustiere: Sie tauchen selten beim Arbeiten, im Garten oder bei Abenteuer-Chefs auf und helfen dir für immer.", "Such dir einen Begleiter aus – er sitzt neben deiner Figur.", "Über 70 Erfolge mit Münzen-Belohnung (unter „Ich“)."] },
