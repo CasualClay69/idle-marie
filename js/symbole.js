@@ -34,6 +34,15 @@ const SYMBOL_BAU = {
   barren: (f) => `<path d="M10 68L24 40H76L90 68Z" fill="${toene(f, -0.2)}" stroke="${toene(f, -0.45)}" stroke-width="3" stroke-linejoin="round"/>
     <path d="M24 40L32 28H68L76 40Z" fill="${toene(f, 0.3)}" stroke="${toene(f, -0.45)}" stroke-width="3" stroke-linejoin="round"/>
     <path d="M34 50H50" stroke="${toene(f, 0.5)}" stroke-width="4" stroke-linecap="round"/>`,
+  samen: (f, g) => `<path d="M24 22H76L80 88H20Z" fill="${toene(f, 0.55)}" stroke="${toene(f, -0.4)}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M24 22L30 14H70L76 22" fill="${toene(f, 0.2)}" stroke="${toene(f, -0.4)}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M30 20L34 16M42 20L46 16M54 20L58 16M66 20L70 16" stroke="${toene(f, -0.3)}" stroke-width="2"/>
+    <circle cx="50" cy="56" r="25" fill="#fff"/><text x="50" y="69" font-size="36" text-anchor="middle">${g?.emoji || ""}</text>`,
+  trank: (f) => `<path d="M40 10H60V34Q82 44 80 66Q78 90 50 90Q22 90 20 66Q18 44 40 34Z" fill="#f4f8ff" stroke="#8a93a8" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M23 60Q50 52 77 60Q78 86 50 87Q22 86 23 60Z" fill="${f}"/>
+    <circle cx="40" cy="70" r="4" fill="#fff" opacity=".7"/><circle cx="56" cy="76" r="2.6" fill="#fff" opacity=".7"/>
+    <rect x="37" y="6" width="26" height="9" rx="3" fill="#c98a5a" stroke="#8a5a30" stroke-width="2"/>
+    <path d="M30 44Q34 40 38 40" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>`,
   muenze: () => `<circle cx="50" cy="50" r="38" fill="#f5b942" stroke="#c98a1a" stroke-width="5"/><circle cx="50" cy="50" r="26" fill="none" stroke="#ffd98a" stroke-width="4"/>
     <path d="M50 36C44 30 34 34 36 42C38 50 50 58 50 58C50 58 62 50 64 42C66 34 56 30 50 36Z" fill="#ff7eb6"/>`,
 };
@@ -43,7 +52,7 @@ function symbolHtml(id, klasse = "symbol") {
   const g = GEGENSTAENDE[id];
   if (!g) return "";
   if (g.art === "emoji") return `<span class="${klasse} emojiSymbol" style="--tier:${g.farbe}">${g.emoji}</span>`;
-  return `<span class="${klasse}" style="--tier:${g.farbe}"><svg viewBox="0 0 100 100" aria-hidden="true">${SYMBOL_BAU[g.art](g.farbe)}</svg></span>`;
+  return `<span class="${klasse}" style="--tier:${g.farbe}"><svg viewBox="0 0 100 100" aria-hidden="true">${SYMBOL_BAU[g.art](g.farbe, g)}</svg></span>`;
 }
 function muenzeHtml(klasse = "muenze") {
   return `<span class="${klasse}"><svg viewBox="0 0 100 100" aria-hidden="true">${SYMBOL_BAU.muenze()}</svg></span>`;

@@ -37,6 +37,9 @@ function verarbeite(ergebnis) {
     }
   }
   if (ergebnis.durchgaenge) ton.fertig();
+  for (const name of spiel.traenkeLeer || []) melde(`🧪 ${name} wirkt nicht mehr`);
+  spiel.traenkeLeer = [];
+  if (ergebnis.durchgaenge) zeichneTrankLeiste();
   if (ergebnis.bankVoll) melde("🏦 Die Bank ist voll – manche Beute blieb liegen");
   if (ergebnis.gestoppt) { ton.nein(); melde(`⏸️ ${ergebnis.gestoppt}`); }
   zeichneKopf();
@@ -45,8 +48,19 @@ function verarbeite(ergebnis) {
 }
 
 // ----- Spielschleife -----
+let letzteGartenPruefung = 0;
 function schleife() {
   verarbeite(tick());
+  if (Date.now() - letzteGartenPruefung > 1000) {
+    letzteGartenPruefung = Date.now();
+    const reif = neuReifeBeete();
+    if (reif.length) {
+      ton.muenze();
+      melde(`🌱 ${reif.map(p => p.name).join(", ")} ${reif.length === 1 ? "ist" : "sind"} reif!`, "gross");
+      if (aktuelleSeite === "seiteFertigkeiten") zeichneSeite();
+      speichern();
+    }
+  }
   zeichneAktivBalken();
   requestAnimationFrame(schleife);
 }
@@ -167,6 +181,8 @@ function starteSpiel() {
   ruheAus();
   zeichneKopf();
   zeichneAktivLeiste();
+  zeichneTrankLeiste();
+  for (const b of gartenStand().beete) if (b && beetFortschritt(b) >= 1) b.gemeldet = true;   // beim Start nicht alles auf einmal melden
   zeigeSeite("seiteFertigkeiten");
   if (!spiel.figur) fragFigur();
   else if (offline && offline.durchgaenge) zeigeOffline(offline);

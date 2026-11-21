@@ -87,6 +87,7 @@ function zeichneAktivLeiste() {
 function zeichneAktivBalken() {
   $("aktivBalken").style.width = `${(aktivFortschritt() * 100).toFixed(1)}%`;
   if (aktuelleSeite === "seiteAbenteuer") zeichneKampfLive();
+  zeichneGartenLive();
   const karte = spiel.aktiv && document.querySelector(`.taetigkeit[data-id="${spiel.aktiv.id}"] .balken > div`);
   if (karte) karte.style.width = `${(aktivFortschritt() * 100).toFixed(1)}%`;
 }
@@ -111,7 +112,8 @@ function zeichneFertigkeiten() {
       <span class="fName">${f.name}</span>
       <span class="fStufe">Stufe <b>${stufeAusXp(xp)}</b> / ${SPIEL.maxStufe}</span>
       <span class="balken"><div style="width:${(fortschrittInStufe(xp) * 100).toFixed(1)}%"></div></span>
-      ${aktiv ? `<span class="laeuftMarke">▶</span>` : ""}`;
+      ${aktiv ? `<span class="laeuftMarke">▶</span>` : ""}
+      ${f.id === "garten" && reifeBeete() ? `<span class="laeuftMarke reifMarke">${reifeBeete()}</span>` : ""}`;
     karte.addEventListener("click", () => {
       ton.klick();
       if (f.art === "kampf") { zeigeSeite("seiteAbenteuer"); return; }
@@ -145,6 +147,8 @@ function zeichneFertigkeit() {
 
   const raster = $("taetigkeitenRaster");
   raster.textContent = "";
+  raster.classList.toggle("garten", f.id === "garten");
+  if (f.id === "garten") { zeichneGarten(raster); return; }
   for (const t of taetigkeitenVon(f.id).sort((x, y) => x.stufe - y.stufe)) {
     const gesperrt = l < t.stufe;
     const aktiv = spiel.aktiv?.id === t.id;
@@ -203,10 +207,15 @@ function zeigeGegenstand(id) {
     ${g.platz ? `<p class="hinweis">${[g.bonus.treff && `🎯 Treffen +${g.bonus.treff}`, g.bonus.kraft && `💥 Schlag +${g.bonus.kraft}`, g.bonus.abwehr && `🛡️ Ausweichen +${g.bonus.abwehr}`, g.bonus.weniger && `${g.bonus.weniger} % weniger Schaden`].filter(Boolean).join(" · ")}
       · braucht ${Object.entries(g.braucht).map(([f, l]) => `${fertigkeit(f).icon} ${fertigkeit(f).name} ${l}`).join(", ")}</p>
       <button type="button" class="knopf" id="anlegen" ${darfTragen(g) ? "" : "disabled"}>🎒 Anlegen</button>` : ""}
+    ${g.trank ? `<p class="hinweis">🧪 ${g.trank.text} · wirkt ${g.trank.ladungen}-mal${spiel.traenke?.[id] ? ` · noch aktiv: ${spiel.traenke[id]}` : ""}</p>
+      <button type="button" class="knopf" id="trinken">🧪 Trinken</button>` : ""}
     ${g.heilt ? `<button type="button" class="knopf" id="alsEssen">🍽️ Im Kampf essen${spiel.essen === id ? " ✓" : ""}</button>` : ""}
     <div class="verkaufKnoepfe"></div>`;
   inhalt.querySelector("#anlegen")?.addEventListener("click", () => {
     if (ruesteAus(id)) { ton.klick(); melde(`🎒 ${g.name} angelegt`); speichern(); zeichneSeite(); zeigeGegenstand(id); }
+  });
+  inhalt.querySelector("#trinken")?.addEventListener("click", () => {
+    if (trinke(id)) { ton.stufe(); melde(`🧪 ${g.name} getrunken – ${g.trank.text}!`, "gross"); speichern(); zeichneTrankLeiste(); zeichneSeite(); zeigeGegenstand(id); }
   });
   inhalt.querySelector("#alsEssen")?.addEventListener("click", () => {
     ton.klick(); spiel.essen = id; melde(`🍽️ ${figurName()} nimmt ${g.name} mit ins Abenteuer`); speichern(); zeigeGegenstand(id);
@@ -296,6 +305,7 @@ function zeichneIch() {
     ["Verkaufte Sachen", zahl(st.verkauft)],
     ["Verdiente Münzen", zahl(st.verdient)],
     ["Eingeschlafene Monster 💤", zahl(st.besiegt || 0)],
+    ["Geerntete Beete 🧺", zahl(st.geerntet || 0)],
     ...FERTIGKEITEN.map(f => [`${f.icon} ${f.name}`, `Stufe ${stufe(f.id)} · ${zahl(spiel.xp[f.id] || 0)} EP`]),
   ];
   $("statistik").innerHTML = zeilen.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("");

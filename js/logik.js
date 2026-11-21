@@ -76,10 +76,11 @@ function dauer(t) {
   const f = fertigkeit(t.fertigkeit);
   if (f.werkzeug) faktor -= WERKZEUG_BONUS * (spiel.werkzeuge[f.werkzeug] || 0);
   if (uebungStufe(t.id) >= SPIEL.maxStufe) faktor -= SPIEL.meisterSchneller;
+  faktor -= trankSchneller(t);
   return Math.max(0.5, t.zeit * faktor);
 }
 function doppeltChance(t) {
-  return Math.floor(uebungStufe(t.id) / 10) * SPIEL.uebungDoppeltProZehn;
+  return Math.floor(uebungStufe(t.id) / 10) * SPIEL.uebungDoppeltProZehn + trankDoppelt(t);
 }
 
 // ----- Bank -----
@@ -125,9 +126,12 @@ function fuehreAus(t) {
   const mal = Math.random() < doppeltChance(t) ? 2 : 1;
   ereignisse.doppelt = mal === 2;
   for (const [id, n] of Object.entries(t.gibt)) gibInBank(id, n * mal);
-  spiel.xp[t.fertigkeit] = (spiel.xp[t.fertigkeit] || 0) + t.xp;
-  spiel.uebung[t.id] = (spiel.uebung[t.id] || 0) + t.xp;
+  const xp = Math.round(t.xp * trankFaktorXp());
+  ereignisse.xp = xp;
+  spiel.xp[t.fertigkeit] = (spiel.xp[t.fertigkeit] || 0) + xp;
+  spiel.uebung[t.id] = (spiel.uebung[t.id] || 0) + xp;
   spiel.statistik.aktionen++;
+  trankNachTaetigkeit(t);
   ereignisse.neueStufe = stufe(t.fertigkeit) > ereignisse.stufeVorher ? stufe(t.fertigkeit) : 0;
   ereignisse.neueUebung = uebungStufe(t.id) > ereignisse.uebungVorher ? uebungStufe(t.id) : 0;
   return ereignisse;
@@ -170,7 +174,7 @@ function tick(jetzt = Date.now(), maxDurchgaenge = Infinity) {
       if (diff > 0) ergebnis.gewonnen[id] = (ergebnis.gewonnen[id] || 0) + diff;
       if (diff < 0) ergebnis.verbraucht[id] = (ergebnis.verbraucht[id] || 0) - diff;
     }
-    ergebnis.xp[t.fertigkeit] = (ergebnis.xp[t.fertigkeit] || 0) + t.xp;
+    ergebnis.xp[t.fertigkeit] = (ergebnis.xp[t.fertigkeit] || 0) + e.xp;
     e.taetigkeit = t;
     ergebnis.ereignisse.push(e);
     ergebnis.durchgaenge++;

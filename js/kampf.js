@@ -15,10 +15,10 @@ function ausruestungsBonus(art) {
 function maxHp() { return stufe("herzen") * KAMPF.hpProStufe; }
 function spielerWerte() {
   return {
-    genauigkeit: (stufe("mut") + 8) * (64 + ausruestungsBonus("treff")),
-    maxSchlag: Math.floor(15 + stufe("kraft") * 1.6 + ausruestungsBonus("kraft") * 1.5),
+    genauigkeit: Math.round((stufe("mut") + 8) * (64 + ausruestungsBonus("treff")) * (1 + trankKampf("treff"))),
+    maxSchlag: Math.floor((15 + stufe("kraft") * 1.6 + ausruestungsBonus("kraft") * 1.5) * (1 + trankKampf("kraft"))),
     ausweichen: (stufe("schutz") + 8) * (64 + ausruestungsBonus("abwehr")),
-    weniger: Math.min(0.5, ausruestungsBonus("weniger") / 100),
+    weniger: Math.min(0.6, ausruestungsBonus("weniger") / 100 + trankKampf("schutz")),
     tempo: KAMPF.ohneWaffeTempo,
   };
 }
@@ -80,7 +80,8 @@ function isst(ergebnis) {
 
 function gibKampfXp(schaden, ergebnis) {
   const stil = spiel.kampfstil || "mut";
-  for (const [fid, xp] of [[stil, schaden * KAMPF.xpProSchaden], ["herzen", schaden * KAMPF.herzenXpProSchaden]]) {
+  const f = trankFaktorXp();
+  for (const [fid, xp] of [[stil, schaden * KAMPF.xpProSchaden * f], ["herzen", schaden * KAMPF.herzenXpProSchaden * f]]) {
     const vorher = stufe(fid);
     spiel.xp[fid] = (spiel.xp[fid] || 0) + xp;
     ergebnis.xp[fid] = (ergebnis.xp[fid] || 0) + xp;
@@ -143,6 +144,7 @@ function besiegt(m, ergebnis) {
   ergebnis.durchgaenge++;
   ergebnis.besiegt = (ergebnis.besiegt || 0) + 1;
   spiel.statistik.besiegt = (spiel.statistik.besiegt || 0) + 1;
+  trankNachSieg();
   spiel.besiegt = spiel.besiegt || {};
   spiel.besiegt[m.id] = (spiel.besiegt[m.id] || 0) + 1;
   const muenzen = zufall(m.muenzen[0], m.muenzen[1]);
