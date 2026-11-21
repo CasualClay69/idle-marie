@@ -47,6 +47,7 @@ function ernte(nr) {
   spiel.xp.garten = (spiel.xp.garten || 0) + xp;
   spiel.uebung[uebungsId] = (spiel.uebung[uebungsId] || 0) + xp;
   spiel.statistik.geerntet = (spiel.statistik.geerntet || 0) + 1;
+  zaehleAktion("garten");
   g.beete[nr] = null;
   const haustier = vielleichtHaustierBeiErnte();
   return { menge, samen, xp, p, haustier, neueStufe: stufe("garten") > vorher ? stufe("garten") : 0 };

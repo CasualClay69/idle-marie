@@ -12,6 +12,9 @@ function ausgeruestet(platz) {
 function ausruestungsBonus(art) {
   return PLAETZE.reduce((s, p) => s + (ausgeruestet(p.id)?.bonus[art] || 0), 0);
 }
+function kampfStufe() {
+  return Math.floor((stufe("mut") + stufe("kraft") + stufe("schutz") + stufe("herzen")) / 4);
+}
 function maxHp() { return stufe("herzen") * KAMPF.hpProStufe; }
 function spielerWerte() {
   return {
@@ -48,6 +51,7 @@ function legeAb(platz) {
 
 // ----- Kampf starten / beenden -----
 function starteKampf(monsterId) {
+  if (monsterId === "season") aktualisiereSeasonMonster();
   const m = MONSTER[monsterId];
   if (!m) return false;
   const jetzt = Date.now();
@@ -144,6 +148,11 @@ function besiegt(m, ergebnis) {
   ergebnis.durchgaenge++;
   ergebnis.besiegt = (ergebnis.besiegt || 0) + 1;
   spiel.statistik.besiegt = (spiel.statistik.besiegt || 0) + 1;
+  if (m.season) {
+    pruefeSeasonWechsel();
+    const neu = gibSeasonPunkte(SEASON.monsterPunkte);
+    if (neu.length) ergebnis.ereignisse.push({ seasonStufen: neu });
+  }
   trankNachSieg();
   spiel.besiegt = spiel.besiegt || {};
   spiel.besiegt[m.id] = (spiel.besiegt[m.id] || 0) + 1;

@@ -22,6 +22,7 @@ function verarbeite(ergebnis) {
   if (!ergebnis.durchgaenge && !ergebnis.gestoppt) return;
   for (const e of ergebnis.ereignisse) {
     if (e.haustier) zeigeHaustierFund(e.haustier);
+    if (e.seasonStufen) { zeigeSeasonStufen(e.seasonStufen); continue; }
     if (!e.taetigkeit && !e.pokal && !e.kampfStufe) continue;
     if (e.pokal) { ton.stufe(); melde(`🏆 Wow! ${GEGENSTAENDE[e.pokal].name} gefunden!`, "gross"); continue; }
     if (e.kampfStufe) { const f = fertigkeit(e.kampfStufe); ton.stufe(); melde(`🎉 ${f.icon} ${f.name}: Stufe ${e.neueStufe}!`, "gross"); continue; }
@@ -51,11 +52,18 @@ function verarbeite(ergebnis) {
 
 // ----- Spielschleife -----
 let letzteGartenPruefung = 0;
+let letzterSeasonStand = "";
 function schleife() {
   verarbeite(tick());
   if (Date.now() - letzteGartenPruefung > 1000) {
     letzteGartenPruefung = Date.now();
     pruefeQuest();
+    if (pruefeSeasonWechsel()) { speichern(); melde(`🎟️ Neue Season-Aufgaben sind da!`); }
+    if (aktuelleSeite === "seiteFertigkeiten") zeichneSeasonBanner();
+    if (aktuelleSeite === "seiteSeason") {
+      const stand = spiel.season.aufgaben.map(a => aufgabeStand(a).wert).join();
+      if (stand !== letzterSeasonStand) { letzterSeasonStand = stand; zeichneSeason(); }
+    }
     const erfolge = pruefeErfolge();
     for (const e of erfolge) { ton.stufe(); melde(`🏆 Erfolg: ${e.name}! +${zahl(e.muenzen)} Münzen`, "gross"); }
     if (erfolge.length) { speichern(); zeichneKopf(); if (aktuelleSeite === "seiteIch") zeichneSeite(); }
@@ -184,6 +192,7 @@ function richteVersionenEin() {
 function starteSpiel() {
   laden();
   ton.laden();
+  richteSeasonEin();   // vor dem Offline-Nachholen: das Season-Monster muss bekannt sein
   richteKnoepfeEin();
   richteVersionenEin();
   richteOnlineEin();

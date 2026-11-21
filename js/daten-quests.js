@@ -70,6 +70,8 @@ quest({ titel: "Nimm Essen mit ins Abenteuer", text: "Tippe im ⚔️ Abenteuer 
   belohnung: { muenzen: 30, sachen: { essen0: 10 } } });
 quest({ titel: "Zieh dir etwas Schönes an", text: "Unter 👤 Ich gibt es einen Kleiderschrank mit Hüten, Kleidung und Rahmen. Kauf dir etwas Hübsches!",
   ziel: 1, wert: () => (spiel.garderobe || []).length, hilfe: { seite: "seiteIch", ziel: "#kleiderschrankKarte" }, icon: "👗", belohnung: { muenzen: 150 } });
+quest({ titel: "Hol dir eine Season-Stufe", text: "Oben auf der 🌟 Fertigkeiten-Seite siehst du die Season. Erledige eine Tages- oder Wochenaufgabe und hol dir die Punkte ab!",
+  ziel: 1, wert: () => spiel.statistik.seasonStufen || 0, hilfe: { seite: "seiteFertigkeiten", ziel: "#seasonBanner" }, icon: "🎟️", belohnung: { muenzen: 150 } });
 monsterQuest("schleimchen", 10, "Jetzt geht's los! Tippe auf der Blumenwiese das Schleimchen an. Es wird müde und schläft ein 💤.", { muenzen: 100 });
 
 // --- Teil 2: Stärker werden ---

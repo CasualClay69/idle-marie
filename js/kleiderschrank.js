@@ -58,7 +58,7 @@ function zeichneKleiderschrank() {
     else if (hat) status = "Anziehen";
     else if (t.preis) status = `${muenzeHtml("muenze klein")} ${zahl(t.preis)}`;
     else if (t.questNr) status = `📜 Auftrag ${t.questNr}`;
-    else status = "🎟️ Season";
+    else status = `🎟️ ${MONATSNAMEN[t.season - 1]}`;
     const vorschau = figurSvg(spiel.figur, { ...a, [kat.id]: t.id });
     return `<button type="button" class="schrankTeil${an ? " an" : ""}${hat ? "" : " zu"}${!hat && t.preis && spiel.muenzen < t.preis ? " teuer" : ""}" data-id="${t.id}">
       <span class="schrankBild">${vorschau}</span><b>${t.name}</b><small>${status}</small></button>`;
@@ -77,7 +77,7 @@ function zeichneKleiderschrank() {
     } else if (t.questNr) {
       ton.nein(); melde(`📜 ${t.name} gibt es als Belohnung für Auftrag ${t.questNr}`); return;
     } else {
-      ton.nein(); melde(`🎟️ ${t.name} gibt es bald in einer Season`); return;
+      ton.nein(); melde(`🎟️ ${t.name} gibt es in der Season im ${MONATSNAMEN[t.season - 1]}`); return;
     }
     speichern();
     zeichneKopf();

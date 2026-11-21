@@ -132,6 +132,7 @@ function fuehreAus(t) {
   spiel.xp[t.fertigkeit] = (spiel.xp[t.fertigkeit] || 0) + xp;
   spiel.uebung[t.id] = (spiel.uebung[t.id] || 0) + xp;
   spiel.statistik.aktionen++;
+  zaehleAktion(t.fertigkeit);
   trankNachTaetigkeit(t);
   ereignisse.haustier = vielleichtHaustierBeiArbeit(t.fertigkeit, dauer(t));
   ereignisse.neueStufe = stufe(t.fertigkeit) > ereignisse.stufeVorher ? stufe(t.fertigkeit) : 0;

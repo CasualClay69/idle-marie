@@ -3,9 +3,6 @@
 //  ABENTEUER-SEITE: Kampf, Werte, Ausrüstung, Gebiete
 // =====================================================
 
-function kampfStufe() {
-  return Math.floor((stufe("mut") + stufe("kraft") + stufe("schutz") + stufe("herzen")) / 4);
-}
 function prozent(x) { return `${Math.round(x * 100)} %`; }
 
 function zeichneAbenteuer() {
@@ -18,7 +15,7 @@ function zeichneAbenteuer() {
   // ----- Kampf oder Ruhe -----
   let kampf;
   if (m) {
-    kampf = `<div class="kampfFeld" style="--farbe:${GEBIETE.find(g => g.id === m.gebiet).farbe}">
+    kampf = `<div class="kampfFeld" style="--farbe:${GEBIETE.find(g => g.id === m.gebiet)?.farbe || aktuellesThema().farben[1]}">
       <div class="kaempfer">
         <div class="kBild figurRund">${figurSvg(spiel.figur)}</div>
         <b>${figur}</b>
@@ -68,7 +65,12 @@ function zeichneAbenteuer() {
         <span class="mBild">${monsterSvg(mo.aussehen)}</span><b>${mo.name}</b><small>Stufe ${mo.stufe}${spiel.besiegt?.[mo.id] ? ` · 💤 ${zahl(spiel.besiegt[mo.id])}` : ""}</small></button>`).join("")}</div>
     </div>`).join("");
 
-  seite.innerHTML = kampf + werte + ausruestung + `<h2 class="seitenTitel">🗺️ Gebiete</h2>` + gebiete;
+  const sm = MONSTER.season, th = aktuellesThema();
+  const seasonGebiet = `<div class="gebiet" style="--farbe:${th.farben[1]}">
+      <h3>🎟️ Season: ${th.titel} <small>passt sich deiner Kampfstufe an · ⭐ ${SEASON.monsterPunkte} Season-Punkte pro Einschlafen</small></h3>
+      <div class="monsterListe"><button type="button" class="monsterKarte chef${a?.monster === "season" ? " laeuft" : ""}" data-monster="season">
+        <span class="mBild">${monsterSvg(sm.aussehen)}</span><b>${sm.name}</b><small>Stufe ${sm.stufe}</small></button></div></div>`;
+  seite.innerHTML = kampf + werte + ausruestung + `<h2 class="seitenTitel">🗺️ Gebiete</h2>` + seasonGebiet + gebiete;
 
   // ----- Knöpfe -----
   seite.querySelector("#weglaufen")?.addEventListener("click", () => {

@@ -79,8 +79,13 @@ erfolg({ id: "bank-voll", icon: "🏦", name: "Sammler", text: "Hab 40 verschied
 erfolg({ id: "beete", icon: "🟫", name: "Großer Garten", text: "Hab 10 Beete", ziel: 10, muenzen: 100000, wert: () => gartenStand().beete.length });
 for (const [ziel, muenzen, name] of [[1, 500, "Ein neuer Freund"], [5, 20000, "Tierfreund"], [HAUSTIERE.length, 1000000, "Zoodirektor"]]) {
   erfolg({ id: `haustiere-${ziel}`, icon: "🐾", name, text: ziel === 1 ? "Finde dein erstes Haustier" : `Finde ${ziel === HAUSTIERE.length ? "alle" : ziel} Haustiere`,
-    ziel, muenzen, wert: () => (spiel.haustiere || []).length });
+    ziel, muenzen, wert: () => (spiel.haustiere || []).filter(id => !id.startsWith("season")).length });
 }
+
+erfolg({ id: "season-1", icon: "🎟️", name: "Season-Starter", text: "Erreiche deine erste Season-Stufe", ziel: 1, muenzen: 300, wert: () => spiel.statistik.seasonStufen || 0 });
+erfolg({ id: "season-30", icon: "🎟️", name: "Season-Held", text: "Erreiche alle 30 Stufen einer Season", ziel: 30, muenzen: 100000, wert: () => spiel.statistik.seasonMax || 0 });
+erfolg({ id: "season-tiere", icon: "🐾", name: "Jahreszeiten-Freunde", text: "Sammle 12 Season-Haustiere", ziel: 12, muenzen: 2000000,
+  wert: () => (spiel.haustiere || []).filter(id => id.startsWith("season")).length });
 
 function zahlKurz(n) {
   return n >= 1e6 ? `${n / 1e6} Mio.` : n.toLocaleString("de-DE");

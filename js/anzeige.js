@@ -39,7 +39,7 @@ let offeneFertigkeit = null;
 function zeigeSeite(id) {
   aktuelleSeite = id;
   for (const s of document.querySelectorAll(".seite")) s.hidden = s.id !== id;
-  const navZiel = id === "seiteFertigkeit" ? "seiteFertigkeiten" : id;
+  const navZiel = id === "seiteFertigkeit" || id === "seiteSeason" ? "seiteFertigkeiten" : id;
   for (const b of document.querySelectorAll("#untenNav button")) b.classList.toggle("aktiv", b.dataset.seite === navZiel);
   $("inhalt").scrollTop = 0;
   zeichneSeite();
@@ -48,6 +48,7 @@ function zeichneSeite() {
   if (aktuelleSeite === "seiteFertigkeiten") zeichneFertigkeiten();
   if (aktuelleSeite === "seiteFertigkeit") zeichneFertigkeit();
   if (aktuelleSeite === "seiteAbenteuer") zeichneAbenteuer();
+  if (aktuelleSeite === "seiteSeason") zeichneSeason();
   if (aktuelleSeite === "seiteBank") zeichneBank();
   if (aktuelleSeite === "seiteLaden") zeichneLaden();
   if (aktuelleSeite === "seiteIch") zeichneIch();
@@ -97,6 +98,7 @@ function zeichneAktivBalken() {
 
 // ----- Übersicht aller Fertigkeiten -----
 function zeichneFertigkeiten() {
+  zeichneSeasonBanner();
   $("gesamtStufe").textContent = `Gesamtstufe ${gesamtStufe()}`;
   const raster = $("fertigkeitenRaster");
   raster.textContent = "";

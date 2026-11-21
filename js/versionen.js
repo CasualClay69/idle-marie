@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "0.9", datum: "2026-11-21", neu: ["🎟️ Season-Pass: Jeden Monat ein neues Thema (wie in Marie Clicker) mit 30 Stufen.", "Täglich 3 und wöchentlich 3 Aufgaben bringen Season-Punkte – verpasste Tagesaufgaben bleiben eine Woche offen.", "Jede Season hat ein eigenes Monster, das sich deiner Stärke anpasst, ein Season-Haustier sowie Hut, Kleidung und Rahmen."] },
   { v: "0.8", datum: "2026-11-21", neu: ["👗 Kleiderschrank (unter „Ich“): 15 Hüte, 12 Kleidungen und 10 Rahmen für deine Figur – zum Kaufen oder als Belohnung für Aufträge.", "In der Bestenliste sieht man jetzt auch, wie die anderen angezogen sind."] },
   { v: "0.7", datum: "2026-11-21", neu: ["📜 Aufträge: Eine Kette von 88 Aufträgen führt dich Schritt für Schritt durchs ganze Spiel – bis zum Regenbogendrachen.", "Jeder Auftrag bringt eine Belohnung, und „Zeig mir wo“ bringt dich direkt an die richtige Stelle."] },
   { v: "0.6", datum: "2026-11-21", neu: ["Spielstand sichern und wiederherstellen – als Code zum Kopieren oder als Datei (unter „Ich“).", "Eine Einführung zeigt neuen Spielern Schritt für Schritt, wie alles geht. Unter „Ich“ kann man sie nochmal ansehen."] },

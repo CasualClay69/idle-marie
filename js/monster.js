@@ -55,6 +55,10 @@ function monsterExtra(art, f, d, h) {
     case "blitz": return `<path d="M54 70L44 84H52L46 96L62 78H54L60 70Z" fill="#ffd54f" stroke="#c98a1a" stroke-width="2"/>`;
     case "sterne": return `<g fill="#fff6b0">${stern(28, 76)}${stern(72, 76)}${stern(50, 84)}</g>`;
     case "regenbogen": return `<g fill="none" stroke-width="4"><path d="M28 80Q50 62 72 80" stroke="#ff7a7a"/><path d="M33 84Q50 68 67 84" stroke="#ffd54f"/><path d="M38 88Q50 74 62 88" stroke="#7ad7f0"/></g>`;
+    case "herz": return `<path d="M50 88C38 80 36 72 42 69C45 67.5 48.5 69 50 72C51.5 69 55 67.5 58 69C64 72 62 80 50 88Z" fill="#ff5fa2" stroke="#fff" stroke-width="1.5"/>
+      <path d="M18 40L14 34M82 40L86 34" stroke="#ff5fa2" stroke-width="3" stroke-linecap="round"/>`;
+    case "kuerbis": return `<path d="M36 34Q34 60 38 86M64 34Q66 60 62 86M50 30V88" stroke="${d}" stroke-width="2.5" fill="none" opacity=".55"/>
+      <path d="M48 32Q46 18 54 12" stroke="#6fbf6a" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M54 14Q64 10 66 18Q58 20 54 14Z" fill="#8fcf6a"/>`;
     default: return "";
   }
 }

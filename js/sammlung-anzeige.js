@@ -6,6 +6,7 @@
 function haustierHerkunft(h) {
   const wo = { holz: "beim Holzsammeln", angeln: "beim Angeln", bergbau: "im Bergbau", garten: "beim Ernten im Garten",
     kochen: "beim Kochen", schmieden: "beim Schmieden", schnitzen: "beim Schnitzen", traenke: "beim Tränke-Brauen" };
+  if (h.season) return `Belohnung der Season im ${MONATSNAMEN[h.season - 1]}`;
   if (h.fertigkeit) return `taucht ${wo[h.fertigkeit]} auf`;
   const m = MONSTER[h.chef];
   return `wohnt bei ${m.name.replaceAll("­", "")} (${GEBIETE.find(g => g.id === m.gebiet).name})`;
@@ -14,14 +15,16 @@ function haustierHerkunft(h) {
 function zeichneHaustiere() {
   const ziel = $("haustierListe");
   $("haustierZahl").textContent = `${(spiel.haustiere || []).length} / ${HAUSTIERE.length}`;
-  ziel.innerHTML = HAUSTIERE.map(h => {
+  const karte = h => {
     const da = hatHaustier(h.id);
     return `<button type="button" class="haustierKarte${da ? "" : " fehlt"}${spiel.begleiter === h.id ? " begleiter" : ""}" data-id="${h.id}" ${da ? "" : "disabled"}>
       <span class="hEmoji">${da ? h.emoji : "❔"}</span>
       <b>${da ? h.name : "???"}</b>
       <small>${da ? `${h.tier} · ${h.text}` : haustierHerkunft(h)}</small>
       ${spiel.begleiter === h.id ? `<span class="begleiterMarke">💖 Begleiter</span>` : ""}</button>`;
-  }).join("");
+  };
+  ziel.innerHTML = HAUSTIERE.filter(h => !h.season).map(karte).join("")
+    + `<h4 class="rasterTitel">🎟️ Season-Haustiere</h4>` + HAUSTIERE.filter(h => h.season).map(karte).join("");
   for (const b of ziel.querySelectorAll(".haustierKarte:not(.fehlt)")) b.addEventListener("click", () => {
     const h = HAUSTIERE.find(x => x.id === b.dataset.id);
     ton.stufe();
