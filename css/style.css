@@ -525,6 +525,23 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
 .questZiel { animation: zielLeuchten 0.9s ease-in-out 5; position: relative; z-index: 2; }
 @keyframes zielLeuchten { 50% { box-shadow: 0 0 0 5px #ffd54f, 0 0 24px #ffd54f; transform: scale(1.04); } }
 
+/* ----- Kleiderschrank ----- */
+.figurVorschau { width: 120px; height: 120px; margin: 0 auto 10px; border-radius: 50%; overflow: hidden;
+  background: linear-gradient(160deg, #ffd1e6, #e6ccff); border: 4px solid #fff; box-shadow: var(--schatten); }
+.figurVorschau svg { width: 100%; height: 100%; display: block; }
+.schrankTabs { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 12px; }
+.schrankRaster { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.schrankTeil { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 4px 8px; min-width: 0;
+  border: 2px solid #fff; border-radius: 16px; background: #fff7fb; box-shadow: var(--schatten); }
+.schrankTeil b { font-size: 0.75rem; line-height: 1.15; text-align: center; overflow-wrap: anywhere; }
+.schrankTeil small { font-size: 0.68rem; font-weight: 700; color: var(--text-sanft); }
+.schrankBild { width: 64px; height: 64px; border-radius: 50%; overflow: hidden; background: linear-gradient(160deg, #ffe0f0, #efe2ff); }
+.schrankBild svg { width: 100%; height: 100%; display: block; }
+.schrankTeil.an { border-color: var(--akzent); background: #ffe9f3; }
+.schrankTeil.an small { color: var(--akzent-dunkel); }
+.schrankTeil.zu .schrankBild { opacity: 0.75; }
+.schrankTeil.teuer small { color: var(--gefahr); }
+
 /* ----- Navigation unten ----- */
 #untenNav {
   display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px;

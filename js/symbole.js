@@ -74,26 +74,26 @@ function schultern(farbe, kragen = "#fff") {
 }
 
 const FIGUREN = [
-  { id: "marie", name: "Marie", svg: `
+  { id: "marie", kleid: "#ff7eb6", kragen: "#fff", name: "Marie", svg: `
     <path d="M20 54Q14 22 50 18Q86 22 80 54L82 84Q70 92 66 80L34 80Q30 92 18 84Z" fill="#b07d4f"/>
-    ${schultern("#ff7eb6")}
+    %SCHULTERN%
     <rect x="43" y="68" width="14" height="14" fill="${HAUT}"/>
     <ellipse cx="50" cy="52" rx="27" ry="28" fill="${HAUT}"/>
     <path d="M22 50Q24 24 50 22Q76 24 78 50Q70 38 58 36Q54 42 44 40Q34 40 22 50Z" fill="#d4a373"/>
     <path d="M58 36Q64 30 70 34" stroke="#b07d4f" stroke-width="2" fill="none"/>
     <circle cx="74" cy="30" r="6" fill="#ff5fa2"/><circle cx="80" cy="34" r="4" fill="#ff9fd0"/>
     ${gesicht()}` },
-  { id: "hannah", name: "Hannah", svg: `
+  { id: "hannah", kleid: "#b48cff", kragen: "#fff", name: "Hannah", svg: `
     <path d="M18 46Q6 64 12 84Q20 76 24 60Z M82 46Q94 64 88 84Q80 76 76 60Z" fill="#e3b14f"/>
-    ${schultern("#b48cff")}
+    %SCHULTERN%
     <rect x="43" y="68" width="14" height="14" fill="${HAUT}"/>
     <ellipse cx="50" cy="52" rx="27" ry="28" fill="${HAUT}"/>
     <path d="M22 52Q22 22 50 20Q78 22 78 52Q72 36 50 34Q30 36 22 52Z" fill="#fbe39a"/>
     <path d="M40 34Q46 42 56 36" stroke="#e3b14f" stroke-width="2" fill="none"/>
     <circle cx="20" cy="46" r="5" fill="#a77bff"/><circle cx="80" cy="46" r="5" fill="#a77bff"/>
     ${gesicht({ augen: "#2f4f8f" })}` },
-  { id: "stefan", name: "Stefan", svg: `
-    ${schultern("#5fb7a8", "#e8f6f2")}
+  { id: "stefan", kleid: "#5fb7a8", kragen: "#e8f6f2", name: "Stefan", svg: `
+    %SCHULTERN%
     <rect x="43" y="68" width="14" height="14" fill="${HAUT}"/>
     <ellipse cx="24" cy="56" rx="5" ry="7" fill="#f6c9ab"/><ellipse cx="76" cy="56" rx="5" ry="7" fill="#f6c9ab"/>
     <ellipse cx="50" cy="52" rx="27" ry="29" fill="${HAUT}"/>
@@ -102,10 +102,10 @@ const FIGUREN = [
     <path d="M42 68Q50 64 58 68" stroke="#5a3a24" stroke-width="4" fill="none" stroke-linecap="round"/>
     <path d="M32 44L44 42M56 42L68 44" stroke="#5a3a24" stroke-width="3" stroke-linecap="round"/>
     ${gesicht({ augen: "#3b2a20", brille: true }).replace(/<path d="M44 66Q50 71 56 66"[^>]*\/>/, '<path d="M45 72Q50 75 55 72" stroke="#ffd0d8" stroke-width="2.4" fill="none" stroke-linecap="round"/>')}` },
-  { id: "jenny", name: "Jenny", svg: `
+  { id: "jenny", kleid: "#5fa8d9", kragen: "#fff", name: "Jenny", svg: `
     <path d="M70 60Q86 70 80 96" stroke="#5a3a24" stroke-width="11" fill="none" stroke-linecap="round"/>
     <path d="M72 66L82 70M74 76L84 78M76 86L84 88" stroke="#3a2416" stroke-width="2"/>
-    ${schultern("#5fa8d9")}
+    %SCHULTERN%
     <rect x="43" y="68" width="14" height="14" fill="${HAUT}"/>
     <ellipse cx="50" cy="52" rx="27" ry="28" fill="${HAUT}"/>
     <path d="M22 54Q20 20 50 20Q82 20 78 56Q74 34 60 32Q46 38 30 36Q24 44 22 54Z" fill="#5a3a24"/>
@@ -114,7 +114,16 @@ const FIGUREN = [
     ${gesicht({ augen: "#3b2a20", brille: true })}` },
 ];
 
-function figurSvg(id) {
+// Figur zeichnen – mit Kleidung, Hut und Rahmen (siehe daten-kleiderschrank.js).
+// look = { hut, kleid, rahmen }; ohne Angabe: bei der eigenen Figur das eigene Aussehen
+function figurSvg(id, look) {
   const f = FIGUREN.find(x => x.id === id) || FIGUREN[0];
-  return `<svg viewBox="0 0 100 100" aria-hidden="true">${f.svg}</svg>`;
+  if (look === undefined) look = (typeof spiel !== "undefined" && id === spiel.figur) ? spiel.aussehen : null;
+  const l = look || {};
+  const kleid = typeof KLEIDUNG !== "undefined" && KLEIDUNG.find(k => k.id === l.kleid);
+  const hut = typeof HUETE !== "undefined" && HUETE.find(h => h.id === l.hut);
+  const rahmen = typeof RAHMEN !== "undefined" && RAHMEN.find(r => r.id === l.rahmen);
+  let inner = f.svg.replace("%SCHULTERN%", kleid?.svg ? kleid.svg(f) : schultern(f.kleid, f.kragen));
+  if (hut?.svg) inner = `<g transform="translate(9 15) scale(.82)">${inner}${hut.svg}</g>`;
+  return `<svg viewBox="0 0 100 100" aria-hidden="true">${inner}${rahmen?.svg || ""}</svg>`;
 }

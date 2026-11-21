@@ -22,7 +22,8 @@ function holeQuestBelohnung() {
   if (!q || !questStand(q).fertig) return false;
   const b = q.belohnung || {};
   spiel.muenzen += b.muenzen || 0;
-  for (const [id, n] of Object.entries(b.sachen || {})) gibInBank(id, n);   // Belohnungen passen immer (auch über die Fächer hinaus)
+  for (const [id, n] of Object.entries(b.sachen || {})) gibInBank(id, n);
+  for (const id of b.aussehen || []) gibTeil(id);   // Belohnungen passen immer (auch über die Fächer hinaus)
   spiel.quest = (spiel.quest || 0) + 1;
   speichern();
   return b;
@@ -32,6 +33,7 @@ function belohnungText(b) {
   const teile = [];
   if (b.muenzen) teile.push(`${muenzeHtml("muenze klein")} ${zahl(b.muenzen)}`);
   for (const [id, n] of Object.entries(b.sachen || {})) teile.push(`${symbolHtml(id, "mini")} ${n}× ${GEGENSTAENDE[id].name}`);
+  for (const id of b.aussehen || []) { const t = teilNachId(id); if (t) teile.push(`${t.icon} ${t.name}`); }
   return teile.join(" · ");
 }
 function questSymbol(q) {

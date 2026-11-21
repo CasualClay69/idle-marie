@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "0.7";
-const APP_NEU = "Neu: Aufträge! Sie zeigen dir Schritt für Schritt den besten Weg durchs Spiel – mit Belohnungen.";
+const APP_VERSION = "0.8";
+const APP_NEU = "Neu: der Kleiderschrank! Hüte, Kleidung und Rahmen für deine Figur.";

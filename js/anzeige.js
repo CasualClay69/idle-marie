@@ -299,6 +299,7 @@ function zeichneFigurAuswahl(ziel, beimWaehlen) {
   }
 }
 function zeichneIch() {
+  zeichneKleiderschrank();
   zeichneBestenliste();
   ladeListe();
   zeichneHaustiere();

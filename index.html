@@ -23,6 +23,7 @@
   <script src="js/daten-kampf.js" defer></script>
   <script src="js/daten-garten.js" defer></script>
   <script src="js/daten-sammlung.js" defer></script>
+  <script src="js/daten-kleiderschrank.js" defer></script>
   <script src="js/symbole.js" defer></script>
   <script src="js/monster.js" defer></script>
   <script src="js/logik.js" defer></script>
@@ -31,6 +32,7 @@
   <script src="js/sammlung.js" defer></script>
   <script src="js/daten-quests.js" defer></script>
   <script src="js/quests.js" defer></script>
+  <script src="js/kleiderschrank.js" defer></script>
   <script src="js/sound.js" defer></script>
   <script src="js/anzeige.js" defer></script>
   <script src="js/kampf-anzeige.js" defer></script>
@@ -134,9 +136,12 @@
           <button type="button" class="knopf kaufen" id="codeLoesen">Einlösen</button></div>
           <p id="codeMeldung"></p>
         </div>
-        <div class="karte">
-          <h3>Meine Figur</h3>
+        <div class="karte" id="kleiderschrankKarte">
+          <h3>👗 Meine Figur</h3>
+          <div class="figurVorschau" id="figurVorschau"></div>
           <div id="figurAuswahlIch" class="figurAuswahl"></div>
+          <div id="schrankTabs" class="listeTabs schrankTabs"></div>
+          <div id="schrankRaster" class="schrankRaster"></div>
         </div>
         <div class="karte">
           <h3>📊 Statistik</h3>

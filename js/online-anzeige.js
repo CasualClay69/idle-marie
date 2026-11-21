@@ -51,7 +51,7 @@ function zeichneBestenliste() {
       const begleiter = HAUSTIERE.find(h => h.id === e.begleiter);
       const wert = listeTab === "woche" ? `${zahl(e.woche_xp)} EP` : `Stufe ${e.gesamtstufe}`;
       return `<li class="${ich ? "ich" : ""}"><span class="platzNr">${["🥇", "🥈", "🥉"][i] || i + 1}</span>
-        <span class="listeFigur">${figurSvg(e.figur)}${begleiter ? `<i>${begleiter.emoji}</i>` : ""}</span>
+        <span class="listeFigur">${(({ figur, look }) => figurSvg(figur, look))(leseAussehenCode(e.figur))}${begleiter ? `<i>${begleiter.emoji}</i>` : ""}</span>
         <span class="listeName"><b>${textSicher(e.name)}${e.wochen_sieger ? " 👑" : ""}</b>
           <small>⚔️ ${e.kampfstufe} · 💤 ${zahl(e.monster)} · 🐾 ${e.haustiere} · 🏆 ${e.erfolge}</small></span>
         <span class="listeWert">${wert}</span></li>`;

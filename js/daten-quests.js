@@ -68,6 +68,8 @@ tragQuest("waffe", 0, "Im ⚔️ Abenteuer tippst du auf den Platz „Waffe“ u
 quest({ titel: "Nimm Essen mit ins Abenteuer", text: "Tippe im ⚔️ Abenteuer auf „Essen wählen“. Wenn deine Herzen knapp werden, isst deine Figur ganz von allein.",
   ziel: 1, wert: () => (spiel.essen && anzahl(spiel.essen) ? 1 : 0), hilfe: { seite: "seiteAbenteuer", ziel: '.platz[data-platz="essen"]' }, icon: "🍽️",
   belohnung: { muenzen: 30, sachen: { essen0: 10 } } });
+quest({ titel: "Zieh dir etwas Schönes an", text: "Unter 👤 Ich gibt es einen Kleiderschrank mit Hüten, Kleidung und Rahmen. Kauf dir etwas Hübsches!",
+  ziel: 1, wert: () => (spiel.garderobe || []).length, hilfe: { seite: "seiteIch", ziel: "#kleiderschrankKarte" }, icon: "👗", belohnung: { muenzen: 150 } });
 monsterQuest("schleimchen", 10, "Jetzt geht's los! Tippe auf der Blumenwiese das Schleimchen an. Es wird müde und schläft ein 💤.", { muenzen: 100 });
 
 // --- Teil 2: Stärker werden ---

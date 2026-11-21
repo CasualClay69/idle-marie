@@ -64,7 +64,7 @@ async function rufeOnlineAuf(funktion, parameter = {}) {
 
 function meineWerte() {
   return {
-    p_figur: spiel.figur || "marie",
+    p_figur: aussehenCode(),   // Figur + Hut, Kleidung, Rahmen, z.B. "hannah.12.11.9"
     p_begleiter: spiel.begleiter || "",
     p_gesamtstufe: gesamtStufe(),
     p_xp_gesamt: Math.floor(Object.values(spiel.xp).reduce((s, x) => s + x, 0)),
