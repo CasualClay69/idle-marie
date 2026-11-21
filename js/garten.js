@@ -37,7 +37,7 @@ function ernte(nr) {
   if (!passtInBank(p.ertrag)) return "Die Bank ist voll";
   const uebungsId = `garten-${p.id}`;
   let menge = p.menge[0] + Math.floor(Math.random() * (p.menge[1] - p.menge[0] + 1));
-  if (Math.random() < Math.floor(stufeAusXp(spiel.uebung[uebungsId] || 0) / 10) * SPIEL.uebungDoppeltProZehn) menge *= 2;
+  if (Math.random() < Math.floor(stufeAusXp(spiel.uebung[uebungsId] || 0) / 10) * SPIEL.uebungDoppeltProZehn + haustierBonus("doppelt", "garten")) menge *= 2;
   gibInBank(p.ertrag, menge);
   let samen = 0;
   if (Math.random() < GARTEN.samenZurueck && passtInBank(p.samen)) { gibInBank(p.samen, 1); samen = 1; }
@@ -47,7 +47,8 @@ function ernte(nr) {
   spiel.uebung[uebungsId] = (spiel.uebung[uebungsId] || 0) + xp;
   spiel.statistik.geerntet = (spiel.statistik.geerntet || 0) + 1;
   g.beete[nr] = null;
-  return { menge, samen, xp, p, neueStufe: stufe("garten") > vorher ? stufe("garten") : 0 };
+  const haustier = vielleichtHaustierBeiErnte();
+  return { menge, samen, xp, p, haustier, neueStufe: stufe("garten") > vorher ? stufe("garten") : 0 };
 }
 
 function beetPreis() { return GARTEN.beetPreise[gartenStand().gekauft]; }   // undefined = alle gekauft
@@ -85,6 +86,7 @@ function trinke(id) {
   nimmAusBank(id, 1);
   spiel.traenke = spiel.traenke || {};
   spiel.traenke[id] = (spiel.traenke[id] || 0) + t.ladungen;
+  spiel.statistik.getrunken = (spiel.statistik.getrunken || 0) + 1;
   return true;
 }
 function aktiveTraenke() {
@@ -101,8 +103,8 @@ function verbraucheTrank(t) {
     spiel.traenkeLeer = (spiel.traenkeLeer || []).concat(t.name);   // für eine Meldung
   }
 }
-function trankFaktorXp() {
-  return 1 + trankWirkung(w => w.art === "xp").reduce((s, t) => s + t.wirkung.wert, 0);
+function trankFaktorXp() {   // Tränke und Haustiere zusammen
+  return 1 + haustierBonus("xp") + trankWirkung(w => w.art === "xp").reduce((s, t) => s + t.wirkung.wert, 0);
 }
 // Bonus für eine Tätigkeit (ohne zu verbrauchen)
 function trankDoppelt(t) {

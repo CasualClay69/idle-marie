@@ -15,10 +15,10 @@ function ausruestungsBonus(art) {
 function maxHp() { return stufe("herzen") * KAMPF.hpProStufe; }
 function spielerWerte() {
   return {
-    genauigkeit: Math.round((stufe("mut") + 8) * (64 + ausruestungsBonus("treff")) * (1 + trankKampf("treff"))),
-    maxSchlag: Math.floor((15 + stufe("kraft") * 1.6 + ausruestungsBonus("kraft") * 1.5) * (1 + trankKampf("kraft"))),
+    genauigkeit: Math.round((stufe("mut") + 8) * (64 + ausruestungsBonus("treff")) * (1 + trankKampf("treff") + haustierBonus("treff"))),
+    maxSchlag: Math.floor((15 + stufe("kraft") * 1.6 + ausruestungsBonus("kraft") * 1.5) * (1 + trankKampf("kraft") + haustierBonus("kraft"))),
     ausweichen: (stufe("schutz") + 8) * (64 + ausruestungsBonus("abwehr")),
-    weniger: Math.min(0.6, ausruestungsBonus("weniger") / 100 + trankKampf("schutz")),
+    weniger: Math.min(0.6, ausruestungsBonus("weniger") / 100 + trankKampf("schutz") + haustierBonus("schutz")),
     tempo: KAMPF.ohneWaffeTempo,
   };
 }
@@ -147,7 +147,8 @@ function besiegt(m, ergebnis) {
   trankNachSieg();
   spiel.besiegt = spiel.besiegt || {};
   spiel.besiegt[m.id] = (spiel.besiegt[m.id] || 0) + 1;
-  const muenzen = zufall(m.muenzen[0], m.muenzen[1]);
+  const muenzen = Math.round(zufall(m.muenzen[0], m.muenzen[1]) * (1 + haustierBonus("muenzen")));
+  if (m.chef) { const h = vielleichtHaustierBeiChef(m.id); if (h) ergebnis.ereignisse.push({ haustier: h }); }
   spiel.muenzen += muenzen;
   ergebnis.muenzen = (ergebnis.muenzen || 0) + muenzen;
   spiel.hp = Math.min(maxHp(), spiel.hp + Math.round(maxHp() * KAMPF.verschnaufen));

@@ -21,6 +21,8 @@ function tippeTaetigkeit(t) {
 function verarbeite(ergebnis) {
   if (!ergebnis.durchgaenge && !ergebnis.gestoppt) return;
   for (const e of ergebnis.ereignisse) {
+    if (e.haustier) zeigeHaustierFund(e.haustier);
+    if (!e.taetigkeit && !e.pokal && !e.kampfStufe) continue;
     if (e.pokal) { ton.stufe(); melde(`🏆 Wow! ${GEGENSTAENDE[e.pokal].name} gefunden!`, "gross"); continue; }
     if (e.kampfStufe) { const f = fertigkeit(e.kampfStufe); ton.stufe(); melde(`🎉 ${f.icon} ${f.name}: Stufe ${e.neueStufe}!`, "gross"); continue; }
     const f = fertigkeit(e.taetigkeit.fertigkeit);
@@ -53,6 +55,9 @@ function schleife() {
   verarbeite(tick());
   if (Date.now() - letzteGartenPruefung > 1000) {
     letzteGartenPruefung = Date.now();
+    const erfolge = pruefeErfolge();
+    for (const e of erfolge) { ton.stufe(); melde(`🏆 Erfolg: ${e.name}! +${zahl(e.muenzen)} Münzen`, "gross"); }
+    if (erfolge.length) { speichern(); zeichneKopf(); if (aktuelleSeite === "seiteIch") zeichneSeite(); }
     const reif = neuReifeBeete();
     if (reif.length) {
       ton.muenze();
@@ -75,6 +80,8 @@ function richteKnoepfeEin() {
     if (!spiel.aktiv) return;
     stoppe(); ruheAus(); ton.klick(); speichern(); zeichneAktivLeiste(); zeichneSeite();
   });
+  $("haustierZu").addEventListener("click", () => { ton.klick(); zeigeNaechstesHaustier(); zeichneKopf(); if (aktuelleSeite === "seiteIch") zeichneSeite(); });
+  $("begleiterKopf").addEventListener?.("click", () => zeigeSeite("seiteIch"));
   $("wahlZu").addEventListener("click", () => { ton.klick(); $("wahlOverlay").hidden = true; });
   $("wahlOverlay").addEventListener("click", e => { if (e.target.id === "wahlOverlay") $("wahlOverlay").hidden = true; });
   $("aktivLeiste").addEventListener("click", e => {
@@ -186,6 +193,7 @@ function starteSpiel() {
   zeigeSeite("seiteFertigkeiten");
   if (!spiel.figur) fragFigur();
   else if (offline && offline.durchgaenge) zeigeOffline(offline);
+  for (const e of pruefeErfolge()) melde(`🏆 Erfolg: ${e.name}! +${zahl(e.muenzen)} Münzen`, "gross");
   speichern();
   requestAnimationFrame(schleife);
 

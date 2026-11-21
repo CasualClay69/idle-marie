@@ -58,6 +58,9 @@ function zeichneKopf() {
   $("figurKnopf").innerHTML = figurSvg(spiel.figur);
   $("muenzAnzeige").innerHTML = `${muenzeHtml()}<b>${zahl(spiel.muenzen)}</b>`;
   $("navFigur").innerHTML = figurSvg(spiel.figur);
+  const b = HAUSTIERE.find(h => h.id === spiel.begleiter && hatHaustier(h.id));
+  $("begleiterKopf").hidden = !b;
+  $("begleiterKopf").textContent = b ? b.emoji : "";
 }
 
 // ----- Leiste mit der laufenden Tätigkeit -----
@@ -295,6 +298,8 @@ function zeichneFigurAuswahl(ziel, beimWaehlen) {
   }
 }
 function zeichneIch() {
+  zeichneHaustiere();
+  zeichneErfolge();
   zeichneFigurAuswahl($("figurAuswahlIch"), id => {
     ton.klick(); spiel.figur = id; speichern(); zeichneKopf(); zeichneAktivLeiste(); zeichneIch();
   });
@@ -306,6 +311,9 @@ function zeichneIch() {
     ["Verdiente Münzen", zahl(st.verdient)],
     ["Eingeschlafene Monster 💤", zahl(st.besiegt || 0)],
     ["Geerntete Beete 🧺", zahl(st.geerntet || 0)],
+    ["Getrunkene Tränke 🧪", zahl(st.getrunken || 0)],
+    ["Haustiere 🐾", `${(spiel.haustiere || []).length} / ${HAUSTIERE.length}`],
+    ["Erfolge 🏆", `${anzahlErfolge()} / ${ERFOLGE.length}`],
     ...FERTIGKEITEN.map(f => [`${f.icon} ${f.name}`, `Stufe ${stufe(f.id)} · ${zahl(spiel.xp[f.id] || 0)} EP`]),
   ];
   $("statistik").innerHTML = zeilen.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("");
@@ -329,6 +337,7 @@ function zeigeOffline(e) {
     const neu = stufe(fid) - e.stufenVorher[fid];
     zeilen.push(`<li>${f.icon} <b>+${zahl(xp)} EP</b> ${f.name}${neu ? ` · <b class="hell">${neu === 1 ? "eine Stufe" : neu + " Stufen"} höher! 🎉</b>` : ""}</li>`);
   }
+  for (const x of e.ereignisse || []) if (x.haustier) zeilen.push(`<li>🎉 <b>${x.haustier.emoji} ${x.haustier.name}</b> ist bei dir eingezogen!</li>`);
   if (e.besiegt) zeilen.push(`<li>💤 <b>${zahl(e.besiegt)}</b> Monster sind eingeschlafen · ${muenzeHtml("muenze klein")} +${zahl(e.muenzen || 0)}</li>`);
   for (const [id, n] of Object.entries(e.gewonnen)) zeilen.push(`<li>${symbolHtml(id, "mini")} <b>+${zahl(n)}</b> ${GEGENSTAENDE[id].name}</li>`);
   for (const [id, n] of Object.entries(e.verbraucht)) zeilen.push(`<li class="sanft">${symbolHtml(id, "mini")} −${zahl(n)} ${GEGENSTAENDE[id].name}</li>`);

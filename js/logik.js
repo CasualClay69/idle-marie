@@ -77,10 +77,11 @@ function dauer(t) {
   if (f.werkzeug) faktor -= WERKZEUG_BONUS * (spiel.werkzeuge[f.werkzeug] || 0);
   if (uebungStufe(t.id) >= SPIEL.maxStufe) faktor -= SPIEL.meisterSchneller;
   faktor -= trankSchneller(t);
+  if (f.art === "machen") faktor -= haustierBonus("schneller", t.fertigkeit);
   return Math.max(0.5, t.zeit * faktor);
 }
 function doppeltChance(t) {
-  return Math.floor(uebungStufe(t.id) / 10) * SPIEL.uebungDoppeltProZehn + trankDoppelt(t);
+  return Math.floor(uebungStufe(t.id) / 10) * SPIEL.uebungDoppeltProZehn + trankDoppelt(t) + haustierBonus("doppelt", t.fertigkeit);
 }
 
 // ----- Bank -----
@@ -132,6 +133,7 @@ function fuehreAus(t) {
   spiel.uebung[t.id] = (spiel.uebung[t.id] || 0) + xp;
   spiel.statistik.aktionen++;
   trankNachTaetigkeit(t);
+  ereignisse.haustier = vielleichtHaustierBeiArbeit(t.fertigkeit, dauer(t));
   ereignisse.neueStufe = stufe(t.fertigkeit) > ereignisse.stufeVorher ? stufe(t.fertigkeit) : 0;
   ereignisse.neueUebung = uebungStufe(t.id) > ereignisse.uebungVorher ? uebungStufe(t.id) : 0;
   return ereignisse;

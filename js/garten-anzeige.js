@@ -74,6 +74,7 @@ function ernteMitMeldung(nr) {
   ton.muenze();
   melde(`🧺 +${e.menge} ${e.p.name}${e.samen ? " und ein Samen" : ""}!`);
   if (e.neueStufe) { ton.stufe(); melde(`🎉 🌱 Gärtnern: Stufe ${e.neueStufe}!`, "gross"); }
+  if (e.haustier) zeigeHaustierFund(e.haustier);
 }
 function nachGarten() {
   speichern();
