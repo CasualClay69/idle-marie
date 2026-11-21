@@ -55,6 +55,7 @@ function schleife() {
   verarbeite(tick());
   if (Date.now() - letzteGartenPruefung > 1000) {
     letzteGartenPruefung = Date.now();
+    pruefeQuest();
     const erfolge = pruefeErfolge();
     for (const e of erfolge) { ton.stufe(); melde(`🏆 Erfolg: ${e.name}! +${zahl(e.muenzen)} Münzen`, "gross"); }
     if (erfolge.length) { speichern(); zeichneKopf(); if (aktuelleSeite === "seiteIch") zeichneSeite(); }
@@ -189,6 +190,7 @@ function starteSpiel() {
   richteAdminEin();
   richteSicherungEin();
   richteEinfuehrungEin();
+  richteQuestsEin();
   const offline = holeOfflineNach();
   ruheAus();
   zeichneKopf();

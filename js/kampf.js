@@ -158,6 +158,7 @@ function besiegt(m, ergebnis) {
     const n = zufall(b.anzahl[0], b.anzahl[1]);
     if (!passtInBank(b.id)) { ergebnis.bankVoll = true; continue; }
     gibInBank(b.id, n);
+    zaehle(b.id, n);
     ergebnis.gewonnen[b.id] = (ergebnis.gewonnen[b.id] || 0) + n;
     if (b.id.startsWith("pokal")) ergebnis.ereignisse.push({ pokal: b.id });
   }

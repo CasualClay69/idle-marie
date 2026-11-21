@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "0.7", datum: "2026-11-21", neu: ["📜 Aufträge: Eine Kette von 88 Aufträgen führt dich Schritt für Schritt durchs ganze Spiel – bis zum Regenbogendrachen.", "Jeder Auftrag bringt eine Belohnung, und „Zeig mir wo“ bringt dich direkt an die richtige Stelle."] },
   { v: "0.6", datum: "2026-11-21", neu: ["Spielstand sichern und wiederherstellen – als Code zum Kopieren oder als Datei (unter „Ich“).", "Eine Einführung zeigt neuen Spielern Schritt für Schritt, wie alles geht. Unter „Ich“ kann man sie nochmal ansehen."] },
   { v: "0.5", datum: "2026-11-21", neu: ["Bestenliste mit Spitznamen (unter „Ich“): Gesamtstufe und Wochen-Wettbewerb – die Wochensieger tragen eine 👑.", "Belohnungs-Codes einlösen: Münzen, Glücks-Tränke oder Samen.", "Ab und zu gibt es Nachrichten für alle und einen Lauftext über dem Logo."] },
   { v: "0.4.1", datum: "2026-11-21", neu: ["Alles passt jetzt auch auf schmale Handys – nichts lässt sich mehr zur Seite schieben.", "Zaubertränke heißen jetzt einfach Tränke."] },

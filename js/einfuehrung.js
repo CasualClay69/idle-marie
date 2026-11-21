@@ -32,6 +32,8 @@ const EINFUEHRUNG = [
     text: () => `Bei <b>⚔️ Abenteuer</b> triffst du Monster. Keine Angst – sie werden nur müde und schlafen ein 💤.` },
   { ziel: () => document.querySelector('#untenNav [data-seite="seiteIch"]'),
     text: () => `Unter <b>Ich</b> findest du deine Haustiere 🐾, Erfolge 🏆 und die Bestenliste 🏅.` },
+  { ziel: () => $("questLeiste"),
+    text: () => `Und hier steht immer dein nächster <b>📜 Auftrag</b>. Er zeigt dir, was du als Nächstes machen kannst – und es gibt eine Belohnung! Tippe ihn an, wenn du nicht weiterweißt.` },
   { ziel: () => null,
     text: () => `Das war's! 💖 Probier alles aus: Angeln, Garten, Kochen, Tränke … Viel Spaß, ${figurName()}!`, ende: true },
 ];

@@ -39,6 +39,7 @@ function ernte(nr) {
   let menge = p.menge[0] + Math.floor(Math.random() * (p.menge[1] - p.menge[0] + 1));
   if (Math.random() < Math.floor(stufeAusXp(spiel.uebung[uebungsId] || 0) / 10) * SPIEL.uebungDoppeltProZehn + haustierBonus("doppelt", "garten")) menge *= 2;
   gibInBank(p.ertrag, menge);
+  zaehle(p.ertrag, menge);
   let samen = 0;
   if (Math.random() < GARTEN.samenZurueck && passtInBank(p.samen)) { gibInBank(p.samen, 1); samen = 1; }
   const vorher = stufe("garten");

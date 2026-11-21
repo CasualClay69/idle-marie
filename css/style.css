@@ -501,6 +501,30 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
 .tippLeise { border: 0; background: none; color: var(--text-sanft); font-weight: 700; font-size: 0.82rem; text-decoration: underline; }
 .tippFuss .knopf { padding: 7px 14px; }
 
+/* ----- Aufträge ----- */
+.questLeiste {
+  display: flex; align-items: center; gap: 8px; margin: -2px 12px 8px; padding: 6px 12px 6px 8px; width: auto;
+  border: 2px solid #ffe3a3; border-radius: 16px; background: #fffaf0; text-align: left; box-shadow: var(--schatten);
+}
+.questLeiste .mini { width: 28px; height: 28px; }
+.questIcon { font-size: 22px; width: 28px; text-align: center; flex: none; }
+.questText { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.questText b { font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.questText .balken { --farbe: var(--gold); }
+.questZahl { font-size: 0.75rem; font-weight: 800; color: #c98a1a; white-space: nowrap; }
+.questLeiste.fertig { border-color: #ffc93c; background: linear-gradient(90deg, #fff1c2, #ffe0ef); animation: questLeuchten 1.3s ease-in-out infinite; }
+.questLeiste.fertig .questZahl { font-size: 1.3rem; color: var(--akzent-dunkel); }
+@keyframes questLeuchten { 50% { box-shadow: 0 0 0 4px #ffe58a, var(--schatten); } }
+.questFenster .questKopf small { color: var(--text-sanft); font-weight: 700; }
+.questFenster h2 { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 2px; }
+.questFenster h2 .mini { width: 34px; height: 34px; }
+.questTipp { background: #fff; border-radius: 16px; padding: 10px 12px; text-align: left; }
+.questFenster .balken { --farbe: var(--gold); margin-top: 10px; }
+.questFortschritt { font-weight: 800; color: #c98a1a; margin: 4px 0 !important; }
+.questBelohnung { font-size: 0.9rem; font-weight: 700; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px; }
+.questZiel { animation: zielLeuchten 0.9s ease-in-out 5; position: relative; z-index: 2; }
+@keyframes zielLeuchten { 50% { box-shadow: 0 0 0 5px #ffd54f, 0 0 24px #ffd54f; transform: scale(1.04); } }
+
 /* ----- Navigation unten ----- */
 #untenNav {
   display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px;

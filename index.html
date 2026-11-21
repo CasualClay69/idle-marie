@@ -29,6 +29,8 @@
   <script src="js/kampf.js" defer></script>
   <script src="js/garten.js" defer></script>
   <script src="js/sammlung.js" defer></script>
+  <script src="js/daten-quests.js" defer></script>
+  <script src="js/quests.js" defer></script>
   <script src="js/sound.js" defer></script>
   <script src="js/anzeige.js" defer></script>
   <script src="js/kampf-anzeige.js" defer></script>
@@ -79,6 +81,7 @@
       <button id="aktivStopp" class="stoppKnopf" type="button" aria-label="Anhalten">⏹</button>
     </section>
 
+    <button id="questLeiste" class="questLeiste" type="button" hidden></button>
     <div id="trankLeiste" class="trankLeiste" hidden></div>
 
     <main id="inhalt">
@@ -207,6 +210,14 @@
     <div class="fenster">
       <div id="gegenstandInhalt"></div>
       <button id="gegenstandZu" class="knopf leise" type="button">Schließen</button>
+    </div>
+  </div>
+
+  <!-- Aktueller Auftrag -->
+  <div id="questOverlay" class="overlay" hidden>
+    <div class="fenster questFenster">
+      <div id="questInhalt"></div>
+      <button id="questZu" class="knopf leise" type="button">Schließen</button>
     </div>
   </div>
 
