@@ -34,6 +34,9 @@
   <script src="js/kampf-anzeige.js" defer></script>
   <script src="js/garten-anzeige.js" defer></script>
   <script src="js/sammlung-anzeige.js" defer></script>
+  <script src="js/online.js" defer></script>
+  <script src="js/online-anzeige.js" defer></script>
+  <script src="js/admin.js" defer></script>
   <script src="js/main.js" defer></script>
 </head>
 <body>
@@ -54,6 +57,7 @@
   </div>
 
   <div id="app">
+    <div id="lauftext" class="lauftext" hidden><span></span></div>
     <header id="kopf">
       <button id="figurKnopf" class="figurKnopf" type="button" aria-label="Figur"></button>
       <span id="begleiterKopf" class="begleiterKopf" hidden></span>
@@ -106,6 +110,10 @@
       <section id="seiteIch" class="seite" hidden>
         <h2 class="seitenTitel">👤 Ich</h2>
         <div class="karte">
+          <h3>🏅 Bestenliste</h3>
+          <div id="bestenlisteInhalt"></div>
+        </div>
+        <div class="karte">
           <h3>🐾 Haustiere <small id="haustierZahl"></small></h3>
           <div id="haustierListe" class="haustierListe"></div>
           <p class="hinweis">Tippe ein Haustier an, dann wird es dein Begleiter. Alle Haustiere helfen dir für immer ein bisschen.</p>
@@ -113,6 +121,13 @@
         <div class="karte">
           <h3>🏆 Erfolge <small id="erfolgZahl"></small></h3>
           <div id="erfolgListe" class="erfolgListe"></div>
+        </div>
+        <div class="karte">
+          <h3>🎁 Code einlösen</h3>
+          <p class="hinweis">Hast du einen Belohnungs-Code bekommen? Hier eintippen!</p>
+          <div class="eingabeZeile"><input id="codeFeld" type="text" maxlength="12" placeholder="ABCD-1234" autocomplete="off" autocapitalize="characters">
+          <button type="button" class="knopf kaufen" id="codeLoesen">Einlösen</button></div>
+          <p id="codeMeldung"></p>
         </div>
         <div class="karte">
           <h3>Meine Figur</h3>
@@ -165,6 +180,23 @@
     <div class="fenster">
       <div id="gegenstandInhalt"></div>
       <button id="gegenstandZu" class="knopf leise" type="button">Schließen</button>
+    </div>
+  </div>
+
+  <!-- Nachricht an alle -->
+  <div id="nachrichtOverlay" class="overlay" hidden>
+    <div class="fenster">
+      <h2>✉️ Eine Nachricht für dich!</h2>
+      <p id="nachrichtText" class="nachrichtText"></p>
+      <button id="nachrichtZu" class="knopf" type="button">Danke! 💖</button>
+    </div>
+  </div>
+
+  <!-- Admin-Menü (10 Sekunden auf das Logo drücken) -->
+  <div id="adminOverlay" class="overlay" hidden>
+    <div class="fenster adminFenster">
+      <div id="adminInhalt"></div>
+      <button id="adminZu" class="knopf leise" type="button">Schließen</button>
     </div>
   </div>
 

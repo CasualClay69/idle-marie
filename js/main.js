@@ -184,6 +184,8 @@ function starteSpiel() {
   ton.laden();
   richteKnoepfeEin();
   richteVersionenEin();
+  richteOnlineEin();
+  richteAdminEin();
   const offline = holeOfflineNach();
   ruheAus();
   zeichneKopf();

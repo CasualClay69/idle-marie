@@ -405,6 +405,61 @@ button:disabled { cursor: default; }
 .eLohn { font-size: 0.78rem; font-weight: 800; white-space: nowrap; color: var(--akzent-dunkel); }
 .erfolgZeile.fertig .eLohn { color: #2f9e57; font-size: 1.1rem; }
 
+/* ----- Online: Bestenliste, Codes, Lauftext, Admin ----- */
+.eingabeZeile { display: flex; gap: 8px; align-items: center; }
+input[type="text"], input[type="password"], input[type="number"], textarea, select {
+  font: inherit; color: var(--text); padding: 9px 12px; border: 2px solid var(--rand); border-radius: 14px;
+  background: #fff; min-width: 0; width: 100%;
+}
+input:focus, textarea:focus, select:focus { outline: none; border-color: var(--akzent); }
+.eingabeZeile input { flex: 1; }
+.fehlerText { color: var(--gefahr); font-weight: 700; font-size: 0.85rem; margin: 6px 0 0; }
+.fehlerText:empty, #codeMeldung:empty { display: none; }
+.okText { color: #2f9e57; font-weight: 800; font-size: 0.9rem; margin: 8px 0 0; }
+.listeTabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin-bottom: 8px; }
+.listeTabs button { padding: 7px 4px; border: 2px solid var(--rand); border-radius: 14px; background: #fff; font-weight: 800; font-size: 0.85rem; }
+.listeTabs button.aktiv { border-color: var(--akzent); background: #ffe9f3; color: var(--akzent-dunkel); }
+.bestenliste { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+.bestenliste li { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 14px; background: #fff7fb; }
+.bestenliste li.ich { background: #ffe1ee; box-shadow: inset 0 0 0 2px var(--akzent); }
+.platzNr { width: 26px; text-align: center; font-weight: 900; flex: none; }
+.listeFigur { position: relative; width: 36px; height: 36px; flex: none; border-radius: 50%; overflow: visible; }
+.listeFigur svg { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(160deg, #ffd1e6, #e6ccff); display: block; }
+.listeFigur i { position: absolute; right: -6px; bottom: -4px; font-style: normal; font-size: 15px; }
+.listeName { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.listeName b { font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.listeName small { font-size: 0.66rem; color: var(--text-sanft); }
+.listeWert { font-weight: 900; font-size: 0.8rem; color: var(--akzent-dunkel); white-space: nowrap; }
+.listeKnoepfe { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.listeKnoepfe .knopf { margin: 0; padding: 8px; font-size: 0.85rem; }
+.nachrichtText { font-size: 1.05rem; white-space: pre-wrap; background: #fff; border-radius: 16px; padding: 12px; }
+
+.lauftext {
+  overflow: hidden; white-space: nowrap; margin: calc(6px + env(safe-area-inset-top)) 12px -2px; padding: 4px 0;
+  border-radius: 999px; background: linear-gradient(90deg, var(--akzent), var(--lila)); color: #fff; font-weight: 800; font-size: 0.9rem;
+}
+.lauftext[hidden] { display: none; }
+.lauftext span { display: inline-block; padding-left: 100%; animation: lauf 15s linear infinite; }
+@keyframes lauf { to { transform: translateX(-100%); } }
+.lauftext:not([hidden]) + #kopf { padding-top: 6px; }
+
+.fenster.adminFenster { text-align: left; }
+.adminFenster h2 { text-align: center; }
+.adminTeil { background: #fff; border-radius: 16px; padding: 10px; margin-bottom: 10px; display: grid; gap: 6px; }
+.adminTeil h3 { margin: 0; font-size: 0.95rem; }
+.adminZeile { display: flex; gap: 6px; align-items: center; }
+.adminZeile .knopf { margin: 0; }
+.adminZeile label { display: flex; align-items: center; gap: 4px; font-size: 0.85rem; font-weight: 700; }
+.adminZeile label input { width: 64px; }
+.neuerCode { font-size: 1.6rem; font-weight: 900; letter-spacing: 0.1em; text-align: center; color: var(--akzent-dunkel); margin: 0; }
+.neuerCode:empty { display: none; }
+.codeListe { font-size: 0.75rem; display: grid; gap: 3px; }
+.codeListe .eingeloest { opacity: 0.5; }
+.adminEintrag { display: flex; align-items: center; gap: 6px; padding: 4px 0; font-size: 0.85rem; }
+.adminEintrag span { flex: 1; }
+.adminEintrag button { border: 0; background: #ffe9f3; border-radius: 10px; padding: 4px 8px; }
+.logo { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+
 /* ----- Navigation unten ----- */
 #untenNav {
   display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px;

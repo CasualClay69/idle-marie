@@ -298,6 +298,8 @@ function zeichneFigurAuswahl(ziel, beimWaehlen) {
   }
 }
 function zeichneIch() {
+  zeichneBestenliste();
+  ladeListe();
   zeichneHaustiere();
   zeichneErfolge();
   zeichneFigurAuswahl($("figurAuswahlIch"), id => {
