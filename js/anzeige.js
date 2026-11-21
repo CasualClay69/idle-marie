@@ -84,7 +84,7 @@ function zeichneAktivLeiste() {
     return;
   }
   const f = fertigkeit(t.fertigkeit);
-  $("aktivSymbol").innerHTML = symbolHtml(Object.keys(t.gibt)[0]);
+  $("aktivSymbol").innerHTML = t.kleidung ? `<span class="symbol kleidVorschau">${figurSvg(spiel.figur, { ...aussehen(), [t.kategorie]: t.kleidung })}</span>` : symbolHtml(Object.keys(t.gibt)[0]);
   $("aktivTitel").textContent = `${figurName()} ${f.tun}: ${t.name}`;
   leiste.style.setProperty("--farbe", f.farbe);
 }
@@ -165,16 +165,19 @@ function zeichneFertigkeit() {
     karte.dataset.id = t.id;
     karte.style.setProperty("--farbe", f.farbe);
     const ausgabe = Object.keys(t.gibt)[0];
+    const bild = t.kleidung ? `<span class="symbol kleidVorschau">${figurSvg(spiel.figur, { ...aussehen(), [t.kategorie]: t.kleidung })}</span>` : symbolHtml(ausgabe);
     if (gesperrt) {
-      karte.innerHTML = `${symbolHtml(ausgabe)}<span class="tName">${t.name}</span><span class="tSperre">🔒 ab Stufe ${t.stufe}</span>`;
+      karte.innerHTML = `${bild}<span class="tName">${t.name}</span><span class="tSperre">🔒 ab Stufe ${t.stufe}</span>`;
     } else {
       const ue = spiel.uebung[t.id] || 0;
       const braucht = Object.entries(t.braucht || {}).map(([id, n]) =>
         `<span class="braucht${anzahl(id) < n ? " fehlt" : ""}">${symbolHtml(id, "mini")} ${n} <small>(${zahl(anzahl(id))})</small></span>`).join("");
-      karte.innerHTML = `${symbolHtml(ausgabe)}
-        <span class="tName">${t.name}</span>
+      const genaeht = t.kleidung && (spiel.garderobe || []).includes(t.kleidung);
+      if (genaeht) karte.classList.add("genaeht");
+      karte.innerHTML = `${bild}
+        <span class="tName">${t.name}${genaeht ? " ✓" : ""}</span>
         <span class="tWerte">✨ ${t.xp} EP · ⏱️ ${sekunden(dauer(t))}</span>
-        ${braucht ? `<span class="tBraucht">${braucht}</span>` : `<span class="tBraucht">${symbolHtml(ausgabe, "mini")} in der Bank: ${zahl(anzahl(ausgabe))}</span>`}
+        ${genaeht ? `<span class="tBraucht">👗 im Kleiderschrank</span>` : braucht ? `<span class="tBraucht">${braucht}</span>` : `<span class="tBraucht">${symbolHtml(ausgabe, "mini")} in der Bank: ${zahl(anzahl(ausgabe))}</span>`}
         <span class="uebung" title="Übung">⭐ ${stufeAusXp(ue)} <span class="balken duenn"><div style="width:${(fortschrittInStufe(ue) * 100).toFixed(1)}%"></div></span></span>
         <span class="balken aktion"><div></div></span>`;
     }

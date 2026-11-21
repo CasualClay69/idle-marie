@@ -34,6 +34,7 @@ function verarbeite(ergebnis) {
       for (const t of neu) melde(`🔓 Neu freigeschaltet: ${t.name}`, "gross");
     }
     if (e.neueUebung && e.neueUebung % 10 === 0) melde(`⭐ Übung ${e.neueUebung}: ${e.taetigkeit.name}`);
+    if (e.kleidung) { const k = teilNachId(e.kleidung); ton.stufe(); melde(`🧵 ${k.icon} ${k.name} ist fertig genäht!`, "gross"); }
     if (e.doppelt) {   // kein Text (käme sonst ständig) – die Leiste blitzt golden
       const l = $("aktivLeiste");
       l.classList.remove("doppelt"); void l.offsetWidth; l.classList.add("doppelt");

@@ -630,6 +630,11 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .bauKosten li.fehlt { color: var(--gefahr); }
 .bauKosten small { color: var(--text-sanft); }
 
+/* ----- Nähen ----- */
+.kleidVorschau { overflow: hidden; background: linear-gradient(160deg, #ffe0f0, #efe2ff); }
+.kleidVorschau svg { width: 100% !important; height: 100% !important; }
+.taetigkeit.genaeht { background: #f1fbf1; }
+
 /* ----- Navigation unten ----- */
 #untenNav {
   display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px;

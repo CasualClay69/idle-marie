@@ -88,6 +88,10 @@ quest({ titel: "Bau die Plattform für dein Baumhaus", text: "Oben auf der 🔨 
   wert: () => (spiel.baumhaus?.plattform ? 1 : 0), hilfe: { fertigkeit: "bauen", ziel: '.bauKarte[data-platz="plattform"]' }, icon: "🪵", belohnung: { muenzen: 200, sachen: { brett0: 10 } } });
 quest({ titel: "Bau dir ein Bett", text: "Mit einem Bett im Baumhaus arbeitet deine Figur länger weiter, wenn das Spiel zu ist.", ziel: 1,
   wert: () => (spiel.baumhaus?.bett ? 1 : 0), hilfe: { fertigkeit: "bauen", ziel: '.bauKarte[data-platz="bett"]' }, icon: "🛏️", belohnung: { muenzen: 200 } });
+sammle("faser0", 10, "garten", "", "Im 🌱 Garten kannst du jetzt auch Baumwolle pflanzen. Kauf Samen und ernte 10 Baumwolle!", { muenzen: 100, sachen: { "samen-faser0": 5 } });
+sammle("stoff0", 8, "naehen", "naehen-stoff0", "Bei 🧵 Nähen webst du aus Baumwolle weichen Stoff.", { muenzen: 120 });
+quest({ titel: "Näh dir ein Haarband", text: "Mit Stoff kannst du Kleidung selbst nähen! Das Haarband landet direkt in deinem Kleiderschrank.", ziel: 1,
+  wert: () => ((spiel.garderobe || []).includes("h20") ? 1 : 0), hilfe: { fertigkeit: "naehen", ziel: '.taetigkeit[data-id="naehen-h20"]' }, icon: "🎗️", belohnung: { muenzen: 200, sachen: { faser0: 10 } } });
 stufeQuest("holz", 10, "Ab Stufe 10 kannst du Birken fällen.", { muenzen: 150 });
 sammle("holz1", 30, "holz", "holz-1", "Birkenholz ist mehr wert als Ästchen.", { muenzen: 150 });
 stufeQuest("angeln", 10, "Ab Stufe 10 beißen Forellen an.", { muenzen: 150 });
@@ -108,6 +112,7 @@ stufeQuest("schutz", 10, "Für Eisen-Helm, -Schild und -Rüstung brauchst du Sch
 stufeQuest("schmieden", 18, "Ab Schmieden-Stufe 18 kannst du auch die Eisen-Rüstung schmieden.", { muenzen: 200 });
 volleRuestung(1, "Zeit für Eisen!", { muenzen: 500, sachen: { essen1: 20 } });
 monsterQuest("pusteriese", 1, "Der Chef der Blumenwiese! Nimm genug Essen mit.", { muenzen: 800, sachen: { "trank7": 1 } });
+sammle("kuschel1", 5, "naehen", "naehen-kuschel1", "Teddys aus Leinen sind beim Verkaufen richtig viel wert!", { muenzen: 600 });
 quest({ titel: "Richte 6 Plätze im Baumhaus ein", text: "Jedes Möbelstück im Baumhaus hilft dir für immer ein bisschen.", ziel: 6,
   wert: () => BAUPLAETZE.filter(p => spiel.baumhaus?.[p.id]).length, hilfe: { fertigkeit: "bauen" }, icon: "🏡", belohnung: { muenzen: 800, sachen: { brett0: 30 } } });
 quest({ titel: "Erreiche Gesamtstufe 100", text: "Alle Fertigkeiten zählen zusammen. Probier ruhig alles aus!", ziel: 100, wert: () => gesamtStufe(),
@@ -142,6 +147,8 @@ monsterQuest("glutechse", 30, "Glutechsen lassen manchmal Drachenschuppen fallen
 monsterQuest("feuerdrache", 1, "Der Feuerdrache! Nimm einen Schutz-Trank mit.", { muenzen: 50000, sachen: { trank7: 3 } });
 
 // --- Teil 7: Eispalast ---
+quest({ titel: "Näh dir ein Feenkleid", text: "Aus Wolkenstoff wird ein zauberhaftes Feenkleid.", ziel: 1,
+  wert: () => ((spiel.garderobe || []).includes("k24") ? 1 : 0), hilfe: { fertigkeit: "naehen", ziel: '.taetigkeit[data-id="naehen-k24"]' }, icon: "🧚", belohnung: { muenzen: 40000 } });
 quest({ titel: "Ahorn-Baumhaus", text: "Bau alle 12 Plätze auf die Ahorn-Stufe aus (3 ★).", ziel: 12,
   wert: () => BAUPLAETZE.filter(p => (spiel.baumhaus?.[p.id] || 0) >= 3).length, hilfe: { fertigkeit: "bauen" }, icon: "🏡", belohnung: { muenzen: 60000 } });
 quest({ titel: "Erreiche Gesamtstufe 500", text: "Wow, du bist richtig gut!", ziel: 500, wert: () => gesamtStufe(), hilfe: { seite: "seiteFertigkeiten" }, icon: "🌟", belohnung: { muenzen: 50000 } });
@@ -155,6 +162,8 @@ monsterQuest("donnerwolke", 30, "Hoch oben im Wolkenreich grummeln die Donnerwö
 monsterQuest("sternenfuchs", 30, "Sternenfüchse funkeln wie der Nachthimmel.", { muenzen: 250000 });
 ruestungsKapitel(7, { muenzen: 600000, sachen: { essen7: 50 } });
 monsterQuest("regenbogendrache", 1, "Das größte Abenteuer: der Regenbogendrache!", { muenzen: 1000000, sachen: { trank7: 10 } });
+quest({ titel: "Näh das Prinzessinnenkleid", text: "Das schönste Kleid überhaupt – aus Regenbogenstoff!", ziel: 1,
+  wert: () => ((spiel.garderobe || []).includes("k27") ? 1 : 0), hilfe: { fertigkeit: "naehen", ziel: '.taetigkeit[data-id="naehen-k27"]' }, icon: "👑", belohnung: { muenzen: 2000000 } });
 quest({ titel: "Regenbogen-Baumhaus", text: "Das schönste Baumhaus der Welt: alle Plätze auf Regenbogen-Stufe (5 ★)!", ziel: 12,
   wert: () => BAUPLAETZE.filter(p => (spiel.baumhaus?.[p.id] || 0) >= 5).length, hilfe: { fertigkeit: "bauen" }, icon: "🌈", belohnung: { muenzen: 5000000 } });
 quest({ titel: "Werde Meister in allem", text: "Bring alle Fertigkeiten auf Stufe 99. Das ist das allergrößte Ziel!", ziel: FERTIGKEITEN.length * 99,

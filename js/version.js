@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.1";
-const APP_NEU = "Neu: Hannahs Baumhaus! Säge Bretter, bau 12 Möbelstücke und bekomme tolle Boni.";
+const APP_VERSION = "1.2";
+const APP_NEU = "Neu: Nähen! Pflanze Baumwolle & Co., webe Stoff und näh dir Kleider, Hüte und Kuscheltiere.";

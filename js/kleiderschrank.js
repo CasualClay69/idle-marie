@@ -33,13 +33,15 @@ for (const t of KLEIDERSCHRANK.flatMap(k => k.teile).filter(t => t.quest)) {   /
 }
 
 // Für die Bestenliste: Figur + Aussehen in einem kurzen Text, z.B. "hannah.12.11.9"
+// Nummer = Platz in der Liste (Listen werden nur hinten erweitert; für die alten Teile ist es dieselbe Zahl wie früher)
 function aussehenCode() {
-  const a = aussehen(), nr = id => (id || "0").replace(/\D/g, "") || "0";
-  return `${spiel.figur || "marie"}.${nr(a.hut)}.${nr(a.kleid)}.${nr(a.rahmen)}`;
+  const a = aussehen(), nr = (liste, id) => Math.max(0, liste.findIndex(t => t.id === id));
+  return `${spiel.figur || "hannah"}.${nr(HUETE, a.hut)}.${nr(KLEIDUNG, a.kleid)}.${nr(RAHMEN, a.rahmen)}`;
 }
 function leseAussehenCode(code) {
-  const [figur, h, k, r] = String(code || "marie").split(".");
-  return { figur, look: h === undefined ? {} : { hut: `h${h}`, kleid: `k${k}`, rahmen: `r${r}` } };
+  const [figur, h, k, r] = String(code || "hannah").split(".");
+  if (h === undefined) return { figur, look: {} };
+  return { figur, look: { hut: HUETE[Number(h)]?.id, kleid: KLEIDUNG[Number(k)]?.id, rahmen: RAHMEN[Number(r)]?.id } };
 }
 
 // ----- Anzeige -----
@@ -58,6 +60,7 @@ function zeichneKleiderschrank() {
     else if (hat) status = "Anziehen";
     else if (t.preis) status = `${muenzeHtml("muenze klein")} ${zahl(t.preis)}`;
     else if (t.questNr) status = `📜 Auftrag ${t.questNr}`;
+    else if (t.naehen) status = `🧵 Nähen ${t.naehen}`;
     else status = `🎟️ ${MONATSNAMEN[t.season - 1]}`;
     const vorschau = figurSvg(spiel.figur, { ...a, [kat.id]: t.id });
     return `<button type="button" class="schrankTeil${an ? " an" : ""}${hat ? "" : " zu"}${!hat && t.preis && spiel.muenzen < t.preis ? " teuer" : ""}" data-id="${t.id}">
@@ -74,6 +77,8 @@ function zeichneKleiderschrank() {
       a[kat.id] = t.id;
       herzchen(b);
       melde(`🎉 ${t.name} gekauft und angezogen!`, "gross");
+    } else if (t.naehen) {
+      ton.nein(); melde(`🧵 ${t.name} kannst du selbst nähen – ab Nähen-Stufe ${t.naehen}`); return;
     } else if (t.questNr) {
       ton.nein(); melde(`📜 ${t.name} gibt es als Belohnung für Auftrag ${t.questNr}`); return;
     } else {

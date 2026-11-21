@@ -43,6 +43,9 @@ const SYMBOL_BAU = {
     <circle cx="40" cy="70" r="4" fill="#fff" opacity=".7"/><circle cx="56" cy="76" r="2.6" fill="#fff" opacity=".7"/>
     <rect x="37" y="6" width="26" height="9" rx="3" fill="#c98a5a" stroke="#8a5a30" stroke-width="2"/>
     <path d="M30 44Q34 40 38 40" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+  stoff: (f) => `<path d="M14 34Q30 26 50 34T86 34V74Q70 66 50 74T14 74Z" fill="${f}" stroke="${toene(f, -0.4)}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M14 46Q30 38 50 46T86 46M14 60Q30 52 50 60T86 60" stroke="${toene(f, 0.45)}" stroke-width="3" fill="none"/>
+    <path d="M24 30V78M76 30V78" stroke="${toene(f, -0.25)}" stroke-width="2" stroke-dasharray="3 3"/>`,
   muenze: () => `<circle cx="50" cy="50" r="38" fill="#f5b942" stroke="#c98a1a" stroke-width="5"/><circle cx="50" cy="50" r="26" fill="none" stroke="#ffd98a" stroke-width="4"/>
     <path d="M50 36C44 30 34 34 36 42C38 50 50 58 50 58C50 58 62 50 64 42C66 34 56 30 50 36Z" fill="#ff7eb6"/>`,
 };

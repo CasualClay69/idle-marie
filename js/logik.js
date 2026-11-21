@@ -112,6 +112,7 @@ function verkaufe(id, n) {
 
 // ----- Kann die Tätigkeit laufen? Rückgabe: null = ja, sonst ein Grund -----
 function hindernis(t) {
+  if (t.kleidung && (spiel.garderobe || []).includes(t.kleidung)) return "Fertig genäht – zieh es im 👗 Kleiderschrank an!";
   if (stufe(t.fertigkeit) < t.stufe) return `Erst ab Stufe ${t.stufe}`;
   for (const [id, n] of Object.entries(t.braucht || {})) {
     if (anzahl(id) < n) return `Es fehlt: ${GEGENSTAENDE[id].name}`;
@@ -130,6 +131,7 @@ function fuehreAus(t) {
   const mal = Math.random() < doppeltChance(t) ? 2 : 1;
   ereignisse.doppelt = mal === 2;
   for (const [id, n] of Object.entries(t.gibt)) { gibInBank(id, n * mal); zaehle(id, n * mal); }
+  if (t.kleidung) { gibTeil(t.kleidung); ereignisse.kleidung = t.kleidung; }
   const xp = Math.round(t.xp * trankFaktorXp());
   ereignisse.xp = xp;
   spiel.xp[t.fertigkeit] = (spiel.xp[t.fertigkeit] || 0) + xp;

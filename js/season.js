@@ -40,6 +40,7 @@ const AUFGABEN_VORLAGEN = [
   ["aktion", "schmieden", 30, 200, n => `Schmiede ${n}× etwas`],
   ["aktion", "schnitzen", 30, 200, n => `Schnitze ${n}× etwas`],
   ["aktion", "bauen", 30, 200, n => `Säge ${n} Bretter`],
+  ["aktion", "naehen", 25, 150, n => `Näh ${n}× etwas`],
   ["aktion", "traenke", 8, 50, n => `Braue ${n} Tränke`, () => stufe("traenke") >= 5],
   ["monster", null, 15, 100, n => `Bring ${n} Monster zum Einschlafen`],
   ["season", null, 5, 30, n => `Lass das Season-Monster ${n}× einschlafen`],

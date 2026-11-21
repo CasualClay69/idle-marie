@@ -5,7 +5,7 @@
 
 function haustierHerkunft(h) {
   const wo = { holz: "beim Holzsammeln", angeln: "beim Angeln", bergbau: "im Bergbau", garten: "beim Ernten im Garten",
-    kochen: "beim Kochen", schmieden: "beim Schmieden", schnitzen: "beim Schnitzen", traenke: "beim Tränke-Brauen", bauen: "beim Bretter-Sägen" };
+    kochen: "beim Kochen", schmieden: "beim Schmieden", schnitzen: "beim Schnitzen", traenke: "beim Tränke-Brauen", bauen: "beim Bretter-Sägen", naehen: "beim Nähen" };
   if (h.season) return `Belohnung der Season im ${MONATSNAMEN[h.season - 1]}`;
   if (h.fertigkeit) return `taucht ${wo[h.fertigkeit]} auf`;
   const m = MONSTER[h.chef];
