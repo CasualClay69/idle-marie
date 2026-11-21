@@ -11,14 +11,20 @@ function neuerSpielstand() {
     version: 1,
     figur: null,                 // marie | hannah | stefan | jenny – wird beim ersten Start gewählt
     muenzen: 0,
-    xp: {},                      // fertigkeitId -> Erfahrung
+    xp: { herzen: KAMPF.herzenStartXp },   // fertigkeitId -> Erfahrung (Herzen beginnen auf Stufe 10)
     uebung: {},                  // taetigkeitId -> Übungs-Erfahrung
     bank: {},                    // gegenstandId -> Anzahl
     bankFaecherGekauft: 0,
     werkzeuge: { axt: 0, angel: 0, hacke: 0 },   // 0 = keins, 1 = Kupfer …
     aktiv: null,                 // { id, start } – was die Figur gerade tut
     letzteZeit: Date.now(),
-    statistik: { aktionen: 0, verkauft: 0, verdient: 0 },
+    statistik: { aktionen: 0, verkauft: 0, verdient: 0, besiegt: 0 },
+    ausruestung: {},             // platz -> gegenstandId
+    essen: null,                 // welches Essen im Kampf gegessen wird
+    kampfstil: "mut",
+    hp: 0,
+    besiegt: {},                 // monsterId -> wie oft eingeschlafen
+    kampfLog: [],
   };
 }
 
@@ -28,6 +34,7 @@ function laden() {
   try {
     const text = localStorage.getItem(SPEICHER_SCHLUESSEL);
     if (text) spiel = Object.assign(neuerSpielstand(), JSON.parse(text));
+    if (!spiel.xp.herzen) spiel.xp.herzen = KAMPF.herzenStartXp;
   } catch (e) { /* kaputter oder gesperrter Speicher -> neues Spiel */ }
 }
 function speichern() {
@@ -136,6 +143,10 @@ function stoppe() { spiel.aktiv = null; }
 // Fortschritt der laufenden Tätigkeit (0 … 1)
 function aktivFortschritt(jetzt = Date.now()) {
   if (!spiel.aktiv) return 0;
+  if (spiel.aktiv.kampf) {
+    if (spiel.aktiv.pauseBis) return 0;
+    return Math.max(0, Math.min(1, 1 - (spiel.aktiv.spielerNaechster - jetzt) / (spielerWerte().tempo * 1000)));
+  }
   const t = taetigkeitNachId(spiel.aktiv.id);
   return Math.min(1, (jetzt - spiel.aktiv.start) / (dauer(t) * 1000));
 }
@@ -144,6 +155,7 @@ function aktivFortschritt(jetzt = Date.now()) {
 // Rückgabe: Liste der Ereignisse und ob die Tätigkeit beenden musste
 function tick(jetzt = Date.now(), maxDurchgaenge = Infinity) {
   const ergebnis = { durchgaenge: 0, ereignisse: [], gestoppt: null, gewonnen: {}, verbraucht: {}, xp: {} };
+  if (spiel.aktiv?.kampf) { kampfTick(jetzt, ergebnis); return ergebnis; }
   while (spiel.aktiv && ergebnis.durchgaenge < maxDurchgaenge) {
     const t = taetigkeitNachId(spiel.aktiv.id);
     if (!t) { stoppe(); break; }
@@ -177,10 +189,23 @@ function holeOfflineNach() {
   const weg = jetzt - spiel.letzteZeit;
   if (weg < 60 * 1000) return null;
   const grenze = SPIEL.offlineMaxStunden * 3600 * 1000;
-  if (jetzt - spiel.aktiv.start > grenze) spiel.aktiv.start = jetzt - grenze;
   const xpVorher = { ...spiel.xp };
   const stufenVorher = Object.fromEntries(FERTIGKEITEN.map(f => [f.id, stufe(f.id)]));
-  const ergebnis = tick(jetzt);
+  let ergebnis;
+  if (spiel.aktiv.kampf) {
+    // Kampf: nur bis zur Grenze rechnen, danach die Uhren auf "jetzt" verschieben
+    const ende = Math.min(jetzt, spiel.letzteZeit + grenze);
+    ergebnis = tick(ende);
+    const a = spiel.aktiv;
+    if (a?.kampf && ende < jetzt) {
+      const d = jetzt - ende;
+      a.spielerNaechster += d; a.monsterNaechster += d;
+      if (a.pauseBis) a.pauseBis += d;
+    }
+  } else {
+    if (jetzt - spiel.aktiv.start > grenze) spiel.aktiv.start = jetzt - grenze;
+    ergebnis = tick(jetzt);
+  }
   ergebnis.weg = Math.min(weg, grenze);
   ergebnis.stufenVorher = stufenVorher;
   ergebnis.xpVorher = xpVorher;

@@ -47,6 +47,7 @@ function zeigeSeite(id) {
 function zeichneSeite() {
   if (aktuelleSeite === "seiteFertigkeiten") zeichneFertigkeiten();
   if (aktuelleSeite === "seiteFertigkeit") zeichneFertigkeit();
+  if (aktuelleSeite === "seiteAbenteuer") zeichneAbenteuer();
   if (aktuelleSeite === "seiteBank") zeichneBank();
   if (aktuelleSeite === "seiteLaden") zeichneLaden();
   if (aktuelleSeite === "seiteIch") zeichneIch();
@@ -62,6 +63,14 @@ function zeichneKopf() {
 // ----- Leiste mit der laufenden Tätigkeit -----
 function zeichneAktivLeiste() {
   const leiste = $("aktivLeiste");
+  if (spiel.aktiv?.kampf) {
+    const m = MONSTER[spiel.aktiv.monster];
+    leiste.classList.remove("ruhe");
+    $("aktivSymbol").innerHTML = monsterSvg(m.aussehen);
+    $("aktivTitel").textContent = `${figurName()} ist im Abenteuer: ${m.name}`;
+    leiste.style.setProperty("--farbe", fertigkeit(spiel.kampfstil || "mut").farbe);
+    return;
+  }
   const t = spiel.aktiv && taetigkeitNachId(spiel.aktiv.id);
   leiste.classList.toggle("ruhe", !t);
   if (!t) {
@@ -77,6 +86,7 @@ function zeichneAktivLeiste() {
 }
 function zeichneAktivBalken() {
   $("aktivBalken").style.width = `${(aktivFortschritt() * 100).toFixed(1)}%`;
+  if (aktuelleSeite === "seiteAbenteuer") zeichneKampfLive();
   const karte = spiel.aktiv && document.querySelector(`.taetigkeit[data-id="${spiel.aktiv.id}"] .balken > div`);
   if (karte) karte.style.width = `${(aktivFortschritt() * 100).toFixed(1)}%`;
 }
@@ -90,10 +100,10 @@ function zeichneFertigkeiten() {
   for (const f of FERTIGKEITEN) {
     if (f.art !== art) {
       art = f.art;
-      raster.append(el("h3", "rasterTitel", art === "sammeln" ? "🧺 Sammeln" : "🛠️ Herstellen"));
+      raster.append(el("h3", "rasterTitel", { sammeln: "🧺 Sammeln", machen: "🛠️ Herstellen", kampf: "⚔️ Abenteuer" }[art]));
     }
     const xp = spiel.xp[f.id] || 0;
-    const aktiv = spiel.aktiv && taetigkeitNachId(spiel.aktiv.id).fertigkeit === f.id;
+    const aktiv = spiel.aktiv && (spiel.aktiv.kampf ? f.id === (spiel.kampfstil || "mut") : taetigkeitNachId(spiel.aktiv.id).fertigkeit === f.id);
     const karte = el("button", "fertigkeitKarte" + (aktiv ? " laeuft" : ""));
     karte.type = "button";
     karte.style.setProperty("--farbe", f.farbe);
@@ -102,7 +112,11 @@ function zeichneFertigkeiten() {
       <span class="fStufe">Stufe <b>${stufeAusXp(xp)}</b> / ${SPIEL.maxStufe}</span>
       <span class="balken"><div style="width:${(fortschrittInStufe(xp) * 100).toFixed(1)}%"></div></span>
       ${aktiv ? `<span class="laeuftMarke">▶</span>` : ""}`;
-    karte.addEventListener("click", () => { ton.klick(); offeneFertigkeit = f.id; zeigeSeite("seiteFertigkeit"); });
+    karte.addEventListener("click", () => {
+      ton.klick();
+      if (f.art === "kampf") { zeigeSeite("seiteAbenteuer"); return; }
+      offeneFertigkeit = f.id; zeigeSeite("seiteFertigkeit");
+    });
     raster.append(karte);
   }
 }
@@ -131,7 +145,7 @@ function zeichneFertigkeit() {
 
   const raster = $("taetigkeitenRaster");
   raster.textContent = "";
-  for (const t of taetigkeitenVon(f.id)) {
+  for (const t of taetigkeitenVon(f.id).sort((x, y) => x.stufe - y.stufe)) {
     const gesperrt = l < t.stufe;
     const aktiv = spiel.aktiv?.id === t.id;
     const karte = el("button", "taetigkeit" + (gesperrt ? " gesperrt" : "") + (aktiv ? " laeuft" : ""));
@@ -186,7 +200,17 @@ function zeigeGegenstand(id) {
   if (!n) { $("gegenstandOverlay").hidden = true; return; }
   inhalt.innerHTML = `<div class="gKopf">${symbolHtml(id, "symbol gross")}<div><h2>${g.name}</h2>
       <p>Du hast <b>${zahl(n)}</b> Stück · je ${muenzeHtml("muenze klein")} ${zahl(g.wert)}${g.heilt ? ` · heilt ${g.heilt} ❤️` : ""}</p></div></div>
+    ${g.platz ? `<p class="hinweis">${[g.bonus.treff && `🎯 Treffen +${g.bonus.treff}`, g.bonus.kraft && `💥 Schlag +${g.bonus.kraft}`, g.bonus.abwehr && `🛡️ Ausweichen +${g.bonus.abwehr}`, g.bonus.weniger && `${g.bonus.weniger} % weniger Schaden`].filter(Boolean).join(" · ")}
+      · braucht ${Object.entries(g.braucht).map(([f, l]) => `${fertigkeit(f).icon} ${fertigkeit(f).name} ${l}`).join(", ")}</p>
+      <button type="button" class="knopf" id="anlegen" ${darfTragen(g) ? "" : "disabled"}>🎒 Anlegen</button>` : ""}
+    ${g.heilt ? `<button type="button" class="knopf" id="alsEssen">🍽️ Im Kampf essen${spiel.essen === id ? " ✓" : ""}</button>` : ""}
     <div class="verkaufKnoepfe"></div>`;
+  inhalt.querySelector("#anlegen")?.addEventListener("click", () => {
+    if (ruesteAus(id)) { ton.klick(); melde(`🎒 ${g.name} angelegt`); speichern(); zeichneSeite(); zeigeGegenstand(id); }
+  });
+  inhalt.querySelector("#alsEssen")?.addEventListener("click", () => {
+    ton.klick(); spiel.essen = id; melde(`🍽️ ${figurName()} nimmt ${g.name} mit ins Abenteuer`); speichern(); zeigeGegenstand(id);
+  });
   const knoepfe = inhalt.querySelector(".verkaufKnoepfe");
   const mengen = [[1, "1"], [10, "10"], [Math.floor(n / 2), "Hälfte"], [n, "Alle"]].filter(([m], i, a) => m > 0 && (i === a.length - 1 || m < n));
   for (const [m, text] of mengen) {
@@ -271,6 +295,7 @@ function zeichneIch() {
     ["Erledigte Tätigkeiten", zahl(st.aktionen)],
     ["Verkaufte Sachen", zahl(st.verkauft)],
     ["Verdiente Münzen", zahl(st.verdient)],
+    ["Eingeschlafene Monster 💤", zahl(st.besiegt || 0)],
     ...FERTIGKEITEN.map(f => [`${f.icon} ${f.name}`, `Stufe ${stufe(f.id)} · ${zahl(spiel.xp[f.id] || 0)} EP`]),
   ];
   $("statistik").innerHTML = zeilen.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("");
@@ -294,6 +319,7 @@ function zeigeOffline(e) {
     const neu = stufe(fid) - e.stufenVorher[fid];
     zeilen.push(`<li>${f.icon} <b>+${zahl(xp)} EP</b> ${f.name}${neu ? ` · <b class="hell">${neu === 1 ? "eine Stufe" : neu + " Stufen"} höher! 🎉</b>` : ""}</li>`);
   }
+  if (e.besiegt) zeilen.push(`<li>💤 <b>${zahl(e.besiegt)}</b> Monster sind eingeschlafen · ${muenzeHtml("muenze klein")} +${zahl(e.muenzen || 0)}</li>`);
   for (const [id, n] of Object.entries(e.gewonnen)) zeilen.push(`<li>${symbolHtml(id, "mini")} <b>+${zahl(n)}</b> ${GEGENSTAENDE[id].name}</li>`);
   for (const [id, n] of Object.entries(e.verbraucht)) zeilen.push(`<li class="sanft">${symbolHtml(id, "mini")} −${zahl(n)} ${GEGENSTAENDE[id].name}</li>`);
   $("offlineTitel").textContent = `🌙 Du warst ${dauerText(e.weg)} weg …`;

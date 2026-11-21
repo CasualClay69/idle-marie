@@ -10,7 +10,7 @@ function tippeTaetigkeit(t) {
   } else {
     const grund = hindernis(t);
     if (grund) { ton.nein(); melde(`🙈 ${grund}`); return; }
-    starte(t); ton.klick();
+    starte(t); ruheAus(); ton.klick();
   }
   speichern();
   zeichneAktivLeiste();
@@ -21,6 +21,8 @@ function tippeTaetigkeit(t) {
 function verarbeite(ergebnis) {
   if (!ergebnis.durchgaenge && !ergebnis.gestoppt) return;
   for (const e of ergebnis.ereignisse) {
+    if (e.pokal) { ton.stufe(); melde(`🏆 Wow! ${GEGENSTAENDE[e.pokal].name} gefunden!`, "gross"); continue; }
+    if (e.kampfStufe) { const f = fertigkeit(e.kampfStufe); ton.stufe(); melde(`🎉 ${f.icon} ${f.name}: Stufe ${e.neueStufe}!`, "gross"); continue; }
     const f = fertigkeit(e.taetigkeit.fertigkeit);
     if (e.neueStufe) {
       ton.stufe();
@@ -35,6 +37,7 @@ function verarbeite(ergebnis) {
     }
   }
   if (ergebnis.durchgaenge) ton.fertig();
+  if (ergebnis.bankVoll) melde("🏦 Die Bank ist voll – manche Beute blieb liegen");
   if (ergebnis.gestoppt) { ton.nein(); melde(`⏸️ ${ergebnis.gestoppt}`); }
   zeichneKopf();
   zeichneAktivLeiste();
@@ -56,10 +59,13 @@ function richteKnoepfeEin() {
   $("zurueck").addEventListener("click", () => { ton.klick(); zeigeSeite("seiteFertigkeiten"); });
   $("aktivStopp").addEventListener("click", () => {
     if (!spiel.aktiv) return;
-    stoppe(); ton.klick(); speichern(); zeichneAktivLeiste(); zeichneSeite();
+    stoppe(); ruheAus(); ton.klick(); speichern(); zeichneAktivLeiste(); zeichneSeite();
   });
+  $("wahlZu").addEventListener("click", () => { ton.klick(); $("wahlOverlay").hidden = true; });
+  $("wahlOverlay").addEventListener("click", e => { if (e.target.id === "wahlOverlay") $("wahlOverlay").hidden = true; });
   $("aktivLeiste").addEventListener("click", e => {
     if (e.target.closest("#aktivStopp") || !spiel.aktiv) return;
+    if (spiel.aktiv.kampf) { zeigeSeite("seiteAbenteuer"); return; }
     offeneFertigkeit = taetigkeitNachId(spiel.aktiv.id).fertigkeit;
     zeigeSeite("seiteFertigkeit");
   });
@@ -158,6 +164,7 @@ function starteSpiel() {
   richteKnoepfeEin();
   richteVersionenEin();
   const offline = holeOfflineNach();
+  ruheAus();
   zeichneKopf();
   zeichneAktivLeiste();
   zeigeSeite("seiteFertigkeiten");
