@@ -23,6 +23,7 @@ function verarbeite(ergebnis) {
   for (const e of ergebnis.ereignisse) {
     if (e.haustier) zeigeHaustierFund(e.haustier);
     if (e.seasonStufen) { zeigeSeasonStufen(e.seasonStufen); continue; }
+    if (e.truhe) { zeigeTruhe(e.truhe); continue; }
     if (!e.taetigkeit && !e.pokal && !e.kampfStufe) continue;
     if (e.pokal) { ton.stufe(); melde(`🏆 Wow! ${GEGENSTAENDE[e.pokal].name} gefunden!`, "gross"); continue; }
     if (e.kampfStufe) { const f = fertigkeit(e.kampfStufe); ton.stufe(); melde(`🎉 ${f.icon} ${f.name}: Stufe ${e.neueStufe}!`, "gross"); continue; }
@@ -49,6 +50,14 @@ function verarbeite(ergebnis) {
   zeichneKopf();
   zeichneAktivLeiste();
   zeichneSeite();
+}
+
+// Schatztruhe: Meldung + bei besonderen Funden ein großes Fenster
+function zeigeTruhe(t) {
+  ton.stufe();
+  melde(`🧰 Schatztruhe vom ${t.pfad.name}: +${zahl(t.muenzen)} Münzen und Beute!`, "gross");
+  if (t.rahmen) { const r = teilNachId(t.rahmen); melde(`🖼️ In der Truhe lag der ${r.name}! Schau im Kleiderschrank.`, "gross"); }
+  if (t.haustier) zeigeHaustierFund(t.haustier);
 }
 
 // ----- Spielschleife -----

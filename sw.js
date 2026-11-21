@@ -33,6 +33,7 @@ const DATEIEN = [
   "js/daten-kleiderschrank.js",
   "js/daten-season.js",
   "js/daten-naehen.js",
+  "js/daten-pfade.js",
   "js/symbole.js",
   "js/monster.js",
   "js/logik.js",

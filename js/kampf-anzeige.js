@@ -26,12 +26,14 @@ function zeichneAbenteuer() {
       <div class="gegen">⚔️</div>
       <div class="kaempfer">
         <div class="kBild" id="monsterBild"></div>
-        <b>${m.name}${m.chef ? " 👑" : ""}</b>
+        <b>${m.name}${m.waechter ? " 🛡️" : m.chef ? " 👑" : ""}</b>
         <div class="hpZeile">Stufe ${m.stufe} · ❤️ <span id="monsterHpText"></span></div>
         <div class="balken hp monsterHp"><div id="monsterHp"></div></div>
         <div class="balken duenn takt"><div id="monsterTakt"></div></div>
       </div>
     </div>
+    ${a.pfad ? (() => { const p = PFADE.find(x => x.id === a.pfad.id); return `<div class="pfadFortschritt"><b>🗺️ ${p.name}</b>
+      <div class="pfadPunkte">${p.liste.map((id, i) => `<span class="${i < a.pfad.schritt ? "geschafft" : i === a.pfad.schritt ? "jetzt" : ""}${i === p.liste.length - 1 ? " waechter" : ""}">${i === p.liste.length - 1 ? "🧰" : i < a.pfad.schritt ? "💤" : i + 1}</span>`).join("")}</div></div>`; })() : ""}
     <ul id="kampfLog" class="kampfLog"></ul>
     <button id="weglaufen" class="knopf leise" type="button">🏃 Nach Hause gehen</button>`;
   } else {
@@ -70,7 +72,15 @@ function zeichneAbenteuer() {
       <h3>🎟️ Season: ${th.titel} <small>passt sich deiner Kampfstufe an · ⭐ ${SEASON.monsterPunkte} Season-Punkte pro Einschlafen</small></h3>
       <div class="monsterListe"><button type="button" class="monsterKarte chef${a?.monster === "season" ? " laeuft" : ""}" data-monster="season">
         <span class="mBild">${monsterSvg(sm.aussehen)}</span><b>${sm.name}</b><small>Stufe ${sm.stufe}</small></button></div></div>`;
-  seite.innerHTML = kampf + werte + ausruestung + `<h2 class="seitenTitel">🗺️ Gebiete</h2>` + seasonGebiet + gebiete;
+  const pfade = `<h2 class="seitenTitel">🧭 Abenteuer-Pfade</h2><p class="hinweis">Mehrere Monster hintereinander – ohne Ausruhen. Am Ende wartet ein Wächter und eine 🧰 Schatztruhe! Nimm genug Essen mit.</p>
+    <div class="pfadListe">${PFADE.map(p => {
+      const frei = pfadFrei(p), w = MONSTER[p.waechter], laeuft = a?.pfad?.id === p.id;
+      return `<button type="button" class="pfadKarte${frei ? "" : " gesperrt"}${laeuft ? " laeuft" : ""}" data-pfad="${p.id}" style="--farbe:${GEBIETE.find(g => g.id === p.gebiet).farbe}">
+        <span class="mBild">${monsterSvg(w.aussehen)}</span>
+        <span class="pfadText"><b>${p.icon} ${p.name}</b><small>${p.liste.length - 1} Monster + Wächter ${w.name} (Stufe ${w.stufe})</small>
+        <small>${frei ? (spiel.pfade?.[p.id] ? `🧰 ${zahl(spiel.pfade[p.id])}× geschafft` : "✨ Noch nie geschafft") : `🔒 Bring zuerst ${MONSTER[p.chef].name} zum Einschlafen`}</small></span></button>`;
+    }).join("")}</div>`;
+  seite.innerHTML = kampf + werte + ausruestung + pfade + `<h2 class="seitenTitel">🗺️ Gebiete</h2>` + seasonGebiet + gebiete;
 
   // ----- Knöpfe -----
   seite.querySelector("#weglaufen")?.addEventListener("click", () => {
@@ -80,6 +90,15 @@ function zeichneAbenteuer() {
     ton.klick(); spiel.kampfstil = b.dataset.stil; speichern(); zeichneAbenteuer();
   });
   for (const b of seite.querySelectorAll(".platz")) b.addEventListener("click", () => { ton.klick(); zeigePlatzWahl(b.dataset.platz); });
+  for (const b of seite.querySelectorAll(".pfadKarte")) b.addEventListener("click", () => {
+    const p = PFADE.find(x => x.id === b.dataset.pfad);
+    if (!pfadFrei(p)) { ton.nein(); melde(`🔒 Bring zuerst ${MONSTER[p.chef].name} zum Einschlafen`); return; }
+    if (spiel.aktiv?.pfad?.id === p.id) return;
+    ton.klick();
+    starteKampf(null, p.id);
+    speichern(); zeichneAktivLeiste(); zeichneAbenteuer();
+    $("inhalt").scrollTop = 0;
+  });
   for (const b of seite.querySelectorAll(".monsterKarte")) b.addEventListener("click", () => {
     const mo = MONSTER[b.dataset.monster];
     if (spiel.aktiv?.monster === mo.id) return;

@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.2";
-const APP_NEU = "Neu: Nähen! Pflanze Baumwolle & Co., webe Stoff und näh dir Kleider, Hüte und Kuscheltiere.";
+const APP_VERSION = "1.3";
+const APP_NEU = "Neu: Abenteuer-Pfade! Viele Monster hintereinander, ein starker Wächter und eine Schatztruhe am Ende.";

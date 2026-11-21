@@ -112,6 +112,8 @@ stufeQuest("schutz", 10, "Für Eisen-Helm, -Schild und -Rüstung brauchst du Sch
 stufeQuest("schmieden", 18, "Ab Schmieden-Stufe 18 kannst du auch die Eisen-Rüstung schmieden.", { muenzen: 200 });
 volleRuestung(1, "Zeit für Eisen!", { muenzen: 500, sachen: { essen1: 20 } });
 monsterQuest("pusteriese", 1, "Der Chef der Blumenwiese! Nimm genug Essen mit.", { muenzen: 800, sachen: { "trank7": 1 } });
+quest({ titel: "Schaffe den Pusteblumen-Pfad", text: "Jetzt ist der Pusteblumen-Pfad offen! Viele Monster hintereinander und am Ende die Hummelkönigin.", ziel: 1,
+  wert: () => spiel.pfade?.["p-wiese"] || 0, hilfe: { seite: "seiteAbenteuer", ziel: '.pfadKarte[data-pfad="p-wiese"]' }, icon: "🧰", belohnung: { muenzen: 1500 } });
 sammle("kuschel1", 5, "naehen", "naehen-kuschel1", "Teddys aus Leinen sind beim Verkaufen richtig viel wert!", { muenzen: 600 });
 quest({ titel: "Richte 6 Plätze im Baumhaus ein", text: "Jedes Möbelstück im Baumhaus hilft dir für immer ein bisschen.", ziel: 6,
   wert: () => BAUPLAETZE.filter(p => spiel.baumhaus?.[p.id]).length, hilfe: { fertigkeit: "bauen" }, icon: "🏡", belohnung: { muenzen: 800, sachen: { brett0: 30 } } });
@@ -128,6 +130,8 @@ ruestungsKapitel(2, { muenzen: 1500, sachen: { essen2: 20 } });
 monsterQuest("wuschelwolf", 30, "Die Wuschelwölfe sind flink – bleib dran!", { muenzen: 1500 });
 monsterQuest("eulenwaechter", 30, "Die Eulenwächter lassen Eulenfedern fallen – die brauchst du für den Fleiß-Trank.", { muenzen: 2000 });
 monsterQuest("baumgeist", 1, "Der Chef des Flüsterwaldes. Ein Mut- oder Kraft-Trank hilft!", { muenzen: 4000, sachen: { trank7: 2 } });
+quest({ titel: "Schaffe den Flüsterpfad", text: "Der Flüsterpfad ist offen – mit dem Uralten Eichenriesen am Ende.", ziel: 1,
+  wert: () => spiel.pfade?.["p-wald"] || 0, hilfe: { seite: "seiteAbenteuer", ziel: '.pfadKarte[data-pfad="p-wald"]' }, icon: "🧰", belohnung: { muenzen: 8000 } });
 
 // --- Teil 5: Ruinenburg und Gold ---
 quest({ titel: "Alle 12 Plätze im Baumhaus", text: "Mach dein Baumhaus komplett!", ziel: 12,
@@ -139,12 +143,16 @@ ruestungsKapitel(3, { muenzen: 8000, sachen: { essen3: 30 } });
 monsterQuest("ruestungsgeist", 30, "In der Ruinenburg spuken freundliche Rüstungsgeister.", { muenzen: 6000 });
 monsterQuest("fledermausbande", 30, "Die Fledermausbande ist ganz schön frech!", { muenzen: 8000 });
 monsterQuest("burggespenst", 1, "Das Burggespenst ist der Chef der Ruinenburg.", { muenzen: 15000, sachen: { trank7: 3 } });
+quest({ titel: "Schaffe den Spukgang", text: "Im Spukgang wartet die Gespensterkönigin.", ziel: 1,
+  wert: () => spiel.pfade?.["p-burg"] || 0, hilfe: { seite: "seiteAbenteuer", ziel: '.pfadKarte[data-pfad="p-burg"]' }, icon: "🧰", belohnung: { muenzen: 30000 } });
 
 // --- Teil 6: Feuerberg ---
 ruestungsKapitel(4, { muenzen: 25000, sachen: { essen4: 30 } });
 monsterQuest("flammenwichtel", 30, "Am Feuerberg wird es heiß!", { muenzen: 20000 });
 monsterQuest("glutechse", 30, "Glutechsen lassen manchmal Drachenschuppen fallen.", { muenzen: 25000 });
 monsterQuest("feuerdrache", 1, "Der Feuerdrache! Nimm einen Schutz-Trank mit.", { muenzen: 50000, sachen: { trank7: 3 } });
+quest({ titel: "Schaffe den Glutpfad", text: "Auf dem Glutpfad wartet der Lavagolem.", ziel: 1,
+  wert: () => spiel.pfade?.["p-feuer"] || 0, hilfe: { seite: "seiteAbenteuer", ziel: '.pfadKarte[data-pfad="p-feuer"]' }, icon: "🧰", belohnung: { muenzen: 100000 } });
 
 // --- Teil 7: Eispalast ---
 quest({ titel: "Näh dir ein Feenkleid", text: "Aus Wolkenstoff wird ein zauberhaftes Feenkleid.", ziel: 1,
@@ -155,6 +163,8 @@ quest({ titel: "Erreiche Gesamtstufe 500", text: "Wow, du bist richtig gut!", zi
 ruestungsKapitel(5, { muenzen: 80000, sachen: { essen5: 40 } });
 monsterQuest("schneegeist", 30, "Im Eispalast ist es kalt – zieh dich warm an!", { muenzen: 60000 });
 monsterQuest("frostkoenig", 1, "Der Frostkönig regiert den Eispalast.", { muenzen: 150000, sachen: { trank7: 5 } });
+quest({ titel: "Schaffe den Frostpfad", text: "Auf dem Frostpfad wartet der Eisdrache.", ziel: 1,
+  wert: () => spiel.pfade?.["p-eis"] || 0, hilfe: { seite: "seiteAbenteuer", ziel: '.pfadKarte[data-pfad="p-eis"]' }, icon: "🧰", belohnung: { muenzen: 300000 } });
 
 // --- Teil 8: Wolkenreich ---
 ruestungsKapitel(6, { muenzen: 250000, sachen: { essen6: 50 } });
@@ -162,6 +172,8 @@ monsterQuest("donnerwolke", 30, "Hoch oben im Wolkenreich grummeln die Donnerwö
 monsterQuest("sternenfuchs", 30, "Sternenfüchse funkeln wie der Nachthimmel.", { muenzen: 250000 });
 ruestungsKapitel(7, { muenzen: 600000, sachen: { essen7: 50 } });
 monsterQuest("regenbogendrache", 1, "Das größte Abenteuer: der Regenbogendrache!", { muenzen: 1000000, sachen: { trank7: 10 } });
+quest({ titel: "Schaffe den Sternenpfad", text: "Der allerletzte Pfad: Am Ende schwimmt der Sternenwal durch die Wolken!", ziel: 1,
+  wert: () => spiel.pfade?.["p-wolken"] || 0, hilfe: { seite: "seiteAbenteuer", ziel: '.pfadKarte[data-pfad="p-wolken"]' }, icon: "🧰", belohnung: { muenzen: 2000000 } });
 quest({ titel: "Näh das Prinzessinnenkleid", text: "Das schönste Kleid überhaupt – aus Regenbogenstoff!", ziel: 1,
   wert: () => ((spiel.garderobe || []).includes("k27") ? 1 : 0), hilfe: { fertigkeit: "naehen", ziel: '.taetigkeit[data-id="naehen-k27"]' }, icon: "👑", belohnung: { muenzen: 2000000 } });
 quest({ titel: "Regenbogen-Baumhaus", text: "Das schönste Baumhaus der Welt: alle Plätze auf Regenbogen-Stufe (5 ★)!", ziel: 12,

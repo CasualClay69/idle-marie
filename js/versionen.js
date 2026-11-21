@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.3", datum: "2026-11-21", neu: ["🧭 6 Abenteuer-Pfade: Monster hintereinander ohne Ausruhen, am Ende ein starker Wächter und eine 🧰 Schatztruhe.", "In den Truhen: viele Münzen, Beute, Barren, Essen – und mit Glück ein Pfad-Rahmen oder Papagei Kiki.", "Ein Pfad öffnet sich, sobald der Chef seines Gebiets einmal eingeschlafen ist."] },
   { v: "1.2", datum: "2026-11-21", neu: ["🧵 Nähen: Im Garten wachsen jetzt 8 Fasern (Baumwolle bis Regenbogenfaser). Daraus webst du Stoff.", "Näh dir 8 Kleider, 4 Hüte und einen Rahmen selbst – sie kommen direkt in deinen Kleiderschrank.", "8 Kuscheltiere zum Nähen, die viele Münzen bringen. Neues Haustier: Schäfchen Wolli."] },
   { v: "1.1", datum: "2026-11-21", neu: ["🏡 Hannahs Baumhaus: Mit der neuen Fertigkeit Bauen sägst du Bretter und richtest 12 Plätze ein – vom Bett bis zum Teleskop.", "Jedes Möbelstück hat 5 Stufen (Ast bis Regenbogen) und hilft dir für immer, z.B. längere Offline-Zeit oder mehr Bankfächer.", "Deine Haustiere wohnen jetzt sichtbar im Baumhaus. Neues Haustier: Specht Klopfi."] },
   { v: "1.0", datum: "2026-11-21", neu: ["Aus Idle Marie wird Hannah Idle – mit neuem App-Bild und Startbildschirm.", "Spielbar sind jetzt Hannah und Marie."] },

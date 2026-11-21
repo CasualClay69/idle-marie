@@ -61,6 +61,7 @@ function zeichneKleiderschrank() {
     else if (t.preis) status = `${muenzeHtml("muenze klein")} ${zahl(t.preis)}`;
     else if (t.questNr) status = `📜 Auftrag ${t.questNr}`;
     else if (t.naehen) status = `🧵 Nähen ${t.naehen}`;
+    else if (t.pfad) status = "🧰 Schatztruhe";
     else status = `🎟️ ${MONATSNAMEN[t.season - 1]}`;
     const vorschau = figurSvg(spiel.figur, { ...a, [kat.id]: t.id });
     return `<button type="button" class="schrankTeil${an ? " an" : ""}${hat ? "" : " zu"}${!hat && t.preis && spiel.muenzen < t.preis ? " teuer" : ""}" data-id="${t.id}">
@@ -77,6 +78,8 @@ function zeichneKleiderschrank() {
       a[kat.id] = t.id;
       herzchen(b);
       melde(`🎉 ${t.name} gekauft und angezogen!`, "gross");
+    } else if (t.pfad) {
+      ton.nein(); melde(`🧰 ${t.name} liegt manchmal in der Schatztruhe vom ${t.pfad}`); return;
     } else if (t.naehen) {
       ton.nein(); melde(`🧵 ${t.name} kannst du selbst nähen – ab Nähen-Stufe ${t.naehen}`); return;
     } else if (t.questNr) {

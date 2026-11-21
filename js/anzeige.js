@@ -71,7 +71,8 @@ function zeichneAktivLeiste() {
     const m = MONSTER[spiel.aktiv.monster];
     leiste.classList.remove("ruhe");
     $("aktivSymbol").innerHTML = monsterSvg(m.aussehen);
-    $("aktivTitel").textContent = `${figurName()} ist im Abenteuer: ${m.name}`;
+    const pfad = spiel.aktiv.pfad && PFADE.find(p => p.id === spiel.aktiv.pfad.id);
+    $("aktivTitel").textContent = pfad ? `${figurName()} auf dem ${pfad.name} (${spiel.aktiv.pfad.schritt + 1}/${pfad.liste.length})` : `${figurName()} ist im Abenteuer: ${m.name}`;
     leiste.style.setProperty("--farbe", fertigkeit(spiel.kampfstil || "mut").farbe);
     return;
   }
@@ -349,6 +350,8 @@ function zeigeOffline(e) {
     zeilen.push(`<li>${f.icon} <b>+${zahl(xp)} EP</b> ${f.name}${neu ? ` · <b class="hell">${neu === 1 ? "eine Stufe" : neu + " Stufen"} höher! 🎉</b>` : ""}</li>`);
   }
   for (const x of e.ereignisse || []) if (x.haustier) zeilen.push(`<li>🎉 <b>${x.haustier.emoji} ${x.haustier.name}</b> ist bei dir eingezogen!</li>`);
+  const truhen = (e.ereignisse || []).filter(x => x.truhe).length;
+  if (truhen) zeilen.push(`<li>🧰 <b>${truhen}</b> Schatztruhe${truhen === 1 ? "" : "n"} geöffnet!</li>`);
   if (e.besiegt) zeilen.push(`<li>💤 <b>${zahl(e.besiegt)}</b> Monster sind eingeschlafen · ${muenzeHtml("muenze klein")} +${zahl(e.muenzen || 0)}</li>`);
   for (const [id, n] of Object.entries(e.gewonnen)) zeilen.push(`<li>${symbolHtml(id, "mini")} <b>+${zahl(n)}</b> ${GEGENSTAENDE[id].name}</li>`);
   for (const [id, n] of Object.entries(e.verbraucht)) zeilen.push(`<li class="sanft">${symbolHtml(id, "mini")} −${zahl(n)} ${GEGENSTAENDE[id].name}</li>`);

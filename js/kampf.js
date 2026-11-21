@@ -50,15 +50,18 @@ function legeAb(platz) {
 }
 
 // ----- Kampf starten / beenden -----
-function starteKampf(monsterId) {
+function starteKampf(monsterId, pfadId = null) {
   if (monsterId === "season") aktualisiereSeasonMonster();
+  const pfad = pfadId && PFADE.find(p => p.id === pfadId);
+  if (pfad) monsterId = pfad.liste[0];
   const m = MONSTER[monsterId];
   if (!m) return false;
   const jetzt = Date.now();
   if (!spiel.hp || spiel.aktiv?.kampf === undefined) spiel.hp = maxHp();
   spiel.aktiv = { kampf: true, monster: m.id, mhp: m.hp, start: jetzt,
     spielerNaechster: jetzt + spielerWerte().tempo * 1000, monsterNaechster: jetzt + m.tempo * 1000, pauseBis: 0 };
-  spiel.kampfLog = [`⚔️ ${figurNameKurz()} trifft auf ${m.name}!`];
+  if (pfad) spiel.aktiv.pfad = { id: pfad.id, schritt: 0 };
+  spiel.kampfLog = [pfad ? `🗺️ ${figurNameKurz()} betritt den ${pfad.name}!` : `⚔️ ${figurNameKurz()} trifft auf ${m.name}!`];
   return true;
 }
 function figurNameKurz() {
@@ -96,9 +99,9 @@ function gibKampfXp(schaden, ergebnis) {
 // Alle Ereignisse bis "jetzt" der Reihe nach abarbeiten
 function kampfTick(jetzt, ergebnis) {
   const a = spiel.aktiv;
-  const m = MONSTER[a.monster];
   let schritte = 0;
   while (spiel.aktiv && schritte++ < 200000) {
+    const m = MONSTER[a.monster];
     // Pause zwischen zwei Monstern
     if (a.pauseBis) {
       if (jetzt < a.pauseBis) break;
@@ -106,7 +109,7 @@ function kampfTick(jetzt, ergebnis) {
       a.spielerNaechster = a.pauseBis + spielerWerte().tempo * 1000;
       a.monsterNaechster = a.pauseBis + m.tempo * 1000;
       a.pauseBis = 0;
-      logge(`👀 Ein neues ${m.name} taucht auf!`);
+      logge(a.pfad ? `👀 Weiter auf dem Pfad: ${m.name}!` : `👀 Ein neues ${m.name} taucht auf!`);
     }
     const naechster = Math.min(a.spielerNaechster, a.monsterNaechster);
     if (naechster > jetzt) break;
@@ -122,6 +125,7 @@ function kampfTick(jetzt, ergebnis) {
       } else logge(`💨 ${m.name} weicht aus`);
       if (a.mhp <= 0) {
         besiegt(m, ergebnis);
+        if (a.pfad) pfadWeiter(a, ergebnis);
         a.pauseBis = naechster + KAMPF.pauseNachSieg * 1000;
       }
     } else {
@@ -135,7 +139,9 @@ function kampfTick(jetzt, ergebnis) {
       if (spiel.hp < maxHp() * KAMPF.essenUnter) isst(ergebnis);
       if (spiel.hp <= 0) {
         logge(`😴 ${figurNameKurz()} ist zu müde und geht nach Hause.`);
-        ergebnis.gestoppt = `${figurNameKurz()} war zu müde und ist nach Hause gegangen – nimm mehr Essen mit!`;
+        ergebnis.gestoppt = a.pfad
+          ? `Der ${PFADE.find(p => p.id === a.pfad.id).name} war diesmal zu schwer – nimm mehr Essen mit oder werde noch etwas stärker!`
+          : `${figurNameKurz()} war zu müde und ist nach Hause gegangen – nimm mehr Essen mit!`;
         ergebnis.muede = true;
         spiel.hp = maxHp();
         spiel.aktiv = null;
@@ -172,6 +178,37 @@ function besiegt(m, ergebnis) {
     if (b.id.startsWith("pokal")) ergebnis.ereignisse.push({ pokal: b.id });
   }
 }
+
+// ----- Abenteuer-Pfade -----
+const zufallAus = ([a, b]) => a + Math.floor(Math.random() * (b - a + 1));
+function pfadWeiter(a, ergebnis) {
+  const p = PFADE.find(x => x.id === a.pfad.id);
+  a.pfad.schritt++;
+  if (a.pfad.schritt >= p.liste.length) {
+    ergebnis.ereignisse.push({ truhe: oeffneTruhe(p) });
+    a.pfad.schritt = 0;
+    logge(`🧰 Schatztruhe geöffnet! Der ${p.name} beginnt von vorn.`);
+  }
+  a.monster = p.liste[a.pfad.schritt];
+}
+function oeffneTruhe(p) {
+  spiel.pfade = spiel.pfade || {};
+  spiel.pfade[p.id] = (spiel.pfade[p.id] || 0) + 1;
+  spiel.statistik.truhen = (spiel.statistik.truhen || 0) + 1;
+  const inhalt = { pfad: p, muenzen: Math.round(zufallAus(p.truhe.muenzen) * (1 + baumhausBonus("muenzen"))), sachen: {} };
+  spiel.muenzen += inhalt.muenzen;
+  for (const s of p.truhe.sachen) {
+    const n = zufallAus(s.anzahl);
+    gibInBank(s.id, n);
+    zaehle(s.id, n);
+    inhalt.sachen[s.id] = n;
+  }
+  if (!(spiel.garderobe || []).includes(p.rahmenId) && Math.random() < PFAD_REGEL.rahmenChance) { gibTeil(p.rahmenId); inhalt.rahmen = p.rahmenId; }
+  const kiki = HAUSTIERE.find(h => h.id === "kiki");
+  if (!hatHaustier("kiki") && Math.random() < PFAD_REGEL.kikiChance * (1 + baumhausBonus("tier"))) inhalt.haustier = gibHaustier(kiki);
+  return inhalt;
+}
+function pfadFrei(p) { return (spiel.besiegt?.[p.chef] || 0) > 0; }
 
 // Herzen füllen sich außerhalb des Kampfes wieder auf
 function ruheAus() {
