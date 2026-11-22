@@ -351,7 +351,7 @@ button:disabled { cursor: default; }
 .samenListe { display: grid; gap: 6px; margin-top: 6px; }
 .samenZeile { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding: 6px 8px; background: #fff; border-radius: 16px; box-shadow: var(--schatten); }
 .samenZeile .symbol { width: 44px; height: 44px; }
-.samenZeile .knopf.kaufen { padding: 6px 10px; font-size: 0.8rem; }
+.samenZeile .knopf.kaufen { padding: 6px 0; min-width: 42px; font-size: 0.9rem; text-align: center; }
 .samenZeile.gesperrt { opacity: 0.55; }
 .reifMarke { background: #ffb347 !important; animation: pochen 1.2s ease-in-out infinite; font-weight: 900; }
 

@@ -42,8 +42,8 @@ function zeichneGarten(ziel) {
     const s = GEGENSTAENDE[p.samen];
     const gesperrt = l < p.stufe;
     html += `<div class="samenZeile${gesperrt ? " gesperrt" : ""}">${symbolHtml(p.samen)}
-      <span class="lText"><b>${p.name}</b><small>${gesperrt ? `🔒 ab Stufe ${p.stufe}` : `⏱️ ${p.minuten} min · ✨ ${p.xp} EP · 🎒 ${zahl(anzahl(p.samen))}`}</small></span>
-      ${gesperrt ? "" : `<button type="button" class="knopf kaufen" data-samen="${p.samen}" data-n="1" ${spiel.muenzen < s.preis ? "disabled" : ""}>1 · ${zahl(s.preis)}</button>
+      <span class="lText"><b>${p.name}</b><small>${gesperrt ? `🔒 ab Stufe ${p.stufe}` : `${muenzeHtml("muenze klein")} ${zahl(s.preis)} je Samen · ⏱️ ${p.minuten} min · 🎒 ${zahl(anzahl(p.samen))}`}</small></span>
+      ${gesperrt ? "" : `<button type="button" class="knopf kaufen" data-samen="${p.samen}" data-n="1" ${spiel.muenzen < s.preis ? "disabled" : ""}>1</button>
       <button type="button" class="knopf kaufen" data-samen="${p.samen}" data-n="10" ${spiel.muenzen < s.preis * 10 ? "disabled" : ""}>10</button>`}</div>`;
   }
   html += `</div><p class="hinweis">🌱 Pflanzen wachsen von ganz allein – auch wenn ${figurName()} gerade etwas anderes macht oder das Spiel zu ist. Gemüse kannst du kochen, Kräuter brauchst du für Tränke 🧪, und aus Fasern webst du beim 🧵 Nähen Stoff.</p>`;
