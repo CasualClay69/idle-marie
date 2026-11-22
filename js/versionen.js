@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.5.1", datum: "2026-11-22", neu: ["Die Seite „Ich“ ist aufgeräumt: Oben gibt es Knöpfe für Figur, Tiere, Erfolge, Bestenliste, Code, Statistik und Optionen."] },
   { v: "1.5", datum: "2026-11-21", neu: ["💍 Goldschmieden: Beim Bergbau findest du Edelsteine. Daraus werden Ringe und Ketten – zwei neue Ausrüstungsplätze mit besonderen Kräften.", "🐾 Haustiere pflegen: Streicheln und Füttern lässt jedes Haustier bis Stufe 10 wachsen – dann hilft es fast doppelt so viel.", "Neues Haustier: Hündchen Bello – als Belohnung für einen Auftrag."] },
   { v: "1.4", datum: "2026-11-21", neu: ["🌱 Der Garten bringt viel mehr Ernte und doppelte Erfahrung. Bis zu 16 Beete (die letzten 3 über den Blumenkasten im Baumhaus).", "🧪 Ein Trank braucht nur noch 1 Kraut, 🧵 ein Stoff nur noch 1 Faser – und Tränke geben doppelte Erfahrung.", "❤️ Herzen wachsen im Kampf schneller, und Monster lassen mehr Beute fallen.", "Sammeln gibt ab Stufe 45 etwas weniger Erfahrung, damit Stufe 99 ein richtiges Ziel bleibt."] },
   { v: "1.3", datum: "2026-11-21", neu: ["🧭 6 Abenteuer-Pfade: Monster hintereinander ohne Ausruhen, am Ende ein starker Wächter und eine 🧰 Schatztruhe.", "In den Truhen: viele Münzen, Beute, Barren, Essen – und mit Glück ein Pfad-Rahmen oder Papagei Kiki.", "Ein Pfad öffnet sich, sobald der Chef seines Gebiets einmal eingeschlafen ist."] },

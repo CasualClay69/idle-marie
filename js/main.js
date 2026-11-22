@@ -112,7 +112,8 @@ function richteKnoepfeEin() {
     offeneFertigkeit = taetigkeitNachId(spiel.aktiv.id).fertigkeit;
     zeigeSeite("seiteFertigkeit");
   });
-  $("figurKnopf").addEventListener("click", () => { ton.klick(); zeigeSeite("seiteIch"); });
+  $("figurKnopf").addEventListener("click", () => { ton.klick(); ichTab = "figur"; zeigeSeite("seiteIch"); });
+  for (const b of document.querySelectorAll("#ichReiter button")) b.addEventListener("click", () => { ton.klick(); zeigeIchTab(b.dataset.teil); $("inhalt").scrollTop = 0; });
   $("offlineZu").addEventListener("click", () => { ton.klick(); $("offlineOverlay").hidden = true; });
   $("gegenstandZu").addEventListener("click", () => { ton.klick(); $("gegenstandOverlay").hidden = true; });
   $("gegenstandOverlay").addEventListener("click", e => { if (e.target.id === "gegenstandOverlay") $("gegenstandOverlay").hidden = true; });

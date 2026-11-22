@@ -132,38 +132,54 @@
 
       <section id="seiteIch" class="seite" hidden>
         <h2 class="seitenTitel">👤 Ich</h2>
-        <div class="karte">
-          <h3>🏅 Bestenliste</h3>
-          <div id="bestenlisteInhalt"></div>
+        <div id="ichReiter" class="ichReiter">
+          <button type="button" data-teil="figur"><span>👗</span>Figur</button>
+          <button type="button" data-teil="tiere"><span>🐾</span>Tiere</button>
+          <button type="button" data-teil="erfolge"><span>🏆</span>Erfolge</button>
+          <button type="button" data-teil="liste"><span>🏅</span>Bestenliste</button>
+          <button type="button" data-teil="code"><span>🎁</span>Code</button>
+          <button type="button" data-teil="statistik"><span>📊</span>Statistik</button>
+          <button type="button" data-teil="optionen"><span>⚙️</span>Optionen</button>
         </div>
-        <div class="karte">
-          <h3>🐾 Haustiere <small id="haustierZahl"></small></h3>
-          <div id="haustierListe" class="haustierListe"></div>
-          <p class="hinweis">Tippe ein Haustier an, um es zu streicheln, zu füttern oder zum Begleiter zu machen. Je höher seine Stufe, desto mehr hilft es dir.</p>
-        </div>
-        <div class="karte">
-          <h3>🏆 Erfolge <small id="erfolgZahl"></small></h3>
-          <div id="erfolgListe" class="erfolgListe"></div>
-        </div>
-        <div class="karte">
-          <h3>🎁 Code einlösen</h3>
-          <p class="hinweis">Hast du einen Belohnungs-Code bekommen? Hier eintippen!</p>
-          <div class="eingabeZeile"><input id="codeFeld" type="text" maxlength="12" placeholder="ABCD-1234" autocomplete="off" autocapitalize="characters">
-          <button type="button" class="knopf kaufen" id="codeLoesen">Einlösen</button></div>
-          <p id="codeMeldung"></p>
-        </div>
-        <div class="karte" id="kleiderschrankKarte">
+        <div class="karte ichTeil" id="kleiderschrankKarte" data-teil="figur">
           <h3>👗 Meine Figur</h3>
           <div class="figurVorschau" id="figurVorschau"></div>
           <div id="figurAuswahlIch" class="figurAuswahl"></div>
           <div id="schrankTabs" class="listeTabs schrankTabs"></div>
           <div id="schrankRaster" class="schrankRaster"></div>
         </div>
-        <div class="karte">
+        <div class="karte ichTeil" data-teil="tiere">
+          <h3>🐾 Haustiere <small id="haustierZahl"></small></h3>
+          <div id="haustierListe" class="haustierListe"></div>
+          <p class="hinweis">Tippe ein Haustier an, um es zu streicheln, zu füttern oder zum Begleiter zu machen. Je höher seine Stufe, desto mehr hilft es dir.</p>
+        </div>
+        <div class="karte ichTeil" data-teil="erfolge">
+          <h3>🏆 Erfolge <small id="erfolgZahl"></small></h3>
+          <div id="erfolgListe" class="erfolgListe"></div>
+        </div>
+        <div class="karte ichTeil" data-teil="liste">
+          <h3>🏅 Bestenliste</h3>
+          <div id="bestenlisteInhalt"></div>
+        </div>
+        <div class="karte ichTeil" data-teil="code">
+          <h3>🎁 Code einlösen</h3>
+          <p class="hinweis">Hast du einen Belohnungs-Code bekommen? Hier eintippen!</p>
+          <div class="eingabeZeile"><input id="codeFeld" type="text" maxlength="12" placeholder="ABCD-1234" autocomplete="off" autocapitalize="characters">
+          <button type="button" class="knopf kaufen" id="codeLoesen">Einlösen</button></div>
+          <p id="codeMeldung"></p>
+        </div>
+        <div class="karte ichTeil" data-teil="statistik">
           <h3>📊 Statistik</h3>
           <dl id="statistik" class="statistik"></dl>
         </div>
-        <div class="karte">
+        <div class="karte ichTeil" data-teil="optionen">
+          <h3>⚙️ Optionen</h3>
+          <button id="einfuehrungNochmal" class="knopf leise" type="button">🎓 Einführung nochmal ansehen</button>
+          <label class="schalter"><input type="checkbox" id="tonAn"> 🔊 Töne</label>
+          <button id="loeschen" class="knopf gefahr" type="button">🗑️ Spielstand löschen</button>
+        </div>
+
+        <div class="karte ichTeil" data-teil="optionen">
           <h3>💾 Spielstand sichern</h3>
           <p class="hinweis">Damit nichts verloren geht – z.B. wenn du ein neues Handy bekommst. Heb den Code oder die Datei gut auf!</p>
           <div class="sicherKnoepfe">
@@ -186,12 +202,6 @@
               <button type="button" class="knopf gefahr" id="ladenJa">Ja, wiederherstellen</button>
             </div>
           </div>
-        </div>
-        <div class="karte">
-          <h3>⚙️ Optionen</h3>
-          <button id="einfuehrungNochmal" class="knopf leise" type="button">🎓 Einführung nochmal ansehen</button>
-          <label class="schalter"><input type="checkbox" id="tonAn"> 🔊 Töne</label>
-          <button id="loeschen" class="knopf gefahr" type="button">🗑️ Spielstand löschen</button>
         </div>
       </section>
     </main>

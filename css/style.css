@@ -672,6 +672,16 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .tierStufeKlein { display: flex; flex-direction: column; align-items: center; color: var(--gold); font-size: 0.6rem; line-height: 1; }
 .tierStufeKlein i { font-style: normal; color: var(--text-sanft); font-size: 0.65rem; font-weight: 700; }
 
+/* ----- Unter-Reiter der Seite "Ich" ----- */
+.ichReiter { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-bottom: 12px; }
+.ichReiter button {
+  display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 2px; min-width: 0;
+  border: 2px solid #fff; border-radius: 16px; background: rgba(255, 255, 255, 0.75); box-shadow: var(--schatten);
+  font-size: 0.72rem; font-weight: 800; color: var(--text-sanft);
+}
+.ichReiter button span { font-size: 1.5rem; line-height: 1.1; }
+.ichReiter button.aktiv { border-color: var(--akzent); background: #ffe9f3; color: var(--akzent-dunkel); }
+
 /* ----- Navigation unten ----- */
 #untenNav {
   display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px;

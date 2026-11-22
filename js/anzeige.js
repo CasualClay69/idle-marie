@@ -306,12 +306,21 @@ function zeichneFigurAuswahl(ziel, beimWaehlen) {
     ziel.append(b);
   }
 }
+// Unter-Reiter der Seite "Ich" (wird gemerkt)
+let ichTab = (() => { try { return localStorage.getItem("idleMarie-ichTab") || "figur"; } catch (e) { return "figur"; } })();
+function zeigeIchTab(teil) {
+  ichTab = teil;
+  try { localStorage.setItem("idleMarie-ichTab", teil); } catch (e) { /* egal */ }
+  zeichneIch();
+}
+
 function zeichneIch() {
-  zeichneKleiderschrank();
-  zeichneBestenliste();
-  ladeListe();
-  zeichneHaustiere();
-  zeichneErfolge();
+  for (const b of document.querySelectorAll("#ichReiter button")) b.classList.toggle("aktiv", b.dataset.teil === ichTab);
+  for (const k of document.querySelectorAll("#seiteIch .ichTeil")) k.hidden = k.dataset.teil !== ichTab;
+  if (ichTab === "figur") zeichneKleiderschrank();
+  if (ichTab === "liste") { zeichneBestenliste(); ladeListe(); }
+  if (ichTab === "tiere") zeichneHaustiere();
+  if (ichTab === "erfolge") zeichneErfolge();
   zeichneFigurAuswahl($("figurAuswahlIch"), id => {
     ton.klick(); spiel.figur = id; speichern(); zeichneKopf(); zeichneAktivLeiste(); zeichneIch();
   });

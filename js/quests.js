@@ -96,6 +96,9 @@ function zeigeQuestFenster() {
 // "Zeig mir wo": zur richtigen Seite springen und das Ziel kurz leuchten lassen
 function zeigeQuestHilfe(q) {
   const h = q.hilfe || {};
+  if (h.seite === "seiteIch") {
+    ichTab = h.ichTab || (/haustier/i.test(h.ziel || "") || /Bello|Haustier/.test(q.titel) ? "tiere" : "figur");
+  }
   if (h.fertigkeit) { offeneFertigkeit = h.fertigkeit; zeigeSeite("seiteFertigkeit"); }
   else if (h.seite) zeigeSeite(h.seite);
   setTimeout(() => {
