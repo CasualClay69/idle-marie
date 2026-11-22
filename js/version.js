@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.5.2";
-const APP_NEU = "Kleine Verbesserung: Die Samen-Knöpfe im Garten zeigen jetzt nur noch 1 und 10.";
+const APP_VERSION = "1.5.3";
+const APP_NEU = "Aufgeräumt: Das Abenteuer hat jetzt Knöpfe für Kampf, Ausrüstung, Gebiete und Pfade.";

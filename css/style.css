@@ -681,6 +681,7 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 }
 .ichReiter button span { font-size: 1.5rem; line-height: 1.1; }
 .ichReiter button.aktiv { border-color: var(--akzent); background: #ffe9f3; color: var(--akzent-dunkel); }
+.abenteuerReiter { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
 /* ----- Navigation unten ----- */
 #untenNav {

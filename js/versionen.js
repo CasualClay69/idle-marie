@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.5.3", datum: "2026-11-22", neu: ["Das Abenteuer ist aufgeräumt: Oben gibt es Knöpfe für Kampf, Ausrüstung, Gebiete und Pfade."] },
   { v: "1.5.2", datum: "2026-11-22", neu: ["Garten: Auf den Samen-Knöpfen steht jetzt nur noch 1 und 10 – der Preis steht darunter."] },
   { v: "1.5.1", datum: "2026-11-22", neu: ["Die Seite „Ich“ ist aufgeräumt: Oben gibt es Knöpfe für Figur, Tiere, Erfolge, Bestenliste, Code, Statistik und Optionen."] },
   { v: "1.5", datum: "2026-11-21", neu: ["💍 Goldschmieden: Beim Bergbau findest du Edelsteine. Daraus werden Ringe und Ketten – zwei neue Ausrüstungsplätze mit besonderen Kräften.", "🐾 Haustiere pflegen: Streicheln und Füttern lässt jedes Haustier bis Stufe 10 wachsen – dann hilft es fast doppelt so viel.", "Neues Haustier: Hündchen Bello – als Belohnung für einen Auftrag."] },

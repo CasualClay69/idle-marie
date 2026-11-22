@@ -5,6 +5,15 @@
 
 function prozent(x) { return `${Math.round(x * 100)} %`; }
 
+// Unter-Reiter der Abenteuer-Seite (wird gemerkt)
+const ABENTEUER_REITER = [["kampf", "⚔️", "Kampf"], ["ausruestung", "🎒", "Ausrüstung"], ["gebiete", "🗺️", "Gebiete"], ["pfade", "🧭", "Pfade"]];
+let abenteuerTab = (() => { try { return localStorage.getItem("idleMarie-abenteuerTab") || "kampf"; } catch (e) { return "kampf"; } })();
+function zeigeAbenteuerTab(teil) {
+  abenteuerTab = teil;
+  try { localStorage.setItem("idleMarie-abenteuerTab", teil); } catch (e) { /* egal */ }
+  zeichneAbenteuer();
+}
+
 function zeichneAbenteuer() {
   const a = spiel.aktiv?.kampf ? spiel.aktiv : null;
   const m = a && MONSTER[a.monster];
@@ -72,7 +81,7 @@ function zeichneAbenteuer() {
       <h3>🎟️ Season: ${th.titel} <small>passt sich deiner Kampfstufe an · ⭐ ${SEASON.monsterPunkte} Season-Punkte pro Einschlafen</small></h3>
       <div class="monsterListe"><button type="button" class="monsterKarte chef${a?.monster === "season" ? " laeuft" : ""}" data-monster="season">
         <span class="mBild">${monsterSvg(sm.aussehen)}</span><b>${sm.name}</b><small>Stufe ${sm.stufe}</small></button></div></div>`;
-  const pfade = `<h2 class="seitenTitel">🧭 Abenteuer-Pfade</h2><p class="hinweis">Mehrere Monster hintereinander – ohne Ausruhen. Am Ende wartet ein Wächter und eine 🧰 Schatztruhe! Nimm genug Essen mit.</p>
+  const pfade = `<p class="hinweis">Mehrere Monster hintereinander – ohne Ausruhen. Am Ende wartet ein Wächter und eine 🧰 Schatztruhe! Nimm genug Essen mit.</p>
     <div class="pfadListe">${PFADE.map(p => {
       const frei = pfadFrei(p), w = MONSTER[p.waechter], laeuft = a?.pfad?.id === p.id;
       return `<button type="button" class="pfadKarte${frei ? "" : " gesperrt"}${laeuft ? " laeuft" : ""}" data-pfad="${p.id}" style="--farbe:${GEBIETE.find(g => g.id === p.gebiet).farbe}">
@@ -80,7 +89,11 @@ function zeichneAbenteuer() {
         <span class="pfadText"><b>${p.icon} ${p.name}</b><small>${p.liste.length - 1} Monster + Wächter ${w.name} (Stufe ${w.stufe})</small>
         <small>${frei ? (spiel.pfade?.[p.id] ? `🧰 ${zahl(spiel.pfade[p.id])}× geschafft` : "✨ Noch nie geschafft") : `🔒 Bring zuerst ${MONSTER[p.chef].name} zum Einschlafen`}</small></span></button>`;
     }).join("")}</div>`;
-  seite.innerHTML = kampf + werte + ausruestung + pfade + `<h2 class="seitenTitel">🗺️ Gebiete</h2>` + seasonGebiet + gebiete;
+  const reiter = `<div class="ichReiter abenteuerReiter">${ABENTEUER_REITER.map(([id, icon, name]) =>
+    `<button type="button" data-tab="${id}" class="${abenteuerTab === id ? "aktiv" : ""}"><span>${icon}</span>${name}${id === "kampf" && a ? " ●" : ""}</button>`).join("")}</div>`;
+  const inhalt = { kampf: kampf + werte, ausruestung, gebiete: seasonGebiet + gebiete, pfade }[abenteuerTab] || kampf + werte;
+  seite.innerHTML = reiter + inhalt;
+  for (const b of seite.querySelectorAll(".abenteuerReiter button")) b.addEventListener("click", () => { ton.klick(); zeigeAbenteuerTab(b.dataset.tab); $("inhalt").scrollTop = 0; });
 
   // ----- Knöpfe -----
   seite.querySelector("#weglaufen")?.addEventListener("click", () => {
@@ -96,6 +109,7 @@ function zeichneAbenteuer() {
     if (spiel.aktiv?.pfad?.id === p.id) return;
     ton.klick();
     starteKampf(null, p.id);
+    abenteuerTab = "kampf";
     speichern(); zeichneAktivLeiste(); zeichneAbenteuer();
     $("inhalt").scrollTop = 0;
   });
@@ -104,6 +118,7 @@ function zeichneAbenteuer() {
     if (spiel.aktiv?.monster === mo.id) return;
     ton.klick();
     starteKampf(mo.id);
+    abenteuerTab = "kampf";
     speichern(); zeichneAktivLeiste(); zeichneAbenteuer();
     $("inhalt").scrollTop = 0;
   });

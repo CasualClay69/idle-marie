@@ -99,6 +99,10 @@ function zeigeQuestHilfe(q) {
   if (h.seite === "seiteIch") {
     ichTab = h.ichTab || (/haustier/i.test(h.ziel || "") || /Bello|Haustier/.test(q.titel) ? "tiere" : "figur");
   }
+  if (h.seite === "seiteAbenteuer") {
+    const z = h.ziel || "";
+    abenteuerTab = z.includes("pfadKarte") ? "pfade" : z.includes("monsterKarte") ? "gebiete" : z.includes("platz") ? "ausruestung" : "kampf";
+  }
   if (h.fertigkeit) { offeneFertigkeit = h.fertigkeit; zeigeSeite("seiteFertigkeit"); }
   else if (h.seite) zeigeSeite(h.seite);
   setTimeout(() => {

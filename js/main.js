@@ -108,7 +108,7 @@ function richteKnoepfeEin() {
   $("wahlOverlay").addEventListener("click", e => { if (e.target.id === "wahlOverlay") $("wahlOverlay").hidden = true; });
   $("aktivLeiste").addEventListener("click", e => {
     if (e.target.closest("#aktivStopp") || !spiel.aktiv) return;
-    if (spiel.aktiv.kampf) { zeigeSeite("seiteAbenteuer"); return; }
+    if (spiel.aktiv.kampf) { abenteuerTab = "kampf"; zeigeSeite("seiteAbenteuer"); return; }
     offeneFertigkeit = taetigkeitNachId(spiel.aktiv.id).fertigkeit;
     zeigeSeite("seiteFertigkeit");
   });

@@ -92,6 +92,7 @@ function zeichneSeason() {
     starteKampf("season");
     speichern();
     zeichneAktivLeiste();
+    abenteuerTab = "kampf";
     zeigeSeite("seiteAbenteuer");
   });
 }
