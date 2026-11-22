@@ -28,12 +28,14 @@
   <script src="js/daten-season.js" defer></script>
   <script src="js/daten-naehen.js" defer></script>
   <script src="js/daten-pfade.js" defer></script>
+  <script src="js/daten-schmuck.js" defer></script>
   <script src="js/symbole.js" defer></script>
   <script src="js/monster.js" defer></script>
   <script src="js/logik.js" defer></script>
   <script src="js/kampf.js" defer></script>
   <script src="js/garten.js" defer></script>
   <script src="js/sammlung.js" defer></script>
+  <script src="js/pflege.js" defer></script>
   <script src="js/daten-quests.js" defer></script>
   <script src="js/quests.js" defer></script>
   <script src="js/kleiderschrank.js" defer></script>
@@ -137,7 +139,7 @@
         <div class="karte">
           <h3>🐾 Haustiere <small id="haustierZahl"></small></h3>
           <div id="haustierListe" class="haustierListe"></div>
-          <p class="hinweis">Tippe ein Haustier an, dann wird es dein Begleiter. Alle Haustiere helfen dir für immer ein bisschen.</p>
+          <p class="hinweis">Tippe ein Haustier an, um es zu streicheln, zu füttern oder zum Begleiter zu machen. Je höher seine Stufe, desto mehr hilft es dir.</p>
         </div>
         <div class="karte">
           <h3>🏆 Erfolge <small id="erfolgZahl"></small></h3>
@@ -254,6 +256,14 @@
     <div class="fenster adminFenster">
       <div id="adminInhalt"></div>
       <button id="adminZu" class="knopf leise" type="button">Schließen</button>
+    </div>
+  </div>
+
+  <!-- Haustier pflegen -->
+  <div id="tierOverlay" class="overlay" hidden>
+    <div class="fenster tierFenster">
+      <div id="tierInhalt"></div>
+      <button id="tierZu" class="knopf leise" type="button">Schließen</button>
     </div>
   </div>
 

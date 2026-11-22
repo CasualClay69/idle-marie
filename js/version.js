@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.4";
-const APP_NEU = "Der Garten bringt jetzt viel mehr Ernte, Tränke und Stoff brauchen weniger, und Herzen wachsen im Kampf schneller.";
+const APP_VERSION = "1.5";
+const APP_NEU = "Neu: Schmuck aus Edelsteinen und Haustiere pflegen – streicheln, füttern und bis Stufe 10 wachsen lassen!";

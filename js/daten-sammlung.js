@@ -71,7 +71,7 @@ for (const [ziel, muenzen] of [[1, 50], [100, 3000], [1000, 50000]]) {
 erfolg({ id: "trank-1", icon: "🧪", name: "Hex, hex!", text: "Trink deinen ersten Zaubertrank", ziel: 1, muenzen: 200, wert: () => spiel.statistik.getrunken || 0 });
 erfolg({ id: "trank-100", icon: "🧪", name: "Trank-Profi", text: "Trink 100 Zaubertränke", ziel: 100, muenzen: 50000, wert: () => spiel.statistik.getrunken || 0 });
 erfolg({ id: "ruestung", icon: "🎒", name: "Gut geschützt", text: "Trag Waffe, Helm, Schild und Rüstung gleichzeitig", ziel: 4, muenzen: 1000,
-  wert: () => PLAETZE.filter(p => spiel.ausruestung?.[p.id]).length });
+  wert: () => ["waffe", "helm", "schild", "ruestung"].filter(p => spiel.ausruestung?.[p]).length });
 erfolg({ id: "regenbogen", icon: "🌈", name: "Regenbogen-Ritter", text: "Trag ein Regenbogen-Schwert", ziel: 1, muenzen: 500000, wert: () => spiel.ausruestung?.waffe === "schwert7" ? 1 : 0 });
 erfolg({ id: "meister", icon: "⭐", name: "Echter Meister", text: "Bring eine Tätigkeit auf Übung ⭐ 99", ziel: 99, muenzen: 100000,
   wert: () => Math.max(1, ...Object.values(spiel.uebung || {}).map(stufeAusXp)) });

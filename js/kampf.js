@@ -15,11 +15,11 @@ function ausruestungsBonus(art) {
 function kampfStufe() {
   return Math.floor((stufe("mut") + stufe("kraft") + stufe("schutz") + stufe("herzen")) / 4);
 }
-function maxHp() { return stufe("herzen") * KAMPF.hpProStufe; }
+function maxHp() { return Math.round(stufe("herzen") * KAMPF.hpProStufe * (1 + schmuckBonus("herzen"))); }
 function spielerWerte() {
   return {
-    genauigkeit: Math.round((stufe("mut") + 8) * (64 + ausruestungsBonus("treff")) * (1 + trankKampf("treff") + haustierBonus("treff"))),
-    maxSchlag: Math.floor((15 + stufe("kraft") * 1.6 + ausruestungsBonus("kraft") * 1.5) * (1 + trankKampf("kraft") + haustierBonus("kraft"))),
+    genauigkeit: Math.round((stufe("mut") + 8) * (64 + ausruestungsBonus("treff")) * (1 + trankKampf("treff") + haustierBonus("treff") + schmuckBonus("treff"))),
+    maxSchlag: Math.floor((15 + stufe("kraft") * 1.6 + ausruestungsBonus("kraft") * 1.5) * (1 + trankKampf("kraft") + haustierBonus("kraft") + schmuckBonus("kraft"))),
     ausweichen: (stufe("schutz") + 8) * (64 + ausruestungsBonus("abwehr")),
     weniger: Math.min(0.6, ausruestungsBonus("weniger") / 100 + trankKampf("schutz") + haustierBonus("schutz")),
     tempo: KAMPF.ohneWaffeTempo,

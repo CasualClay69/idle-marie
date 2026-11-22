@@ -46,6 +46,14 @@ const SYMBOL_BAU = {
   stoff: (f) => `<path d="M14 34Q30 26 50 34T86 34V74Q70 66 50 74T14 74Z" fill="${f}" stroke="${toene(f, -0.4)}" stroke-width="3" stroke-linejoin="round"/>
     <path d="M14 46Q30 38 50 46T86 46M14 60Q30 52 50 60T86 60" stroke="${toene(f, 0.45)}" stroke-width="3" fill="none"/>
     <path d="M24 30V78M76 30V78" stroke="${toene(f, -0.25)}" stroke-width="2" stroke-dasharray="3 3"/>`,
+  edelstein: (f) => `<path d="M30 30H70L86 46L50 86L14 46Z" fill="${f}" stroke="${toene(f, -0.45)}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M14 46H86M30 30L40 46L50 30L60 46L70 30M40 46L50 86L60 46" stroke="${toene(f, -0.3)}" stroke-width="2" fill="none"/>
+    <path d="M34 36L40 44" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".8"/>`,
+  ring: (f) => `<ellipse cx="50" cy="62" rx="28" ry="24" fill="none" stroke="#f5b942" stroke-width="9"/><ellipse cx="50" cy="62" rx="28" ry="24" fill="none" stroke="#ffe08a" stroke-width="3"/>
+    <path d="M38 30H62L70 38L50 56L30 38Z" fill="${f}" stroke="${toene(f, -0.45)}" stroke-width="2.5" stroke-linejoin="round"/><path d="M40 34L44 38" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>`,
+  kette: (f) => `<path d="M18 14Q50 70 82 14" fill="none" stroke="#f5b942" stroke-width="5" stroke-dasharray="6 3"/>
+    <path d="M50 52L64 66L50 90L36 66Z" fill="${f}" stroke="${toene(f, -0.45)}" stroke-width="2.5" stroke-linejoin="round"/><circle cx="50" cy="50" r="5" fill="#f5b942"/>
+    <path d="M45 64L49 60" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>`,
   muenze: () => `<circle cx="50" cy="50" r="38" fill="#f5b942" stroke="#c98a1a" stroke-width="5"/><circle cx="50" cy="50" r="26" fill="none" stroke="#ffd98a" stroke-width="4"/>
     <path d="M50 36C44 30 34 34 36 42C38 50 50 58 50 58C50 58 62 50 64 42C66 34 56 30 50 36Z" fill="#ff7eb6"/>`,
 };

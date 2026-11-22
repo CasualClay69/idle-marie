@@ -216,7 +216,7 @@ function zeigeGegenstand(id) {
   if (!n) { $("gegenstandOverlay").hidden = true; return; }
   inhalt.innerHTML = `<div class="gKopf">${symbolHtml(id, "symbol gross")}<div><h2>${g.name}</h2>
       <p>Du hast <b>${zahl(n)}</b> Stück · je ${muenzeHtml("muenze klein")} ${zahl(g.wert)}${g.heilt ? ` · heilt ${g.heilt} ❤️` : ""}</p></div></div>
-    ${g.platz ? `<p class="hinweis">${[g.bonus.treff && `🎯 Treffen +${g.bonus.treff}`, g.bonus.kraft && `💥 Schlag +${g.bonus.kraft}`, g.bonus.abwehr && `🛡️ Ausweichen +${g.bonus.abwehr}`, g.bonus.weniger && `${g.bonus.weniger} % weniger Schaden`].filter(Boolean).join(" · ")}
+    ${g.platz ? `<p class="hinweis">${g.schmuckText ? `✨ ${g.schmuckText} ` : ""}${[g.bonus.treff && `🎯 Treffen +${g.bonus.treff}`, g.bonus.kraft && `💥 Schlag +${g.bonus.kraft}`, g.bonus.abwehr && `🛡️ Ausweichen +${g.bonus.abwehr}`, g.bonus.weniger && `${g.bonus.weniger} % weniger Schaden`].filter(Boolean).join(" · ")}
       · braucht ${Object.entries(g.braucht).map(([f, l]) => `${fertigkeit(f).icon} ${fertigkeit(f).name} ${l}`).join(", ")}</p>
       <button type="button" class="knopf" id="anlegen" ${darfTragen(g) ? "" : "disabled"}>🎒 Anlegen</button>` : ""}
     ${g.trank ? `<p class="hinweis">🧪 ${g.trank.text} · wirkt ${g.trank.ladungen}-mal${spiel.traenke?.[id] ? ` · noch aktiv: ${spiel.traenke[id]}` : ""}</p>

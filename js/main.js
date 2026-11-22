@@ -35,6 +35,7 @@ function verarbeite(ergebnis) {
       for (const t of neu) melde(`🔓 Neu freigeschaltet: ${t.name}`, "gross");
     }
     if (e.neueUebung && e.neueUebung % 10 === 0) melde(`⭐ Übung ${e.neueUebung}: ${e.taetigkeit.name}`);
+    if (e.edelstein) { ton.muenze(); melde(`💎 Ein ${GEGENSTAENDE[e.edelstein].name} gefunden!`); }
     if (e.kleidung) { const k = teilNachId(e.kleidung); ton.stufe(); melde(`🧵 ${k.icon} ${k.name} ist fertig genäht!`, "gross"); }
     if (e.doppelt) {   // kein Text (käme sonst ständig) – die Leiste blitzt golden
       const l = $("aktivLeiste");
@@ -100,7 +101,9 @@ function richteKnoepfeEin() {
     stoppe(); ruheAus(); ton.klick(); speichern(); zeichneAktivLeiste(); zeichneSeite();
   });
   $("haustierZu").addEventListener("click", () => { ton.klick(); zeigeNaechstesHaustier(); zeichneKopf(); if (aktuelleSeite === "seiteIch") zeichneSeite(); });
-  $("begleiterKopf").addEventListener?.("click", () => zeigeSeite("seiteIch"));
+  $("begleiterKopf").addEventListener("click", () => { ton.klick(); if (spiel.begleiter) zeigeTierFenster(spiel.begleiter); });
+  $("tierZu").addEventListener("click", () => { ton.klick(); $("tierOverlay").hidden = true; });
+  $("tierOverlay").addEventListener("click", e => { if (e.target.id === "tierOverlay") $("tierOverlay").hidden = true; });
   $("wahlZu").addEventListener("click", () => { ton.klick(); $("wahlOverlay").hidden = true; });
   $("wahlOverlay").addEventListener("click", e => { if (e.target.id === "wahlOverlay") $("wahlOverlay").hidden = true; });
   $("aktivLeiste").addEventListener("click", e => {

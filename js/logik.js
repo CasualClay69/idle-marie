@@ -79,15 +79,22 @@ function dauer(t) {
   if (uebungStufe(t.id) >= SPIEL.maxStufe) faktor -= SPIEL.meisterSchneller;
   faktor -= trankSchneller(t);
   if (f.art === "machen") faktor -= haustierBonus("schneller", t.fertigkeit);
-  if (f.art === "sammeln") faktor -= baumhausBonus("sammeln");
-  if (f.art === "machen") faktor -= baumhausBonus("machen");
+  if (f.art === "sammeln") faktor -= baumhausBonus("sammeln") + schmuckBonus("sammeln");
+  if (f.art === "machen") faktor -= baumhausBonus("machen") + schmuckBonus("machen");
   return Math.max(0.5, t.zeit * faktor);
 }
 function doppeltChance(t) {
-  return Math.floor(uebungStufe(t.id) / 10) * SPIEL.uebungDoppeltProZehn + trankDoppelt(t) + haustierBonus("doppelt", t.fertigkeit) + baumhausBonus("doppelt");
+  return Math.floor(uebungStufe(t.id) / 10) * SPIEL.uebungDoppeltProZehn + trankDoppelt(t) + haustierBonus("doppelt", t.fertigkeit) + baumhausBonus("doppelt") + schmuckBonus("doppelt");
 }
 
 // ----- Bank -----
+// Bonus von Ring und Kette (Anteil, z.B. 0,05)
+function schmuckBonus(art) {
+  return ["ring", "kette"].reduce((s, p) => {
+    const g = GEGENSTAENDE[spiel.ausruestung?.[p]];
+    return s + (g?.schmuck?.art === art ? g.schmuck.wert : 0);
+  }, 0);
+}
 function bankFaecher() { return SPIEL.bankStart + spiel.bankFaecherGekauft + baumhausBonus("bank"); }
 function belegteFaecher() { return Object.keys(spiel.bank).filter(id => spiel.bank[id] > 0).length; }
 function anzahl(id) { return spiel.bank[id] || 0; }
@@ -132,6 +139,10 @@ function fuehreAus(t) {
   ereignisse.doppelt = mal === 2;
   for (const [id, n] of Object.entries(t.gibt)) { gibInBank(id, n * mal); zaehle(id, n * mal); }
   if (t.kleidung) { gibTeil(t.kleidung); ereignisse.kleidung = t.kleidung; }
+  if (t.fertigkeit === "bergbau" && Math.random() < SCHMUCK.edelsteinChance) {
+    const stein = `stein${t.id.replace(/\D/g, "")}`;
+    if (passtInBank(stein)) { gibInBank(stein, 1); zaehle(stein, 1); ereignisse.edelstein = stein; }
+  }
   const xp = Math.round(t.xp * trankFaktorXp());
   ereignisse.xp = xp;
   spiel.xp[t.fertigkeit] = (spiel.xp[t.fertigkeit] || 0) + xp;

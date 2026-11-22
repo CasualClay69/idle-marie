@@ -299,7 +299,7 @@ button:disabled { cursor: default; }
 .stilKnopf small { font-weight: 600; color: var(--text-sanft); font-size: 0.7rem; }
 .stilKnopf.aktiv { border-color: var(--akzent); background: #ffe9f3; }
 .werte { margin: 10px 0 0; font-size: 0.85rem; line-height: 1.5; }
-.plaetze { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.plaetze { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 .platz {
   display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 2px; min-width: 0;
   border: 2px dashed var(--rand); border-radius: 16px; background: #fff;
@@ -372,6 +372,7 @@ button:disabled { cursor: default; }
   background: #fff; box-shadow: 0 2px 6px rgba(214, 51, 132, 0.3);
 }
 .begleiterKopf[hidden] { display: none; }
+.begleiterKopf { cursor: pointer; }
 .haustierListe { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .haustierListe .rasterTitel { margin-top: 10px; }
 .haustierKarte {
@@ -652,6 +653,24 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .pfadPunkte span.geschafft { background: #dff6df; }
 .pfadPunkte span.jetzt { background: var(--akzent); color: #fff; animation: pochen 1.2s ease-in-out infinite; }
 .pfadPunkte span.waechter { background: #fff3c4; font-size: 0.9rem; }
+
+/* ----- Haustier pflegen ----- */
+.tierGross { font-size: 96px; line-height: 1.1; animation: huepfen 2.4s ease-in-out infinite; }
+.tierGross.freut { animation: freuen 0.6s ease-out; }
+@keyframes freuen { 30% { transform: scale(1.25) rotate(-8deg); } 60% { transform: scale(1.1) rotate(6deg); } }
+.tierFenster h2 small { font-size: 0.85rem; color: var(--text-sanft); }
+.tierSterne { color: var(--gold); font-size: 1.2rem; letter-spacing: 2px; }
+.tierStufe { margin: 2px 0 !important; }
+.tierBalken { --farbe: var(--gold); margin: 6px 0; }
+.tierKnoepfe { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 10px 0; }
+.tierKnoepfe .knopf { margin: 0; display: flex; flex-direction: column; align-items: center; }
+.tierKnoepfe small { font-size: 0.7rem; font-weight: 700; }
+.futterListe { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; text-align: left; }
+.futter { display: flex; align-items: center; gap: 6px; padding: 6px 8px; border: 2px solid #fff; border-radius: 14px; background: #fff; box-shadow: var(--schatten); min-width: 0; }
+.futter span { display: flex; flex-direction: column; font-size: 0.75rem; font-weight: 700; min-width: 0; }
+.futter small { color: var(--text-sanft); font-weight: 600; }
+.tierStufeKlein { display: flex; flex-direction: column; align-items: center; color: var(--gold); font-size: 0.6rem; line-height: 1; }
+.tierStufeKlein i { font-style: normal; color: var(--text-sanft); font-size: 0.65rem; font-weight: 700; }
 
 /* ----- Navigation unten ----- */
 #untenNav {

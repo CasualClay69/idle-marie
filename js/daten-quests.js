@@ -14,7 +14,7 @@ const ruestungsStufe = platz => {
   const id = spiel.ausruestung?.[platz];
   return id ? Number(id.replace(/\D/g, "")) : -1;
 };
-const vollAusgeruestet = tier => PLAETZE.every(p => ruestungsStufe(p.id) >= tier);
+const vollAusgeruestet = tier => ["waffe", "helm", "schild", "ruestung"].every(p => ruestungsStufe(p) >= tier);
 
 const QUESTS = [];
 function quest(q) { QUESTS.push(q); }
@@ -33,11 +33,11 @@ const werkzeugQuest = (art, st, text, belohnung) => quest({
   titel: `Kaufe: ${WERKZEUG_STUFEN[st - 1].name}-${WERKZEUGE[art].name}`, text, ziel: st, wert: () => spiel.werkzeuge?.[art] || 0,
   hilfe: { seite: "seiteLaden" }, icon: WERKZEUGE[art].icon, belohnung });
 const tragQuest = (platz, tier, text, belohnung) => quest({
-  titel: `Trag: ${GEGENSTAENDE[`${platz === "waffe" ? "schwert" : platz}${tier}`].name}`, text, ziel: 1, wert: () => ruestungsStufe(platz) >= tier ? 1 : 0,
+  titel: `Trag: ${GEGENSTAENDE[`${platz === "waffe" ? "schwert" : platz}${tier}`].name.replaceAll("\u00ad", "")}`, text, ziel: 1, wert: () => ruestungsStufe(platz) >= tier ? 1 : 0,
   hilfe: { seite: "seiteAbenteuer", ziel: `.platz[data-platz="${platz}"]` }, symbol: `${platz === "waffe" ? "schwert" : platz}${tier}`, belohnung });
 const volleRuestung = (tier, text, belohnung) => quest({
   titel: `Volle ${ERZE[tier]}-Ausrüstung`, text: `${text ? text + " " : ""}Schmiede Schwert, Helm, Schild und Rüstung aus ${ERZE[tier]} und leg alles im ⚔️ Abenteuer an.`, ziel: 4,
-  wert: () => PLAETZE.filter(p => ruestungsStufe(p.id) >= tier).length,
+  wert: () => ["waffe", "helm", "schild", "ruestung"].filter(p => ruestungsStufe(p) >= tier).length,
   hilfe: { fertigkeit: "schmieden" }, symbol: `ruestung${tier}`, belohnung });
 
 // Vorbereitung für neue Ausrüstung: Erz finden, schmieden können, und stark genug sein, sie zu tragen
@@ -70,6 +70,12 @@ quest({ titel: "Nimm Essen mit ins Abenteuer", text: "Tippe im ⚔️ Abenteuer 
   belohnung: { muenzen: 30, sachen: { essen0: 10 } } });
 quest({ titel: "Zieh dir etwas Schönes an", text: "Unter 👤 Ich gibt es einen Kleiderschrank mit Hüten, Kleidung und Rahmen. Kauf dir etwas Hübsches!",
   ziel: 1, wert: () => (spiel.garderobe || []).length, hilfe: { seite: "seiteIch", ziel: "#kleiderschrankKarte" }, icon: "👗", belohnung: { muenzen: 150 } });
+quest({ titel: "Hündchen Bello möchte zu dir!", text: "Bello hat kein Zuhause. Hol dir die Belohnung ab – dann wohnt er bei dir!", ziel: 1,
+  wert: () => 1, hilfe: { seite: "seiteIch" }, icon: "🐶", belohnung: { haustier: "bello" } });
+quest({ titel: "Streichle Bello", text: "Tippe unter 👤 Ich auf Bello (oder oben auf das kleine Tier neben deiner Figur) und streichle ihn!", ziel: 1,
+  wert: () => spiel.statistik.gestreichelt || 0, hilfe: { seite: "seiteIch", ziel: '.haustierKarte[data-id="bello"]' }, icon: "💖", belohnung: { muenzen: 100, sachen: { essen0: 10 } } });
+quest({ titel: "Bello auf Stufe 3", text: "Streicheln und Füttern lässt Bello wachsen. Füttere ihn mit gekochtem Essen!", ziel: 3,
+  wert: () => (hatHaustier("bello") ? tierStufe("bello") : 0), hilfe: { seite: "seiteIch", ziel: '.haustierKarte[data-id="bello"]' }, icon: "🐶", belohnung: { muenzen: 300, sachen: { essen0: 20 } } });
 quest({ titel: "Hol dir eine Season-Stufe", text: "Oben auf der 🌟 Fertigkeiten-Seite siehst du die Season. Erledige eine Tages- oder Wochenaufgabe und hol dir die Punkte ab!",
   ziel: 1, wert: () => spiel.statistik.seasonStufen || 0, hilfe: { seite: "seiteFertigkeiten", ziel: "#seasonBanner" }, icon: "🎟️", belohnung: { muenzen: 150 } });
 monsterQuest("schleimchen", 10, "Jetzt geht's los! Tippe auf der Blumenwiese das Schleimchen an. Es wird müde und schläft ein 💤.", { muenzen: 100 });
@@ -77,6 +83,10 @@ monsterQuest("schleimchen", 10, "Jetzt geht's los! Tippe auf der Blumenwiese das
 // --- Teil 2: Stärker werden ---
 werkzeugQuest("hacke", 1, "Eine Kupfer-Spitzhacke macht den Bergbau schneller.", { muenzen: 50 });
 stufeQuest("schmieden", 9, "Ab Schmieden-Stufe 9 kannst du Helm, Schild und Rüstung aus Kupfer schmieden.", { muenzen: 80 });
+sammle("stein0", 1, "bergbau", "bergbau-0", "Beim ⛏️ Bergbau findest du manchmal einen glitzernden Edelstein. Grab weiter!", { muenzen: 100 });
+quest({ titel: "Mach dir einen Bernstein-Ring", text: "Beim 💍 Goldschmieden wird aus einem Kupferbarren und einem Bernstein ein Ring.", ziel: 1,
+  wert: () => gemacht("ring0"), hilfe: { fertigkeit: "schmuck", ziel: '.taetigkeit[data-id="schmuck-ring0"]' }, symbol: "ring0", belohnung: { muenzen: 150, sachen: { barren0: 5 } } });
+tragQuest("ring", 0, "Leg den Ring im ⚔️ Abenteuer an. Ein Bernstein-Ring macht dich beim Sammeln schneller!", { muenzen: 150 });
 volleRuestung(0, "Mit Rüstung wirst du seltener getroffen!", { muenzen: 200, sachen: { barren0: 10 } });
 monsterQuest("brummhummel", 15, "Die Brummhummeln auf der Blumenwiese sind etwas stärker.", { muenzen: 150 });
 quest({ titel: "Ernte dein erstes Beet", text: "Bei 🌱 Gärtnern kaufst du Samen und pflanzt sie ein. Sie wachsen von allein – auch wenn du etwas anderes machst!",
@@ -138,6 +148,10 @@ quest({ titel: "Alle 12 Plätze im Baumhaus", text: "Mach dein Baumhaus komplett
   wert: () => BAUPLAETZE.filter(p => spiel.baumhaus?.[p.id]).length, hilfe: { fertigkeit: "bauen" }, icon: "🏡", belohnung: { muenzen: 5000 } });
 quest({ titel: "Birken-Plattform", text: "Bau die Plattform aus – dann passen mehr Sachen in deine Bank.", ziel: 2,
   wert: () => spiel.baumhaus?.plattform || 0, hilfe: { fertigkeit: "bauen", ziel: '.bauKarte[data-platz="plattform"]' }, icon: "🪵", belohnung: { muenzen: 5000 } });
+quest({ titel: "Trag eine Smaragd-Kette", text: "Smaragde machen öfter doppelte Ausbeute. Mach dir eine Kette beim 💍 Goldschmieden!", ziel: 1,
+  wert: () => (spiel.ausruestung?.kette === "kette4" ? 1 : 0), hilfe: { fertigkeit: "schmuck", ziel: '.taetigkeit[data-id="schmuck-kette4"]' }, symbol: "kette4", belohnung: { muenzen: 8000 } });
+quest({ titel: "Ein Haustier auf Stufe 10", text: "Pflege ein Haustier, bis es ganz groß ist – dann hilft es dir fast doppelt so viel!", ziel: 10,
+  wert: () => Math.max(1, ...(spiel.haustiere || []).map(tierStufe)), hilfe: { seite: "seiteIch" }, icon: "⭐", belohnung: { muenzen: 10000 } });
 quest({ titel: "Erreiche Gesamtstufe 250", text: "Du wirst immer besser!", ziel: 250, wert: () => gesamtStufe(), hilfe: { seite: "seiteFertigkeiten" }, icon: "🌟", belohnung: { muenzen: 5000 } });
 ruestungsKapitel(3, { muenzen: 8000, sachen: { essen3: 30 } });
 monsterQuest("ruestungsgeist", 30, "In der Ruinenburg spuken freundliche Rüstungsgeister.", { muenzen: 6000 });
@@ -176,6 +190,8 @@ quest({ titel: "Schaffe den Sternenpfad", text: "Der allerletzte Pfad: Am Ende s
   wert: () => spiel.pfade?.["p-wolken"] || 0, hilfe: { seite: "seiteAbenteuer", ziel: '.pfadKarte[data-pfad="p-wolken"]' }, icon: "🧰", belohnung: { muenzen: 2000000 } });
 quest({ titel: "Näh das Prinzessinnenkleid", text: "Das schönste Kleid überhaupt – aus Regenbogenstoff!", ziel: 1,
   wert: () => ((spiel.garderobe || []).includes("k27") ? 1 : 0), hilfe: { fertigkeit: "naehen", ziel: '.taetigkeit[data-id="naehen-k27"]' }, icon: "👑", belohnung: { muenzen: 2000000 } });
+quest({ titel: "Diamant-Schmuck", text: "Das Allerschönste: ein Diamant-Ring und eine Diamant-Kette!", ziel: 2,
+  wert: () => (spiel.ausruestung?.ring === "ring7" ? 1 : 0) + (spiel.ausruestung?.kette === "kette7" ? 1 : 0), hilfe: { fertigkeit: "schmuck" }, symbol: "ring7", belohnung: { muenzen: 2000000 } });
 quest({ titel: "Regenbogen-Baumhaus", text: "Das schönste Baumhaus der Welt: alle Plätze auf Regenbogen-Stufe (5 ★)!", ziel: 12,
   wert: () => BAUPLAETZE.filter(p => (spiel.baumhaus?.[p.id] || 0) >= 5).length, hilfe: { fertigkeit: "bauen" }, icon: "🌈", belohnung: { muenzen: 5000000 } });
 quest({ titel: "Werde Meister in allem", text: "Bring alle Fertigkeiten auf Stufe 99. Das ist das allergrößte Ziel!", ziel: FERTIGKEITEN.length * 99,

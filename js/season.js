@@ -31,6 +31,7 @@ const AUFGABEN_TYPEN = {
   season:  { wert: () => spiel.besiegt?.season || 0 },
   ernte:   { wert: () => spiel.statistik.geerntet || 0 },
   truhe:   { wert: () => spiel.statistik.truhen || 0 },
+  streicheln: { wert: () => spiel.statistik.gestreichelt || 0 },
 };
 // Vorlagen: [typ, fertigkeit, Menge am Tag, Menge in der Woche, Text]
 const AUFGABEN_VORLAGEN = [
@@ -46,6 +47,8 @@ const AUFGABEN_VORLAGEN = [
   ["monster", null, 15, 100, n => `Bring ${n} Monster zum Einschlafen`],
   ["season", null, 5, 30, n => `Lass das Season-Monster ${n}× einschlafen`],
   ["ernte", null, 2, 12, n => `Ernte ${n} Beete`],
+  ["streicheln", null, 3, 15, n => `Streichle ${n}× deine Haustiere`, () => (spiel.haustiere || []).length > 0],
+  ["aktion", "schmuck", 10, 60, n => `Mach ${n} Schmuckstücke`, () => stufe("schmuck") >= 5],
   ["truhe", null, 1, 6, n => `Öffne ${n === 1 ? "eine Schatztruhe" : `${n} Schatztruhen`} auf einem Abenteuer-Pfad`, () => PFADE.some(pfadFrei)],
 ];
 

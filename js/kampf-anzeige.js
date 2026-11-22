@@ -150,7 +150,7 @@ function zeigePlatzWahl(platz) {
     const g = GEGENSTAENDE[id];
     const ok = istEssen || darfTragen(g);
     const info = istEssen ? `heilt ${g.heilt} ❤️ · ×${zahl(anzahl(id))}`
-      : [g.bonus.treff && `🎯 +${g.bonus.treff}`, g.bonus.kraft && `💥 +${g.bonus.kraft}`, g.bonus.abwehr && `🛡️ +${g.bonus.abwehr}`, g.bonus.weniger && `−${g.bonus.weniger} % Schaden`].filter(Boolean).join(" · ");
+      : g.schmuckText ? `✨ ${g.schmuckText}` : [g.bonus.treff && `🎯 +${g.bonus.treff}`, g.bonus.kraft && `💥 +${g.bonus.kraft}`, g.bonus.abwehr && `🛡️ +${g.bonus.abwehr}`, g.bonus.weniger && `−${g.bonus.weniger} % Schaden`].filter(Boolean).join(" · ");
     const sperre = ok ? "" : ` · 🔒 ${Object.entries(g.braucht).map(([f, l]) => `${fertigkeit(f).name} ${l}`).join(", ")}`;
     return `<button type="button" class="wahlZeile${ok ? "" : " gesperrt"}${jetzt === id ? " aktiv" : ""}" data-id="${id}" ${ok ? "" : "disabled"}>${symbolHtml(id)}<span><b>${g.name}</b><small>${info}${sperre}</small></span></button>`;
   }).join("")}</div>`;
