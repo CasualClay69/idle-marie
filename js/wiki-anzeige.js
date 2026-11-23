@@ -17,6 +17,7 @@ const WIKI_TABS = [
   { id: "baumhaus",     name: "Baumhaus",     icon: "🏡", html: () => wikiBaumhaus() },
   { id: "sterne",       name: "Sterne",       icon: "🔭", html: () => wikiSterne() },
   { id: "dorf",         name: "Dorf",         icon: "🏘️", html: () => wikiDorf() },
+  { id: "turnen",       name: "Spielplatz",   icon: "🤸", html: () => wikiTurnen() },
   { id: "aussehen",     name: "Aussehen",     icon: "👗", html: () => wikiAussehen() },
   { id: "erfolge",      name: "Erfolge",      icon: "🏆", html: () => wikiErfolge() },
   { id: "season",       name: "Season",       icon: "🎟️", html: () => wikiSeason() },
@@ -361,5 +362,14 @@ function wikiDorf() {
   }).join(""));
   html += wEintrag("d-sorten", "📈 Bessere Sorten mit der Dorf-Stufe", STUFEN.map((s, i) => wZeile(s, `${wSym(`holz${i}`)} ${wSym(`erz${i}`)} ${wSym(`fisch${i}`)} ${wSym(`kraut${i}`)}`,
     `${GEGENSTAENDE[`holz${i}`].name}, ${GEGENSTAENDE[`erz${i}`].name}, ${GEGENSTAENDE[`fisch${i}`].name}, ${GEGENSTAENDE[`kraut${i}`].name}`, stufe("dorf") >= s)).join(""));
+  return html;
+}
+
+// ===================== SPIELPLATZ =====================
+function wikiTurnen() {
+  let html = wEintrag("r-turnen2", "🤸 So funktioniert der Abenteuer-Spielplatz", WIKI_REGELN.find(r => r.id === "turnen").text());
+  html += PARCOURS.map((s, i) => wEintrag(`p-${i}`, `${s.icon} ${i + 1}. ${s.name} <small>ab Turnen-Stufe ${s.stufe} · ${Object.entries(s.kosten).map(([id, n]) => `${wSym(id)} ${n}`).join(" ")} ${muenzeHtml("muenze klein")} ${zahl(s.muenzen)}</small>`,
+    s.optionen.map((o, nr) => wZeile(nr + 1, o.name + (spiel.parcours?.stationen?.[i] === nr ? " ✅" : ""), bonusText(o.bonus), spiel.parcours?.stationen?.[i] === nr)).join(""))).join("");
+  html += wEintrag("p-podest", `${PODEST.icon} ${PODEST.name} <small>ab Turnen-Stufe ${PODEST.stufe}</small>`, `<p>${PODEST.bonus.map(bonusText).join(" und ")}. Kostet ${Object.entries(PODEST.kosten).map(([id, n]) => `${wSym(id)} ${n}`).join(" ")} ${muenzeHtml("muenze klein")} ${zahl(PODEST.muenzen)}.</p>`);
   return html;
 }

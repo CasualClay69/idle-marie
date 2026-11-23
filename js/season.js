@@ -52,6 +52,7 @@ const AUFGABEN_VORLAGEN = [
   ["aktion", "schmuck", 10, 60, n => `Mach ${n} Schmuckstücke`, () => stufe("schmuck") >= 5],
   ["aktion", "sterne", 40, 250, n => `Beobachte ${n}× die Sterne`, () => sterneFrei()],
   ["jagd", null, 1, 5, n => (n === 1 ? "Schaffe einen Monster-Auftrag" : `Schaffe ${n} Monster-Aufträge`), () => jagdFrei()],
+  ["aktion", "turnen", 15, 100, n => `Lauf ${n} Runden auf dem Spielplatz`, () => turnenFrei() && gebauteStationen().length > 0],
   ["aktion", "feuer", 50, 300, n => `Leg ${n}× Holz ins Lagerfeuer`, () => feuerFrei()],
   ["truhe", null, 1, 6, n => `Öffne ${n === 1 ? "eine Schatztruhe" : `${n} Schatztruhen`} auf einem Abenteuer-Pfad`, () => PFADE.some(pfadFrei)],
 ];

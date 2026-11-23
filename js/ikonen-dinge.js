@@ -155,3 +155,13 @@ ikon("🔺", B.p("M16 4L29 27H3Z", "#ff9fc8") + B.k(16, 7, 3, "#ffd54f") + B.k(5
 ikon("🏘", B.e(16, 28, 15, 3, "#8fd47a") + `<g transform="translate(-5 2) scale(.7)">${haus("#ffb347", "#fff3dc")}</g><g transform="translate(13 2) scale(.7)">${haus("#7ad7f0", "#fff3dc")}</g><g transform="translate(4 6) scale(.8)">${haus("#ff7eb6", "#fff3dc")}</g>`);
 ikon("🎠", B.l("M16 5V28", "#c9a06a", 2) + B.p("M4 12L16 3L28 12Z", "#ff7eb6") + B.r(4, 11, 24, 3, 1.5, "#ffd54f") + B.l("M9 14V22M23 14V22", "#c9d2e0", 1.4) + B.e(9, 22, 4, 2.6, "#fff") + B.e(23, 20, 4, 2.6, "#b48cff") + B.e(16, 29, 12, 2, "#c98a5a"));
 ikon("👷", B.k(16, 18, 9, "#ffdcc2") + B.p("M6 16Q6 5 16 5Q26 5 26 16Z", "#ffcc33") + B.r(4, 15, 24, 3, 1.5, "#f5b942") + B.augen(12.5, 19.5, 21, 1.1) + B.mund(16, 24.5) + B.backen(10, 22, 24));
+
+// ----- Abenteuer-Spielplatz -----
+ikon("🤸", B.l("M16 11L6 4M16 11L26 4M16 20L8 29M16 20L24 29", "#ff7eb6", 3.4) + B.p("M12 10H20L19 21H13Z", "#ff9fc8") + B.k(16, 6.5, 4.2, "#ffdcc2") + B.p("M12 5Q12 1.5 16 1.8Q20 1.5 20 5Q17 3.6 12 5Z", "#ffd54f") + B.fp(sternD(4, 14, 2.6, 4, 0.4), "#ffd54f") + B.fp(sternD(28, 14, 2.6, 4, 0.4), "#ffd54f"));
+ikon("🧗", B.r(18, 2, 12, 28, 3, "#e8c39e") + [[21, 7, "#ff7eb6"], [26, 13, "#7ad7f0"], [21, 19, "#8fd47a"], [26, 25, "#ffd54f"]].map(([x, y, f]) => B.k(x, y, 1.8, f)).join("") + B.k(11, 9, 3.6, "#ffdcc2") + B.l("M12 13L14 20L12 27M13 15L19 10M13 16L19 20", "#b48cff", 3));
+ikon("🚡", B.l("M2 6L30 12", "#9aa3b5", 1.8) + B.l("M16 9V13", "#9aa3b5", 1.6) + B.r(7, 13, 18, 14, 4, "#ff7eb6") + B.r(10, 16, 5, 5, 1.2, "#bfe3ff") + B.r(17, 16, 5, 5, 1.2, "#bfe3ff"));
+ikon("🛝", B.l("M6 29V8M12 29V8", "#9aa3b5", 2.2) + B.l("M6 12H12M6 17H12M6 22H12", "#c9d2e0", 1.6) + B.p("M12 8H15Q20 8 23 16L28 27H24L19 17Q17 12 12 12Z", "#ffd54f") + B.p("M4 6H14V9H4Z", "#ff7eb6"));
+ikon("🕸", B.l("M16 3V29M3 16H29M7 7L25 25M25 7L7 25", "#c9d2e0", 1.4) + [5, 9, 13].map(r => `<polygon points="${Array.from({ length: 8 }, (_, i) => `${(16 + r * Math.cos(i * Math.PI / 4)).toFixed(1)},${(16 + r * Math.sin(i * Math.PI / 4)).toFixed(1)}`).join(" ")}" fill="none" stroke="#b48cff" stroke-width="1.2"/>`).join(""));
+ikon("🎢", B.l("M2 28Q8 4 14 18T26 10L30 28", "#ff7eb6", 2.6) + B.l("M6 28V20M14 28V18M22 28V14M28 28V20", "#c9d2e0", 1.6) + B.r(9, 6, 7, 5, 2, "#7ad7f0", `transform="rotate(-50 12 8)"`));
+ikon("🦘", B.e(17, 21, 7, 8, "#d9a46a") + B.e(16, 24, 3.6, 4.4, "#f2d2b0") + B.k(18, 10, 5, "#d9a46a") + B.e(16, 4, 1.8, 3.6, "#d9a46a") + B.e(20, 4, 1.8, 3.6, "#d9a46a") + B.p("M22 26Q30 26 31 30Q26 30 21 29Z", "#c98f5a") + B.p("M10 28Q8 30 14 30H18L16 27Z", "#c98f5a") + B.augen(16.5, 20, 9.5, 1) + B.fk(22.5, 11.5, 1, "#3b2240"));
+ikon("➕", B.k(16, 16, 12, "#e3f7e6") + B.l("M16 9V23M9 16H23", "#4fc27a", 3.4));

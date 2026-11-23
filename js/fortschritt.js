@@ -11,7 +11,7 @@
 
 const ohneSeason = liste => liste.filter(x => !x.season);
 const FORTSCHRITT_BEREICHE = [
-  { id: "fertigkeiten", name: "Fertigkeiten auf 99", icon: "🌟", gewicht: 26,
+  { id: "fertigkeiten", name: "Fertigkeiten auf 99", icon: "🌟", gewicht: 24,
     stand: () => [FERTIGKEITEN.reduce((s, f) => s + Math.min(SPIEL.maxStufe, stufe(f.id)), 0), FERTIGKEITEN.length * SPIEL.maxStufe],
     hilfe: { seite: "seiteFertigkeiten" } },
   { id: "auftraege", name: "Aufträge", icon: "📜", gewicht: 8,
@@ -49,7 +49,9 @@ const FORTSCHRITT_BEREICHE = [
   { id: "werkzeuge", name: "Werkzeuge", icon: "🪓", gewicht: 4,
     stand: () => [Object.keys(WERKZEUGE).reduce((s, a) => s + (spiel.werkzeuge?.[a] || 0), 0), Object.keys(WERKZEUGE).length * WERKZEUG_STUFEN.length],
     hilfe: { seite: "seiteLaden" } },
-  { id: "beete", name: "Garten-Beete", icon: "🟫", gewicht: 4,
+  { id: "turnen", name: "Abenteuer-Spielplatz", icon: "🤸", gewicht: 3,
+    stand: () => [spiel.parcours ? gebauteStationen().length + (spiel.parcours.podest ? 1 : 0) : 0, PARCOURS.length + 1], hilfe: { fertigkeit: "turnen" } },
+  { id: "beete", name: "Garten-Beete", icon: "🟫", gewicht: 3,
     stand: () => [gartenStand().beete.length, GARTEN.startBeete + GARTEN.beetPreise.length + 3],
     hilfe: { fertigkeit: "garten", ziel: "#beetKaufen" } },
 ];

@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.18";
-const APP_NEU = "Neu: Monster-Aufträge bei der Wichtel-Jägerin Pia – mit Jagd-Münzen und eigenem Laden!";
+const APP_VERSION = "1.19";
+const APP_NEU = "Neu: Der Abenteuer-Spielplatz! Nach deinem fünften Pfad baust du einen Parcours und turnst für Dauer-Boni.";

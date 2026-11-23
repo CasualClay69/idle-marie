@@ -231,6 +231,7 @@ function starteSpiel() {
   richteDorfEin();
   richteFeuerEin();
   richteJagdEin();
+  richteTurnenEin();
   richteWikiEin();
   holeOfflineNach();
   ruheAus();

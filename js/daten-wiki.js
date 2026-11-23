@@ -105,6 +105,10 @@ const WIKI_REGELN = [
     <p>Sobald der <b>Pusteblumen-Riese</b> eingeschlafen ist, hat die Wichtel-Jägerin ${JAGD_JAEGERIN} Aufträge für dich (⚔️ Abenteuer → 📋 Aufträge). Zum Beispiel: „Lass 30× Wuschelwolf einschlafen“.</p>
     <p>Es gibt <b>leichte</b>, <b>mittlere</b> (ab Jagd-Stufe ${JAGD.arten[1].stufe}) und <b>schwere</b> Aufträge (ab Jagd-Stufe ${JAGD.arten[2].stufe}). Für jedes Monster aus dem Auftrag gibt es 🏅 Jagd-Münzen und Jagd-Erfahrung, am Ende +${Math.round(JAGD.bonusAmEnde * 100)} % Bonus. Mit Glück (1 von ${Math.round(1 / JAGD.haustierChance)}) kommt der Igel Stups zu dir.</p>
     <p>Im <b>Jagd-Laden</b>: ${JAGD_LADEN.map(x => `${x.icon} ${x.name}`).join(", ")}. Einen Auftrag tauschen kostet ${JAGD.tauschenKostet} Jagd-Münzen (gratis, wenn du weniger hast).</p>` },
+  { id: "turnen", icon: "🤸", titel: "Abenteuer-Spielplatz", text: () => `
+    <p>Der Abenteuer-Spielplatz öffnet sich, sobald du <b>fünf Abenteuer-Pfade</b> geschafft hast. Neue Fertigkeit: Turnen.</p>
+    <p>Der Parcours hat ${PARCOURS.length} Stationen (ab Turnen-Stufe ${STUFEN.join(", ")}). An jeder baust du <b>eins von drei Hindernissen</b> – jedes gibt einen Dauer-Bonus. Umbauen geht jederzeit, kostet aber neu.</p>
+    <p><b>Parcours laufen</b> ist eine Tätigkeit: Eine Runde dauert länger, je mehr Hindernisse stehen, und bringt dafür mehr Erfahrung und Münzen. Stehen alle Stationen, gibt es das <b>Siegerpodest</b>: ${PODEST.bonus.map(bonusText).join(" und ")}.</p>` },
   { id: "gluecksrad", icon: "🎁", titel: "Tägliches Glücksrad", text: () => `
     <p>Jeden Tag darfst du einmal am Glücksrad drehen – die Karte dafür ist oben auf der 🌟 Fertigkeiten-Seite. Jeder ${GLUECKSRAD.serieBonus}. Tag in Folge bringt ein <b>doppeltes</b> Geschenk.</p>
     <p>Mögliche Geschenke: ${GLUECKSRAD.felder.map(f => `${f.icon} ${f.name}`).join(", ")}. Die Geschenke wachsen mit deiner Gesamtstufe mit.</p>` },
@@ -165,6 +169,12 @@ const GUIDE_EINSCHUEBE = [
   { nach: "Pusteblumen-Riese: 1× einschlafen lassen", schritt: { id: "jagd:3", icon: "🏅", titel: "Kauf etwas im Jagd-Laden",
     text: "Der Jäger-Köcher spart Pfeile, das Perlen-Täschchen Zauberperlen – oder gönn dir den Jägerhut!",
     ziel: 1, wert: () => (spiel.jagd ? jagdLadenSumme() : 0), hilfe: { seite: "seiteAbenteuer", abenteuerTab: "jagd", ziel: ".jagdKaufen:not([disabled])" } } },
+  { nach: "Schaffe den Frostpfad", schritt: { id: "turnen:1", icon: "🛝", titel: "Bau dein erstes Hindernis",
+    text: "Nach deinem fünften Pfad gibt es den 🤸 Abenteuer-Spielplatz. Bau an der ersten Station ein Hindernis.",
+    ziel: 1, wert: () => (spiel.parcours ? gebauteStationen().length : 0), hilfe: { fertigkeit: "turnen", ziel: ".stationBauen:not([disabled])" } } },
+  { nach: "Schaffe den Frostpfad", schritt: { id: "turnen:2", icon: "🤸", titel: "Lauf 20 Runden Parcours",
+    text: "Tippe auf „Parcours laufen“ – jede Runde bringt Erfahrung und Münzen.",
+    ziel: 20, wert: () => spiel.statistik.aktionenNach?.turnen || 0, hilfe: { fertigkeit: "turnen", ziel: ".parcoursLauf" } } },
   { nach: "Schaffe den Pusteblumen-Pfad", schritt: { id: "sterne:1", icon: "🔭", titel: "Beobachte die Sterne",
     text: "Nach deinem ersten Pfad öffnet sich die 🔭 Sternenkunde. Beobachte das Eichhörnchen-Sternbild und sammle 30 Sternsplitter.",
     ziel: 30, wert: () => spiel.zaehler?.sternsplitter2 || 0, hilfe: { fertigkeit: "sterne" } } },
@@ -204,6 +214,10 @@ function guideVervollstaendigen() {
   schritt({ id: "jagd:laden", kapitel: K1, icon: "🏅", titel: "Alles aus dem Jagd-Laden",
     text: "Kauf alle Verbesserungen und die Kleidung im Jagd-Laden. Höhere Stufen brauchen eine höhere Jagd-Stufe.",
     ziel: jagdLadenMax(), wert: () => (spiel.jagd ? jagdLadenSumme() : 0), hilfe: { seite: "seiteAbenteuer", abenteuerTab: "jagd", ziel: ".jagdKaufen:not([disabled])" } });
+
+  schritt({ id: "turnen:alle", kapitel: K1, icon: "🏆", titel: "Spielplatz mit Siegerpodest",
+    text: "Bau an allen 8 Stationen ein Hindernis und dann das Siegerpodest.",
+    ziel: PARCOURS.length + 1, wert: () => (spiel.parcours ? gebauteStationen().length + (spiel.parcours.podest ? 1 : 0) : 0), hilfe: { fertigkeit: "turnen", ziel: ".stationBauen:not([disabled])" } });
 
   // --- Alles sammeln ---
   const K2 = "Alles sammeln";
