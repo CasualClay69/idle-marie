@@ -152,3 +152,6 @@ ikon("🏹", B.l("M8 3Q30 16 8 29", "#c98a5a", 3) + B.l("M8 3V29", "#fff3dc", 1)
 ikon("➳", [[0, "#ff7eb6"], [6, "#7ad7f0"], [12, "#ffd54f"]].map(([d, f]) => `<g transform="translate(0 ${d - 6}) rotate(-35 16 16)">${B.l("M4 16H26", "#c98a5a", 1.8)}${B.p("M30 16L25 13.5V18.5Z", "#c9d2e0")}${B.p("M4 16L1 13H6ZM4 16L1 19H6Z", f)}</g>`).join(""));
 ikon("🔮", B.e(16, 27, 9, 3, "#c98a5a") + B.k(16, 15, 11, "#c9a6ff") + B.k(16, 15, 7, "#e0ccff") + B.fk(12, 11, 2.4, "#fff", `opacity=".8"`) + B.fp(sternD(19, 18, 3, 4, 0.4), "#fff"));
 ikon("🔺", B.p("M16 4L29 27H3Z", "#ff9fc8") + B.k(16, 7, 3, "#ffd54f") + B.k(5.5, 25, 3, "#7ad7f0") + B.k(26.5, 25, 3, "#8fd47a"));
+ikon("🏘", B.e(16, 28, 15, 3, "#8fd47a") + `<g transform="translate(-5 2) scale(.7)">${haus("#ffb347", "#fff3dc")}</g><g transform="translate(13 2) scale(.7)">${haus("#7ad7f0", "#fff3dc")}</g><g transform="translate(4 6) scale(.8)">${haus("#ff7eb6", "#fff3dc")}</g>`);
+ikon("🎠", B.l("M16 5V28", "#c9a06a", 2) + B.p("M4 12L16 3L28 12Z", "#ff7eb6") + B.r(4, 11, 24, 3, 1.5, "#ffd54f") + B.l("M9 14V22M23 14V22", "#c9d2e0", 1.4) + B.e(9, 22, 4, 2.6, "#fff") + B.e(23, 20, 4, 2.6, "#b48cff") + B.e(16, 29, 12, 2, "#c98a5a"));
+ikon("👷", B.k(16, 18, 9, "#ffdcc2") + B.p("M6 16Q6 5 16 5Q26 5 26 16Z", "#ffcc33") + B.r(4, 15, 24, 3, 1.5, "#f5b942") + B.augen(12.5, 19.5, 21, 1.1) + B.mund(16, 24.5) + B.backen(10, 22, 24));

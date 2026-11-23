@@ -92,6 +92,11 @@ const WIKI_REGELN = [
     <p>Die Sternenkunde öffnet sich, sobald du deinen <b>ersten Abenteuer-Pfad</b> geschafft hast. Dann beobachtest du Sternbilder – wie beim Holzsammeln. Dafür gibt es Erfahrung und 💫 Sternsplitter, ganz selten (${(STERNE.goldChance * 100).toLocaleString("de-DE")} %) einen 🌟 Goldsplitter.</p>
     <p>Es gibt ${STERNBILDER.length} Sternbilder (ab Stufe ${STUFEN.join(", ")}). Jedes gehört zu zwei Fertigkeiten. Mit Sternsplittern lässt du seine 3 Sterne leuchten (je ${STERNE.maxNormal} Stufen, jede Stufe +${Math.round(STERNE.proStufe * 100)} %). Mit Goldsplittern den goldenen Stern (${STERNE.maxGold} Stufen) mit einer besonderen Kraft.</p>
     <p>Höhere Stern-Stufen brauchen eine höhere Sternenkunde-Stufe. Alle Sternbilder und Kräfte stehen in der Wiki unter 🔭 Sterne.</p>` },
+  { id: "dorf", icon: "🏘️", titel: "Wichteldorf", text: () => `
+    <p>Das Wichteldorf öffnet sich, sobald du <b>zwei Abenteuer-Pfade</b> geschafft hast. Es läuft nebenher – wie der Garten.</p>
+    <p>Alle ${DORF.tickMinuten} Minuten ist ein <b>Dorf-Tag</b> (auch wenn das Spiel zu ist, bis zu einer Woche): Die Wichtel essen Korn, arbeiten in den Gebäuden und legen Holz, Erz, Fisch, Kräuter und Münzen ins Dorflager. Von dort holst du alles in die Bank.</p>
+    <p>In jedem Wichtelhaus wohnen ${DORF.bewohnerProHaus} Wichtel. Arbeits-Gebäude brauchen Wichtel – fehlen welche, wird langsamer gearbeitet. Reicht das Korn nicht, sinkt die <b>Gesundheit</b>. Der Spielplatz macht <b>glücklich</b>. Gesundheit und Glück bestimmen den Fleiß.</p>
+    <p>Mit jedem Dorf-Tag steigt die Dorf-Stufe: mehr Bauplätze (${4} + Stufe) und bessere Sorten. Von jedem Gebäude kannst du ${DORF.maxJeGebaeude} Stück bauen – jedes weitere kostet mehr.</p>` },
   { id: "gluecksrad", icon: "🎁", titel: "Tägliches Glücksrad", text: () => `
     <p>Jeden Tag darfst du einmal am Glücksrad drehen – die Karte dafür ist oben auf der 🌟 Fertigkeiten-Seite. Jeder ${GLUECKSRAD.serieBonus}. Tag in Folge bringt ein <b>doppeltes</b> Geschenk.</p>
     <p>Mögliche Geschenke: ${GLUECKSRAD.felder.map(f => `${f.icon} ${f.name}`).join(", ")}. Die Geschenke wachsen mit deiner Gesamtstufe mit.</p>` },
@@ -125,6 +130,15 @@ const GUIDE_EINSCHUEBE = [
   { nach: "Schaffe den Flüsterpfad", schritt: { id: "magie:3", icon: "🪄", titel: "10 Monster mit Magie",
     text: "Leg den Zauberstab an, wähle die Perlen und lass 10 Monster einschlafen. Tipp: Magie ist stark gegen ⚔️-Monster!",
     ziel: 10, wert: () => spiel.statistik.besiegtMagie || 0, fertigkeitId: "magie", hilfe: { seite: "seiteAbenteuer" } } },
+  { nach: "Schaffe den Flüsterpfad", schritt: { id: "dorf:1", icon: "🏘️", titel: "Bau ein Gebäude im Wichteldorf",
+    text: "Nach deinem zweiten Pfad ziehen Wichtel zu dir! Bau im 🏘️ Wichteldorf ein Wichtelhaus oder einen Holzfäller.",
+    ziel: 1, wert: () => (spiel.dorf ? dorfGesamt() - 2 : 0), hilfe: { fertigkeit: "dorf", ziel: ".dorfBauen:not([disabled])" } } },
+  { nach: "Schaffe den Flüsterpfad", schritt: { id: "dorf:2", icon: "📦", titel: "Hol Sachen aus dem Dorflager",
+    text: "Alle 10 Minuten legen die Wichtel Sachen ins Dorflager. Tippe auf „Alles abholen“.",
+    ziel: 1, wert: () => spiel.statistik.dorfAbgeholt || 0, hilfe: { fertigkeit: "dorf", ziel: "#dorfAbholen" } } },
+  { nach: "Schaffe den Flüsterpfad", schritt: { id: "dorf:3", icon: "🧚", titel: "24 Wichtel im Dorf",
+    text: "Bau ein zweites Wichtelhaus – mehr Wichtel können mehr arbeiten. Vergiss den Bauernhof nicht!",
+    ziel: 24, wert: () => (spiel.dorf ? dorfBewohnerPlatz() : 0), hilfe: { fertigkeit: "dorf", ziel: '.dGebaeude[data-gebaeude="haus"]' } } },
   { nach: "Schaffe den Pusteblumen-Pfad", schritt: { id: "sterne:1", icon: "🔭", titel: "Beobachte die Sterne",
     text: "Nach deinem ersten Pfad öffnet sich die 🔭 Sternenkunde. Beobachte das Eichhörnchen-Sternbild und sammle 30 Sternsplitter.",
     ziel: 30, wert: () => spiel.zaehler?.sternsplitter2 || 0, hilfe: { fertigkeit: "sterne" } } },
@@ -156,6 +170,10 @@ function guideVervollstaendigen() {
   schritt({ id: "sterne:alle", kapitel: K1, icon: "✨", titel: "Der ganze Himmel leuchtet",
     text: "Bring alle Sterne aller Sternbilder auf die höchste Stufe. Höhere Stufen brauchen eine höhere Sternenkunde-Stufe.",
     ziel: sternStufenMax(), wert: () => sternStufenSumme(), hilfe: { fertigkeit: "sterne", ziel: ".sternKaufen" } });
+
+  schritt({ id: "dorf:alle", kapitel: K1, icon: "🏰", titel: "Die Wichtelstadt",
+    text: `Bau von jedem Gebäude im Wichteldorf ${DORF.maxJeGebaeude} Stück. Mehr Bauplätze gibt es mit höherer Dorf-Stufe.`,
+    ziel: dorfAllesMax(), wert: () => (spiel.dorf ? dorfAllesGebaut() : 0), hilfe: { fertigkeit: "dorf", ziel: ".dorfBauen:not([disabled])" } });
 
   // --- Alles sammeln ---
   const K2 = "Alles sammeln";

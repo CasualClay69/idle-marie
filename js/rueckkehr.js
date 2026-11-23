@@ -93,6 +93,7 @@ function zeigeRueckkehr(s, weg) {
   if (season) warten.push(`<li>🎟️ <span class="rkName">${season} Season-Aufgabe${season === 1 ? "" : "n"} zum Abholen</span></li>`);
   const streichel = (spiel.haustiere || []).filter(id => tierStufe(id) < PFLEGE.maxStufe && streichelnIn(id) === 0).length;
   if (streichel) warten.push(`<li>💖 <span class="rkName">${streichel} Haustier${streichel === 1 ? " möchte" : "e möchten"} gestreichelt werden</span></li>`);
+  if (dorfFrei() && !dorfLagerLeer()) warten.push(`<li>🏘️ <span class="rkName">Im Dorflager liegen Sachen zum Abholen</span></li>`);
   if (kannDrehen()) warten.push(`<li>🎁 <span class="rkName">Dein tägliches Glücksrad wartet – dreh es!</span></li>`);
   const q = aktuellerQuest();
   if (q && questStand(q).fertig) warten.push(`<li>📜 <span class="rkName">Auftrag geschafft – Belohnung abholen!</span></li>`);

@@ -16,6 +16,7 @@ const WIKI_TABS = [
   { id: "haustiere",    name: "Haustiere",    icon: "🐾", html: () => wikiHaustiere() },
   { id: "baumhaus",     name: "Baumhaus",     icon: "🏡", html: () => wikiBaumhaus() },
   { id: "sterne",       name: "Sterne",       icon: "🔭", html: () => wikiSterne() },
+  { id: "dorf",         name: "Dorf",         icon: "🏘️", html: () => wikiDorf() },
   { id: "aussehen",     name: "Aussehen",     icon: "👗", html: () => wikiAussehen() },
   { id: "erfolge",      name: "Erfolge",      icon: "🏆", html: () => wikiErfolge() },
   { id: "season",       name: "Season",       icon: "🎟️", html: () => wikiSeason() },
@@ -56,6 +57,7 @@ function wikiIndex() {
   }
   for (const p of PFADE) for (const s of p.truhe.sachen) dazu(her, s.id, `🧰 Schatztruhe: ${p.name}`);
   EDELSTEINE.forEach((e, i) => dazu(her, `stein${i}`, `⛏️ Bergbau: ${Math.round(SCHMUCK.edelsteinChance * 100)} % Glück bei ${GEGENSTAENDE[`erz${i}`].name}`));
+  for (const g of DORF_GEBAEUDE.filter(x => x.macht)) for (let i = 0; i < 8; i++) dazu(her, `${g.macht}${i}`, `🏘️ Wichteldorf: ${g.name} (ab Dorf-Stufe ${STUFEN[i]})`);
   dazu(her, "goldsplitter5", `🔭 Sternenkunde: ${(STERNE.goldChance * 100).toLocaleString("de-DE")} % Glück bei jeder Beobachtung`);
   dazu(nutz, "sternsplitter2", "🔭 Sterne der Sternbilder leuchten lassen");
   dazu(nutz, "goldsplitter5", "🌟 Goldene Sterne der Sternbilder");
@@ -340,5 +342,18 @@ function wikiSterne() {
       `${STERNE.maxGold} Stufen · ${STERNE.goldBasis.map(g => zahl(Math.round(g * (1 + sb.nr * 0.5)))).join(" / ")} Goldsplitter · ab Stufe ${STERNE.goldBasis.map((_, k) => Math.min(SPIEL.maxStufe, sb.stufe + (k + 1) * STERNE.goldAbstand)).join(" / ")} · du hast Stufe ${st.g}`, st.g > 0);
     return wEintrag(`s-${sb.id}`, `${sb.icon} ${sb.name} <small>ab Stufe ${sb.stufe} · für ${sternName(sb)}</small>`, sternbildSvg(sb) + kraefte + gold);
   }).join("");
+  return html;
+}
+
+// ===================== DORF =====================
+function wikiDorf() {
+  let html = wEintrag("r-dorf2", "🏘️ So funktioniert das Wichteldorf", WIKI_REGELN.find(r => r.id === "dorf").text());
+  html += wEintrag("d-gebaeude", "🔨 Alle Gebäude", DORF_GEBAEUDE.map(g => {
+    const k0 = Object.entries({ brett0: g.bretter, ...(g.barren ? { barren0: g.barren } : {}) }).map(([id, n]) => `${wSym(id)} ${n}`).join(" ");
+    return wZeile(g.icon, `${g.name} <small>(${spiel.dorf ? dorfAnzahl(g.id) : 0} / ${DORF.maxJeGebaeude})</small>`,
+      `${g.text}${g.arbeiter ? ` · braucht ${g.arbeiter} Wichtel` : ""} · erstes: ${k0} ${muenzeHtml("muenze klein")} ${zahl(g.muenzen)} – jedes weitere kostet mehr und braucht bessere Bretter`, true);
+  }).join(""));
+  html += wEintrag("d-sorten", "📈 Bessere Sorten mit der Dorf-Stufe", STUFEN.map((s, i) => wZeile(s, `${wSym(`holz${i}`)} ${wSym(`erz${i}`)} ${wSym(`fisch${i}`)} ${wSym(`kraut${i}`)}`,
+    `${GEGENSTAENDE[`holz${i}`].name}, ${GEGENSTAENDE[`erz${i}`].name}, ${GEGENSTAENDE[`fisch${i}`].name}, ${GEGENSTAENDE[`kraut${i}`].name}`, stufe("dorf") >= s)).join(""));
   return html;
 }

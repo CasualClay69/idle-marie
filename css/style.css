@@ -1156,3 +1156,33 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .dreieckLegende .gut { color: #2f8a4a; }
 .dreieckLegende .schlecht { color: #c0394f; }
 .karte h3 small { font-size: 0.75rem; color: var(--text-sanft); font-weight: 700; }
+
+/* ----- Wichteldorf ----- */
+.taetigkeitenRaster.dorfRaster { display: block; }
+.dorfSeite { display: grid; gap: 10px; }
+.dorfSeite .karte { margin: 0; }
+.dorfZu { text-align: center; }
+.dGross { font-size: 3rem; }
+.dorfBild { border-radius: 20px; overflow: hidden; background: linear-gradient(180deg, #bfe6ff 0 34%, #a8e08f 34%); border: 3px solid #fff; box-shadow: var(--schatten); text-align: center; padding-bottom: 6px; }
+.dorfHimmel { display: flex; justify-content: space-between; padding: 6px 14px 0; font-size: 1.6rem; height: 38px; }
+.dorfWiese { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; padding: 6px 10px; }
+.dKachel { aspect-ratio: 1; display: grid; place-items: center; font-size: 1.35rem; border-radius: 10px; background: rgba(255, 255, 255, 0.55); }
+.dKachel.frei { background: transparent; border: 2px dashed rgba(255, 255, 255, 0.8); }
+.dorfBild small { font-size: 0.72rem; font-weight: 800; color: #3f6b2f; }
+.dWerte { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.dWert { display: grid; justify-items: center; padding: 6px 2px; border-radius: 12px; background: #fff7fb; }
+.dWert span { font-size: 1.2rem; }
+.dWert b { font-size: 0.9rem; }
+.dWert small { font-size: 0.65rem; color: var(--text-sanft); font-weight: 700; }
+.dUhr { text-align: center; font-size: 0.85rem; margin: 8px 0 0; }
+.dLager { display: flex; flex-wrap: wrap; gap: 6px 12px; margin-bottom: 8px; }
+.dLagerDing { display: inline-flex; align-items: center; gap: 4px; font-size: 0.85rem; }
+.dGebaeude { display: grid; grid-template-columns: 40px 1fr auto; gap: 4px 10px; align-items: center; }
+.dIcon { font-size: 1.9rem; text-align: center; }
+.dText { display: grid; gap: 2px; min-width: 0; }
+.dText b small { color: var(--text-sanft); font-size: 0.75rem; }
+.dText > small { font-size: 0.72rem; color: var(--text-sanft); line-height: 1.3; }
+.dText .dErtrag { color: #2f8a4a; font-weight: 800; }
+.dKosten { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+.dGrund { grid-column: 2 / -1; font-size: 0.68rem; color: #c0394f; font-weight: 800; text-align: right; }
+.dGrossBilder span { font-size: 3rem; }
