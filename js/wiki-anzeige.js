@@ -71,11 +71,12 @@ function wikiIndex() {
 // ===================== GUIDE =====================
 function wikiGuide() {
   pruefeGuide();
-  const r = route(), geschafft = r.filter(schrittErledigt).length, p = guideProzent();
+  const r = route(), geschafft = r.filter(schrittErledigt).length, p = spielFortschritt();
   const n = naechsterGuideSchritt();
   let html = `<div class="karte guideKopf"><h3>🧭 Dein Weg zu 100 %</h3>
     <div class="balken dick"><div style="width:${p}%"></div></div>
-    <p class="guideZahl"><b>${p} %</b> · ${geschafft} von ${r.length} Schritten geschafft</p>`;
+    <p class="guideZahl"><b>${fortschrittText(p)}</b> vom Spiel · ${geschafft} von ${r.length} Schritten geschafft</p>
+    <button type="button" class="knopf leise" id="guideFortschritt">🏁 Woraus setzt sich das zusammen?</button>`;
   if (n) {
     const w = schrittWert(n);
     html += `<div class="guideNaechster"><small>Als Nächstes</small><b>${n.titel}</b><span>${n.text}</span>
@@ -310,6 +311,7 @@ function zeichneWiki() {
   const tab = WIKI_TABS.find(t => t.id === wikiTab) || WIKI_TABS[0];
   ziel.innerHTML = tab.html();
   ziel.querySelector("#guideZeig")?.addEventListener("click", kompass);
+  ziel.querySelector("#guideFortschritt")?.addEventListener("click", () => { ton.klick(); zeigeFortschritt(); });
   for (const b of ziel.querySelectorAll(".wikiChips button")) b.addEventListener("click", () => { ton.klick(); wikiArt = b.dataset.art; zeichneWiki(); });
 }
 

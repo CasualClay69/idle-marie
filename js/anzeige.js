@@ -102,6 +102,7 @@ function zeichneAktivBalken() {
 function zeichneFertigkeiten() {
   zeichneSeasonBanner();
   zeichneGluecksKarte();
+  zeichneFortschrittKnopf();
   $("gesamtStufe").textContent = `Gesamtstufe ${gesamtStufe()}`;
   const raster = $("fertigkeitenRaster");
   raster.textContent = "";

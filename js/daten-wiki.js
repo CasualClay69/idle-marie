@@ -21,7 +21,7 @@ const WIKI_REGELN = [
     <p>Deine Figur kann immer nur <b>eine</b> Sache gleichzeitig machen. Nur der 🌱 Garten wächst nebenher.</p>` },
   { id: "kompass", icon: "🧭", titel: "Guide und Kompass", text: () => `
     <p>Der <b>Guide</b> hier in der Wiki ist der beste Weg vom Spielstart bis 100 %. Erledigte Schritte werden automatisch abgehakt ✅ – auch wenn du sie früher oder in anderer Reihenfolge schaffst.</p>
-    <p>Der runde <b>🧭 Kompass-Knopf</b> unten rechts zeigt dir jederzeit den nächsten Schritt: Er springt zur richtigen Stelle im Spiel und lässt das Ziel leuchten. Darunter steht, wie viel Prozent du schon geschafft hast.</p>
+    <p>Der runde <b>🧭 Kompass-Knopf</b> unten rechts zeigt dir jederzeit den nächsten Schritt: Er springt zur richtigen Stelle im Spiel und lässt das Ziel leuchten. Darunter steht, wie viel Prozent vom ganzen Spiel du schon geschafft hast. Wie sich diese Zahl zusammensetzt, zeigt das 🏁 Fortschritts-Fenster (oben auf der Fertigkeiten-Seite oder unter 👤 Ich → 📊 Statistik).</p>
     <p>Hast du einen 📜 Auftrag geschafft, zeigt der Kompass dir zuerst die Belohnung zum Abholen.</p>` },
   { id: "stufen", icon: "📈", titel: "Fertigkeiten und Stufen", text: () => `
     <p>Es gibt ${FERTIGKEITEN.length} Fertigkeiten. Jede geht bis Stufe ${SPIEL.maxStufe}. Alle Stufen zusammen sind deine <b>Gesamtstufe</b> (höchstens ${zahl(FERTIGKEITEN.length * SPIEL.maxStufe)}).</p>

@@ -224,6 +224,7 @@ function starteSpiel() {
   richteBankEin();
   richteGluecksradEin();
   richteUebungEin();
+  richteFortschrittEin();
   richteWikiEin();
   holeOfflineNach();
   ruheAus();

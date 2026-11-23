@@ -59,6 +59,7 @@
   <script src="js/season-anzeige.js" defer></script>
   <script src="js/gluecksrad.js" defer></script>
   <script src="js/uebung-anzeige.js" defer></script>
+  <script src="js/fortschritt.js" defer></script>
   <script src="js/rueckkehr.js" defer></script>
   <script src="js/daten-wiki.js" defer></script>
   <script src="js/wiki.js" defer></script>
@@ -110,7 +111,7 @@
       <section id="seiteFertigkeiten" class="seite">
         <button type="button" id="gluecksKarte" class="gluecksKarte"></button>
         <button type="button" id="seasonBanner" class="seasonBanner"></button>
-        <h2 class="seitenTitel">🌟 Fertigkeiten <small id="gesamtStufe"></small></h2>
+        <h2 class="seitenTitel">🌟 Fertigkeiten <small id="gesamtStufe"></small><button type="button" id="fortschrittKnopf" class="fsPille"></button></h2>
         <div id="fertigkeitenRaster" class="fertigkeitenRaster"></div>
       </section>
 
@@ -198,6 +199,7 @@
           <h3>📊 Statistik</h3>
           <dl id="statistik" class="statistik"></dl>
           <button type="button" class="knopf leise" id="uebungIch">⭐ Meine Übung bei allem ansehen</button>
+          <button type="button" class="knopf leise" id="fortschrittIch">🏁 Mein Fortschritt zu 100 %</button>
         </div>
         <div class="karte ichTeil" data-teil="optionen">
           <h3>⚙️ Optionen</h3>
@@ -346,6 +348,14 @@
       <h2>⭐ Meine Übung</h2>
       <div id="uebungInhalt"></div>
       <button id="uebungZu" class="knopf leise" type="button">Schließen</button>
+    </div>
+  </div>
+
+  <div id="fortschrittOverlay" class="overlay" hidden>
+    <div class="fenster fortschrittFenster">
+      <h2>🏁 Mein Spiel-Fortschritt</h2>
+      <div id="fortschrittInhalt"></div>
+      <button id="fortschrittZu" class="knopf leise" type="button">Schließen</button>
     </div>
   </div>
 

@@ -164,7 +164,7 @@ function kompass() {
   zeigeWegHilfe(h);
 }
 function zeichneKompass() {
-  $("kompassProzent").textContent = `${guideProzent()} %`;
+  $("kompassProzent").textContent = `${Math.floor(spielFortschritt())} %`;
 }
 
 function richteWikiEin() {
