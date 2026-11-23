@@ -58,6 +58,9 @@
   <script src="js/einfuehrung.js" defer></script>
   <script src="js/season-anzeige.js" defer></script>
   <script src="js/rueckkehr.js" defer></script>
+  <script src="js/daten-wiki.js" defer></script>
+  <script src="js/wiki.js" defer></script>
+  <script src="js/wiki-anzeige.js" defer></script>
   <script src="js/main.js" defer></script>
 </head>
 <body>
@@ -142,6 +145,14 @@
         <div id="ladenListe" class="ladenListe"></div>
       </section>
 
+      <section id="seiteWiki" class="seite" hidden>
+        <button type="button" class="zurueck" id="wikiZurueck">‹ Zurück</button>
+        <h2 class="seitenTitel">📖 Wiki <small>alles über alles</small></h2>
+        <input id="wikiSuche" class="wikiSuche" type="search" placeholder="Wiki durchsuchen …" autocomplete="off">
+        <div id="wikiReiter" class="ichReiter wikiReiter"></div>
+        <div id="wikiInhalt"></div>
+      </section>
+
       <section id="seiteIch" class="seite" hidden>
         <h2 class="seitenTitel">👤 Ich</h2>
         <div id="ichReiter" class="ichReiter">
@@ -217,6 +228,12 @@
         </div>
       </section>
     </main>
+
+    <div class="schnellKnoepfe">
+      <button type="button" id="wikiKnopf" class="schnellKnopf wikiKnopf" aria-label="Wiki">📖<small>Wiki</small></button>
+      <button type="button" id="kompassKnopf" class="schnellKnopf kompassKnopf" aria-label="Was mache ich als Nächstes?">🧭<small id="kompassProzent">0 %</small></button>
+    </div>
+    <button type="button" id="wegBlase" class="wegBlase" hidden></button>
 
     <nav id="untenNav">
       <button type="button" data-seite="seiteFertigkeiten" class="aktiv"><span>🌟</span>Fertigkeiten</button>

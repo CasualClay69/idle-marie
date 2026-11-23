@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.9", datum: "2026-11-23", neu: ["📖 Neu: die Wiki! Unten rechts findest du alles über alles: Fertigkeiten, Gegenstände (woher sie kommen und wofür man sie braucht), Monster, Haustiere, Baumhaus, Aussehen, Erfolge und Season – mit Suche.", "🧭 Der Guide in der Wiki zeigt den besten Weg vom Start bis 100 %. Geschaffte Schritte werden von allein abgehakt.", "Der Kompass-Knopf zeigt dir jederzeit den nächsten Schritt und lässt die richtige Stelle im Spiel leuchten."] },
   { v: "1.8", datum: "2026-11-23", neu: ["🖌️ Alles ist jetzt gemalt: Jedes Bild im Spiel – Tiere, Essen, Werkzeuge, Knöpfe, Herzen und Sterne – ist eine eigene Zeichnung im selben Stil. Keine Emojis mehr.", "Sicherheitsfragen erscheinen jetzt im Spiel-Fenster statt im grauen Browser-Kasten."] },
   { v: "1.7", datum: "2026-11-23", neu: ["🏦 Neue Bank: Reiter für Holz, Fisch, Bergbau, Essen, Garten, Basteln, Ausrüstung, Tränke und Beute – und „Alle“.", "Bunte Rahmen nach Seltenheit: grau, weiß, grün, blau, lila, orange, rot und Regenbogen.", "Neue Knöpfe: Sortieren, „Alles verkaufen“ und „Alles außer 1 verkaufen“."] },
   { v: "1.6", datum: "2026-11-23", neu: ["🌙 Willkommen zurück: Wenn du wieder ins Spiel kommst, siehst du, wie lange du weg warst – und alles, was in der Zeit passiert ist.", "Dazu zeigt es, was jetzt auf dich wartet: reife Beete, Season-Aufgaben, Haustiere zum Streicheln und geschaffte Aufträge."] },

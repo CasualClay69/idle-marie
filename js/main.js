@@ -222,6 +222,7 @@ function starteSpiel() {
   richteEinfuehrungEin();
   richteQuestsEin();
   richteBankEin();
+  richteWikiEin();
   holeOfflineNach();
   ruheAus();
   zeichneKopf();

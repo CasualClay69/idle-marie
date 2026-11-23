@@ -17,7 +17,9 @@ const ruestungsStufe = platz => {
 const vollAusgeruestet = tier => ["waffe", "helm", "schild", "ruestung"].every(p => ruestungsStufe(p) >= tier);
 
 const QUESTS = [];
-function quest(q) { QUESTS.push(q); }
+let questKapitelName = "";
+function questKapitel(name) { questKapitelName = name; }   // Kapitel für den Guide in der Wiki
+function quest(q) { q.kapitel = q.kapitel || questKapitelName; QUESTS.push(q); }
 
 // Bausteine für häufige Aufträge
 const sammle = (id, n, fertigkeitId, taetigkeitId, text, belohnung) => quest({
@@ -25,6 +27,7 @@ const sammle = (id, n, fertigkeitId, taetigkeitId, text, belohnung) => quest({
   hilfe: { fertigkeit: fertigkeitId, ziel: `.taetigkeit[data-id="${taetigkeitId}"]` }, symbol: id, belohnung });
 const stufeQuest = (fid, l, text, belohnung) => quest({
   titel: `${fertigkeit(fid).name} Stufe ${l}`, text, ziel: l, wert: () => stufe(fid),
+  fertigkeitId: fid,
   hilfe: ["mut", "kraft", "schutz", "herzen"].includes(fid) ? { seite: "seiteAbenteuer" } : { fertigkeit: fid }, icon: fertigkeit(fid).icon, belohnung });
 const monsterQuest = (mid, n, text, belohnung) => quest({
   titel: `${MONSTER[mid].name.replaceAll("­", "")}: ${n}× einschlafen lassen`, text, ziel: n, wert: () => schlafend(mid),
@@ -52,6 +55,7 @@ function ruestungsKapitel(tier, belohnung) {
 
 // ===================== DIE KETTE =====================
 // --- Teil 1: Die ersten Schritte ---
+questKapitel("Die ersten Schritte");
 sammle("holz0", 10, "holz", "holz-0", "Tippe bei 🌳 Holzsammeln auf den Busch. Deine Figur sammelt dann ganz von allein.", { muenzen: 20 });
 quest({ titel: "Verdiene 30 Münzen", text: "Geh in die 🏦 Bank, tippe dein Holz an und verkaufe es.", ziel: 30, wert: () => spiel.statistik.verdient || 0,
   hilfe: { seite: "seiteBank" }, icon: "🪙", belohnung: { muenzen: 30 } });
@@ -71,7 +75,7 @@ quest({ titel: "Nimm Essen mit ins Abenteuer", text: "Tippe im ⚔️ Abenteuer 
 quest({ titel: "Zieh dir etwas Schönes an", text: "Unter 👤 Ich gibt es einen Kleiderschrank mit Hüten, Kleidung und Rahmen. Kauf dir etwas Hübsches!",
   ziel: 1, wert: () => (spiel.garderobe || []).length, hilfe: { seite: "seiteIch", ziel: "#kleiderschrankKarte" }, icon: "👗", belohnung: { muenzen: 150 } });
 quest({ titel: "Hündchen Bello möchte zu dir!", text: "Bello hat kein Zuhause. Hol dir die Belohnung ab – dann wohnt er bei dir!", ziel: 1,
-  wert: () => 1, hilfe: { seite: "seiteIch" }, icon: "🐶", belohnung: { haustier: "bello" } });
+  wert: () => 1, nurAbholen: true, hilfe: { seite: "seiteIch" }, icon: "🐶", belohnung: { haustier: "bello" } });
 quest({ titel: "Streichle Bello", text: "Tippe unter 👤 Ich auf Bello (oder oben auf das kleine Tier neben deiner Figur) und streichle ihn!", ziel: 1,
   wert: () => spiel.statistik.gestreichelt || 0, hilfe: { seite: "seiteIch", ziel: '.haustierKarte[data-id="bello"]' }, icon: "💖", belohnung: { muenzen: 100, sachen: { essen0: 10 } } });
 quest({ titel: "Bello auf Stufe 3", text: "Streicheln und Füttern lässt Bello wachsen. Füttere ihn mit gekochtem Essen!", ziel: 3,
@@ -81,6 +85,7 @@ quest({ titel: "Hol dir eine Season-Stufe", text: "Oben auf der 🌟 Fertigkeite
 monsterQuest("schleimchen", 10, "Jetzt geht's los! Tippe auf der Blumenwiese das Schleimchen an. Es wird müde und schläft ein 💤.", { muenzen: 100 });
 
 // --- Teil 2: Stärker werden ---
+questKapitel("Stärker werden");
 werkzeugQuest("hacke", 1, "Eine Kupfer-Spitzhacke macht den Bergbau schneller.", { muenzen: 50 });
 stufeQuest("schmieden", 9, "Ab Schmieden-Stufe 9 kannst du Helm, Schild und Rüstung aus Kupfer schmieden.", { muenzen: 80 });
 sammle("stein0", 1, "bergbau", "bergbau-0", "Beim ⛏️ Bergbau findest du manchmal einen glitzernden Edelstein. Grab weiter!", { muenzen: 100 });
@@ -113,6 +118,7 @@ tragQuest("waffe", 1, "Schmiede ein Eisen-Schwert und leg es an.", { muenzen: 25
 monsterQuest("frechdachs", 20, "Die Frechdachse sind schlau – mit dem Eisen-Schwert klappt's!", { muenzen: 300, sachen: { essen1: 10 } });
 
 // --- Teil 3: Garten, Tränke und der erste Chef ---
+questKapitel("Garten, Tränke und der erste Chef");
 sammle("kraut0", 10, "garten", "", "Pflanze Minze im 🌱 Garten. Kräuter brauchst du für Tränke.", { muenzen: 150, sachen: { "samen-kraut0": 5 } });
 quest({ titel: "Braue einen Waldgeist-Trank", text: "Bei 🧪 Tränke mischst du Minze mit einem Blütenblatt von der Blumenwiese.", ziel: 1, wert: () => gemacht("trank0"),
   hilfe: { fertigkeit: "traenke", ziel: '.taetigkeit[data-id="traenke-0"]' }, symbol: "trank0", belohnung: { muenzen: 150, sachen: { bluete: 3 } } });
@@ -131,6 +137,7 @@ quest({ titel: "Erreiche Gesamtstufe 100", text: "Alle Fertigkeiten zählen zusa
   hilfe: { seite: "seiteFertigkeiten" }, icon: "🌟", belohnung: { muenzen: 1000 } });
 
 // --- Teil 4: Flüsterwald und Silber ---
+questKapitel("Flüsterwald und Silber");
 werkzeugQuest("axt", 2, "Eine Eisen-Axt – noch schneller!", { muenzen: 300 });
 stufeQuest("garten", 10, "Ab Gärtnern-Stufe 10 kannst du Karotten pflanzen.", { muenzen: 300, sachen: { "samen-gemuese1": 5 } });
 stufeQuest("kochen", 13, "Ab Kochen-Stufe 13 kannst du Karotten-Suppe kochen.", { muenzen: 300 });
@@ -144,6 +151,7 @@ quest({ titel: "Schaffe den Flüsterpfad", text: "Der Flüsterpfad ist offen –
   wert: () => spiel.pfade?.["p-wald"] || 0, hilfe: { seite: "seiteAbenteuer", ziel: '.pfadKarte[data-pfad="p-wald"]' }, icon: "🧰", belohnung: { muenzen: 8000 } });
 
 // --- Teil 5: Ruinenburg und Gold ---
+questKapitel("Ruinenburg und Gold");
 quest({ titel: "Alle 12 Plätze im Baumhaus", text: "Mach dein Baumhaus komplett!", ziel: 12,
   wert: () => BAUPLAETZE.filter(p => spiel.baumhaus?.[p.id]).length, hilfe: { fertigkeit: "bauen" }, icon: "🏡", belohnung: { muenzen: 5000 } });
 quest({ titel: "Birken-Plattform", text: "Bau die Plattform aus – dann passen mehr Sachen in deine Bank.", ziel: 2,
@@ -161,6 +169,7 @@ quest({ titel: "Schaffe den Spukgang", text: "Im Spukgang wartet die Gespensterk
   wert: () => spiel.pfade?.["p-burg"] || 0, hilfe: { seite: "seiteAbenteuer", ziel: '.pfadKarte[data-pfad="p-burg"]' }, icon: "🧰", belohnung: { muenzen: 30000 } });
 
 // --- Teil 6: Feuerberg ---
+questKapitel("Feuerberg");
 ruestungsKapitel(4, { muenzen: 25000, sachen: { essen4: 30 } });
 monsterQuest("flammenwichtel", 30, "Am Feuerberg wird es heiß!", { muenzen: 20000 });
 monsterQuest("glutechse", 30, "Glutechsen lassen manchmal Drachenschuppen fallen.", { muenzen: 25000 });
@@ -169,6 +178,7 @@ quest({ titel: "Schaffe den Glutpfad", text: "Auf dem Glutpfad wartet der Lavago
   wert: () => spiel.pfade?.["p-feuer"] || 0, hilfe: { seite: "seiteAbenteuer", ziel: '.pfadKarte[data-pfad="p-feuer"]' }, icon: "🧰", belohnung: { muenzen: 100000 } });
 
 // --- Teil 7: Eispalast ---
+questKapitel("Eispalast");
 quest({ titel: "Näh dir ein Feenkleid", text: "Aus Wolkenstoff wird ein zauberhaftes Feenkleid.", ziel: 1,
   wert: () => ((spiel.garderobe || []).includes("k24") ? 1 : 0), hilfe: { fertigkeit: "naehen", ziel: '.taetigkeit[data-id="naehen-k24"]' }, icon: "🧚", belohnung: { muenzen: 40000 } });
 quest({ titel: "Ahorn-Baumhaus", text: "Bau alle 12 Plätze auf die Ahorn-Stufe aus (3 ★).", ziel: 12,
@@ -181,6 +191,7 @@ quest({ titel: "Schaffe den Frostpfad", text: "Auf dem Frostpfad wartet der Eisd
   wert: () => spiel.pfade?.["p-eis"] || 0, hilfe: { seite: "seiteAbenteuer", ziel: '.pfadKarte[data-pfad="p-eis"]' }, icon: "🧰", belohnung: { muenzen: 300000 } });
 
 // --- Teil 8: Wolkenreich ---
+questKapitel("Wolkenreich");
 ruestungsKapitel(6, { muenzen: 250000, sachen: { essen6: 50 } });
 monsterQuest("donnerwolke", 30, "Hoch oben im Wolkenreich grummeln die Donnerwölkchen.", { muenzen: 200000 });
 monsterQuest("sternenfuchs", 30, "Sternenfüchse funkeln wie der Nachthimmel.", { muenzen: 250000 });

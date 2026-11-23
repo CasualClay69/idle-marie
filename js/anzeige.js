@@ -52,6 +52,7 @@ function zeichneSeite() {
   if (aktuelleSeite === "seiteBank") zeichneBank();
   if (aktuelleSeite === "seiteLaden") zeichneLaden();
   if (aktuelleSeite === "seiteIch") zeichneIch();
+  if (aktuelleSeite === "seiteWiki") zeichneWiki();
 }
 
 // ----- Kopf -----
