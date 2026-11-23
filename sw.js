@@ -58,6 +58,7 @@ const DATEIEN = [
   "js/sicherung.js",
   "js/einfuehrung.js",
   "js/season-anzeige.js",
+  "js/rueckkehr.js",
   "js/main.js",
   "icons/icon-192.png",
   "icons/icon-512.png",

@@ -178,7 +178,11 @@ function aktivFortschritt(jetzt = Date.now()) {
 // Rückgabe: Liste der Ereignisse und ob die Tätigkeit beenden musste
 function tick(jetzt = Date.now(), maxDurchgaenge = Infinity) {
   const ergebnis = { durchgaenge: 0, ereignisse: [], gestoppt: null, gewonnen: {}, verbraucht: {}, xp: {} };
-  if (spiel.aktiv?.kampf) { kampfTick(jetzt, ergebnis); return ergebnis; }
+  if (spiel.aktiv?.kampf) {
+    kampfTick(jetzt, ergebnis);
+    if (ergebnis.gestoppt) spiel.letzterStopp = { grund: ergebnis.gestoppt, zeit: jetzt };
+    return ergebnis;
+  }
   while (spiel.aktiv && ergebnis.durchgaenge < maxDurchgaenge) {
     const t = taetigkeitNachId(spiel.aktiv.id);
     if (!t) { stoppe(); break; }
@@ -202,6 +206,7 @@ function tick(jetzt = Date.now(), maxDurchgaenge = Infinity) {
     const weiter = hindernis(t);
     if (weiter) { ergebnis.gestoppt = weiter; stoppe(); }
   }
+  if (ergebnis.gestoppt) spiel.letzterStopp = { grund: ergebnis.gestoppt, zeit: jetzt };
   return ergebnis;
 }
 

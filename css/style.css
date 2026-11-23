@@ -683,6 +683,16 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .ichReiter button.aktiv { border-color: var(--akzent); background: #ffe9f3; color: var(--akzent-dunkel); }
 .abenteuerReiter { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
+/* ----- Willkommen zurück ----- */
+.rkZeit { display: flex; flex-direction: column; align-items: center; padding: 10px; margin: 6px 0 10px; border-radius: 18px;
+  background: linear-gradient(135deg, #ffe1ee, #ece0ff); }
+.rkZeit small { color: var(--text-sanft); font-weight: 700; }
+.rkZeit b { font-size: 1.35rem; color: var(--akzent-dunkel); }
+.rkTitel { text-align: left; margin: 12px 4px 4px; font-size: 0.95rem; }
+.offlineListe li { justify-content: space-between; }
+.rkName { flex: 1; min-width: 0; }
+.offlineListe .hell { margin-left: 6px; }
+
 /* ----- Navigation unten ----- */
 #untenNav {
   display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px;

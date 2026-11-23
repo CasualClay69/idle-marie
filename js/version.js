@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.5.3";
-const APP_NEU = "Aufgeräumt: Das Abenteuer hat jetzt Knöpfe für Kampf, Ausrüstung, Gebiete und Pfade.";
+const APP_VERSION = "1.6";
+const APP_NEU = "Neu: Willkommen zurück! Ein Fenster zeigt, wie lange du weg warst und was alles passiert ist.";

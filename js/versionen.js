@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.6", datum: "2026-11-23", neu: ["🌙 Willkommen zurück: Wenn du wieder ins Spiel kommst, siehst du, wie lange du weg warst – und alles, was in der Zeit passiert ist.", "Dazu zeigt es, was jetzt auf dich wartet: reife Beete, Season-Aufgaben, Haustiere zum Streicheln und geschaffte Aufträge."] },
   { v: "1.5.3", datum: "2026-11-22", neu: ["Das Abenteuer ist aufgeräumt: Oben gibt es Knöpfe für Kampf, Ausrüstung, Gebiete und Pfade."] },
   { v: "1.5.2", datum: "2026-11-22", neu: ["Garten: Auf den Samen-Knöpfen steht jetzt nur noch 1 und 10 – der Preis steht darunter."] },
   { v: "1.5.1", datum: "2026-11-22", neu: ["Die Seite „Ich“ ist aufgeräumt: Oben gibt es Knöpfe für Figur, Tiere, Erfolge, Bestenliste, Code, Statistik und Optionen."] },

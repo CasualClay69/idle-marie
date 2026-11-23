@@ -65,10 +65,17 @@ function zeigeTruhe(t) {
 let letzteGartenPruefung = 0;
 let letzterSeasonStand = "";
 function schleife() {
+  // Sicherheitsnetz: War die App länger weg, ohne dass das Zurückkommen gemeldet wurde?
+  if (!document.hidden && spiel.schnappschuss && Date.now() - spiel.schnappschuss.zeit > 60000) {
+    holeOfflineNach();
+    pruefeRueckkehr();
+    zeichneKopf(); zeichneAktivLeiste(); zeichneSeite();
+  }
   verarbeite(tick());
   if (Date.now() - letzteGartenPruefung > 1000) {
     letzteGartenPruefung = Date.now();
     pruefeQuest();
+    if (!document.hidden) merkeSchnappschuss();
     if (pruefeSeasonWechsel()) { speichern(); melde(`🎟️ Neue Season-Aufgaben sind da!`); }
     if (aktuelleSeite === "seiteFertigkeiten") zeichneSeasonBanner();
     if (aktuelleSeite === "seiteSeason") {
@@ -214,7 +221,7 @@ function starteSpiel() {
   richteSicherungEin();
   richteEinfuehrungEin();
   richteQuestsEin();
-  const offline = holeOfflineNach();
+  holeOfflineNach();
   ruheAus();
   zeichneKopf();
   zeichneAktivLeiste();
@@ -222,17 +229,19 @@ function starteSpiel() {
   for (const b of gartenStand().beete) if (b && beetFortschritt(b) >= 1) b.gemeldet = true;   // beim Start nicht alles auf einmal melden
   zeigeSeite("seiteFertigkeiten");
   if (!spiel.figur) fragFigur();
-  else if (offline && offline.durchgaenge) zeigeOffline(offline);
+  else pruefeRueckkehr();   // "Willkommen zurück!" mit allem, was passiert ist
   for (const e of pruefeErfolge()) melde(`🏆 Erfolg: ${e.name}! +${zahl(e.muenzen)} Münzen`, "gross");
   speichern();
   requestAnimationFrame(schleife);
 
   setInterval(speichern, 10 * 1000);
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) speichern();
+    if (document.hidden) { merkeSchnappschuss(); speichern(); }
     else {
-      const e = holeOfflineNach();
-      if (e && e.durchgaenge) { zeigeOffline(e); zeichneKopf(); zeichneAktivLeiste(); zeichneSeite(); }
+      holeOfflineNach();
+      zeichneKopf(); zeichneAktivLeiste(); zeichneSeite();
+      pruefeRueckkehr();
+      speichern();
       pruefeAufUpdate();
     }
   });
