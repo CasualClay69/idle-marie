@@ -43,10 +43,11 @@ function zeichneSeason() {
   const aufgabeHtml = a => {
     const z = aufgabeStand(a);
     const alt = a.art === "tag" && a.tag !== tagText() ? `<span class="altMarke">von ${Number(a.tag.slice(8))}.${Number(a.tag.slice(5, 7))}.</span>` : "";
-    return `<div class="aufgabe${a.abgeholt ? " erledigt" : ""}${z.fertig && !a.abgeholt ? " fertig" : ""}">
+    const offen = !a.abgeholt && !z.fertig;
+    return `<div class="aufgabe${a.abgeholt ? " erledigt" : ""}${z.fertig && !a.abgeholt ? " fertig" : ""}${offen ? " hinKnopf" : ""}"${offen ? ` data-hin="${a.id}" role="button"` : ""}>
       <span class="aText"><b>${a.text} ${alt}</b><span class="balken duenn"><div style="width:${(z.wert / a.ziel * 100).toFixed(1)}%"></div></span>
         <small>${zahl(z.wert)} / ${zahl(a.ziel)} · ⭐ ${a.punkte} Punkte</small></span>
-      ${a.abgeholt ? `<span class="aHaken">✓</span>` : z.fertig ? `<button type="button" class="knopf kaufen" data-aufgabe="${a.id}">Abholen</button>` : ""}</div>`;
+      ${a.abgeholt ? `<span class="aHaken">✓</span>` : z.fertig ? `<button type="button" class="knopf kaufen" data-aufgabe="${a.id}">Abholen</button>` : `<span class="aHin">🧭</span>`}</div>`;
   };
   const tag = s.aufgaben.filter(a => a.art === "tag").sort((x, y) => (x.abgeholt - y.abgeholt) || y.tag.localeCompare(x.tag));
   const woche = s.aufgaben.filter(a => a.art === "woche");
@@ -86,6 +87,14 @@ function zeichneSeason() {
     zeichneSeason();
     zeichneSeasonBanner();
   });
+  for (const d of $("seasonInhalt").querySelectorAll("[data-hin]")) d.addEventListener("click", () => {
+    const a = spiel.season.aufgaben.find(x => x.id === d.dataset.hin);
+    if (!a) return;
+    ton.klick();
+    const h = seasonAufgabeZiel(a);
+    zeigeBlase(`🎟️ ${a.text}`, h.hinweis || "");
+    zeigeWegHilfe(h);
+  });
   $("zumSeasonMonster").addEventListener("click", () => {
     ton.klick();
     aktualisiereSeasonMonster();
@@ -111,4 +120,29 @@ function richteSeasonEin() {
   pruefeSeasonWechsel();
   $("seasonBanner").addEventListener("click", () => { ton.klick(); zeigeSeite("seiteSeason"); });
   $("seasonZurueck").addEventListener("click", () => { ton.klick(); zeigeSeite("seiteFertigkeiten"); });
+}
+
+// Wohin führt eine Tages- oder Wochenaufgabe? (gleiche Ziele wie der Kompass)
+function seasonAufgabeZiel(a) {
+  if (a.typ === "aktion") {
+    const t = besteTaetigkeit(a.fertigkeit);
+    return { fertigkeit: a.fertigkeit, ziel: t ? `.taetigkeit[data-id="${t.id}"]` : undefined, hinweis: t ? `Am besten jetzt: ${t.name}.` : "" };
+  }
+  if (a.typ === "monster") {
+    const m = besterGegner();
+    return { seite: "seiteAbenteuer", abenteuerTab: "gebiete", ziel: `.monsterKarte[data-monster="${m.id}"]`, hinweis: `Tippe ${m.name.replaceAll("­", "")} an – das passt gerade am besten zu dir.` };
+  }
+  if (a.typ === "season") return { seite: "seiteAbenteuer", abenteuerTab: "gebiete", ziel: '.monsterKarte[data-monster="season"]', hinweis: "Tippe das Season-Monster an!" };
+  if (a.typ === "ernte") return gartenZiel();
+  if (a.typ === "truhe") {
+    const p = [...PFADE].reverse().find(x => pfadFrei(x) && kampfStufe() >= MONSTER[x.chef].stufe - 5) || PFADE.find(pfadFrei);
+    return p ? { seite: "seiteAbenteuer", abenteuerTab: "pfade", ziel: `.pfadKarte[data-pfad="${p.id}"]`, hinweis: `Lauf den ${p.name} bis zum Ende – dann wartet die Schatztruhe.` }
+             : { seite: "seiteAbenteuer", abenteuerTab: "pfade", hinweis: "Besiege zuerst einen Chef, dann öffnet sich ein Pfad." };
+  }
+  if (a.typ === "streicheln") {
+    const tier = (spiel.haustiere || []).find(id => streichelnIn(id) === 0);
+    return { seite: "seiteIch", ichTab: "tiere", ziel: tier ? `.haustierKarte[data-id="${tier}"]` : ".haustierKarte",
+      hinweis: tier ? "Tippe das Haustier an und streichle es!" : "Gerade will kein Haustier gestreichelt werden – schau später wieder vorbei." };
+  }
+  return {};
 }

@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.9";
-const APP_NEU = "Neu: Die Wiki mit allem über alles – und ein Kompass, der dir immer zeigt, was du als Nächstes tun solltest.";
+const APP_VERSION = "1.9.1";
+const APP_NEU = "Season-Aufgaben antippen bringt dich direkt hin. Dazu zwei kleine Fehler behoben.";

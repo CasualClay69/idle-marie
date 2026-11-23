@@ -79,6 +79,7 @@ const WIKI_REGELN = [
     <p>Ein Pfad öffnet sich, sobald der Chef seines Gebiets einmal eingeschlafen ist. In den Truhen: Münzen, Beute, Barren, Essen, Edelsteine – mit Glück ein Pfad-Rahmen (${Math.round(PFAD_REGEL.rahmenChance * 100)} %) oder Papagei Kiki.</p>` },
   { id: "season", icon: "🎟️", titel: "Season-Pass", text: () => `
     <p>Jeden Monat gibt es eine neue Season mit eigenem Thema. Erledige jeden Tag ${SEASON.tagesAufgaben} Tagesaufgaben (je ${SEASON.tagesPunkte} Punkte) und jede Woche ${SEASON.wochenAufgaben} Wochenaufgaben (je ${SEASON.wochenPunkte} Punkte). Jedes Season-Monster gibt ${SEASON.monsterPunkte} Punkte.</p>
+    <p><b>Tipp:</b> Tippe eine Aufgabe an – dann bringt dich das Spiel direkt zur richtigen Stelle und lässt sie leuchten.</p>
     <p>${SEASON.punkteProStufe} Punkte = 1 Stufe. Bei ${SEASON.stufen} Stufen gibt es Rahmen, Kleidung, Hut und am Ende ein Season-Haustier.</p>
     <p>Die Season zählt nicht zu den 100 % im Guide – sie ist ein Extra für jeden Monat.</p>` },
   { id: "online", icon: "🏅", titel: "Bestenliste, Codes und Sichern", text: () => `

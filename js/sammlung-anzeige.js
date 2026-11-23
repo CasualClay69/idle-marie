@@ -21,7 +21,7 @@ function zeichneHaustiere() {
     const da = hatHaustier(h.id);
     return `<button type="button" class="haustierKarte${da ? "" : " fehlt"}${spiel.begleiter === h.id ? " begleiter" : ""}" data-id="${h.id}" ${da ? "" : "disabled"}>
       <span class="hEmoji">${da ? h.emoji : "❔"}</span>
-      <b>${da ? h.name : "???"}</b>${da ? `<span class="tierStufeKlein">${"★".repeat(tierStufe(h.id))}<i>Stufe ${tierStufe(h.id)}</i></span>` : ""}
+      <b>${da ? h.name : "???"}</b>${da ? `<span class="tierStufeKlein"><span class="tSterne">${"★".repeat(tierStufe(h.id))}</span><i>Stufe ${tierStufe(h.id)}</i></span>` : ""}
       <small>${da ? `${h.tier} · ${h.text}` : haustierHerkunft(h)}</small>
       ${spiel.begleiter === h.id ? `<span class="begleiterMarke">💖 Begleiter</span>` : ""}</button>`;
   };
