@@ -74,7 +74,7 @@ function zeichneAktivLeiste() {
     $("aktivSymbol").innerHTML = monsterSvg(m.aussehen);
     const pfad = spiel.aktiv.pfad && PFADE.find(p => p.id === spiel.aktiv.pfad.id);
     $("aktivTitel").textContent = pfad ? `${figurName()} auf dem ${pfad.name} (${spiel.aktiv.pfad.schritt + 1}/${pfad.liste.length})` : `${figurName()} ist im Abenteuer: ${m.name}`;
-    leiste.style.setProperty("--farbe", fertigkeit(spiel.kampfstil || "mut").farbe);
+    leiste.style.setProperty("--farbe", fertigkeit(aktiverStil()).farbe);
     return;
   }
   const t = spiel.aktiv && taetigkeitNachId(spiel.aktiv.id);
@@ -113,7 +113,7 @@ function zeichneFertigkeiten() {
       raster.append(el("h3", "rasterTitel", { sammeln: "🧺 Sammeln", machen: "🛠️ Herstellen", kampf: "⚔️ Abenteuer" }[art]));
     }
     const xp = spiel.xp[f.id] || 0;
-    const aktiv = spiel.aktiv && (spiel.aktiv.kampf ? f.id === (spiel.kampfstil || "mut") : taetigkeitNachId(spiel.aktiv.id).fertigkeit === f.id);
+    const aktiv = spiel.aktiv && (spiel.aktiv.kampf ? f.id === aktiverStil() : taetigkeitNachId(spiel.aktiv.id).fertigkeit === f.id);
     const zu = f.id === "sterne" && !sterneFrei();
     const karte = el("button", "fertigkeitKarte" + (aktiv ? " laeuft" : "") + (zu ? " zu" : ""));
     karte.type = "button";

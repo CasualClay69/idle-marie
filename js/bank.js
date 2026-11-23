@@ -39,7 +39,7 @@ const BANK_ARTEN = [
   { id: "essen",      name: "Essen",      icon: "🍲", muster: ["essen", "gericht"] },
   { id: "garten",     name: "Garten",     icon: "🌱", muster: ["gemuese", "kraut", "faser", "samen-gemuese", "samen-kraut", "samen-faser"] },
   { id: "basteln",    name: "Basteln",    icon: "🧸", muster: ["schnitz", "stoff", "kuschel"] },
-  { id: "ausruestung", name: "Ausrüstung", icon: "⚔️", muster: ["schwert", "helm", "schild", "ruestung", "ring", "kette"] },
+  { id: "ausruestung", name: "Ausrüstung", icon: "⚔️", muster: ["schwert", "bogen", "stab", "helm", "schild", "ruestung", "ring", "kette", "pfeil", "perle"] },
   { id: "traenke",    name: "Tränke",     icon: "🧪", muster: ["trank"] },
   { id: "beute",      name: "Beute",      icon: "💎", muster: [] },   // alles andere
 ];

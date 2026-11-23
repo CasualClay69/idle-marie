@@ -17,8 +17,9 @@ function zeigeAbenteuerTab(teil) {
 function zeichneAbenteuer() {
   const a = spiel.aktiv?.kampf ? spiel.aktiv : null;
   const m = a && MONSTER[a.monster];
-  const w = spielerWerte();
+  const w = spielerWerte(m);
   const seite = $("abenteuerInhalt");
+  const ka = KAMPFARTEN[w.art];
   const figur = figurName();
 
   // ----- Kampf oder Ruhe -----
@@ -52,11 +53,16 @@ function zeichneAbenteuer() {
   }
 
   // ----- Kampfstil & Werte -----
-  const stile = KAMPFSTILE.map(s => `<button type="button" class="stilKnopf${(spiel.kampfstil || "mut") === s.id ? " aktiv" : ""}" data-stil="${s.id}">
+  const stile = erlaubteStile(w.art).map(s => `<button type="button" class="stilKnopf${aktiverStil() === s.id ? " aktiv" : ""}" data-stil="${s.id}">
       <span>${s.icon}</span>${s.name}<small>${s.text}</small></button>`).join("");
   const gegnerTreff = m ? ` · Treffer gegen ${m.name}: <b>${prozent(trefferChance(w.genauigkeit, m.ausweichen))}</b>` : "";
-  const werte = `<div class="karte"><h3>🎯 Kampfstil</h3><div class="stile">${stile}</div>
-    <p class="werte">💥 Stärkster Schlag: <b>${w.maxSchlag}</b> · 🛡️ Weniger Schaden: <b>${prozent(w.weniger)}</b>${gegnerTreff}</p></div>`;
+  const dreieckText = m && w.dreieck ? `<p class="dreieckHinweis ${w.dreieck > 0 ? "gut" : "schlecht"}">${w.dreieck > 0
+      ? `${ka.icon} Super! ${ka.name} ist stark gegen ${KAMPFARTEN[monsterArt(m)].icon}-Monster: +${prozent(w.dreieck)}`
+      : `${KAMPFARTEN[monsterArt(m)].icon} Achtung: Dieses Monster ist stark gegen ${ka.name} (−${prozent(-w.dreieck)}). Probier eine andere Waffe!`}</p>` : "";
+  const ohneMun = ka.munition && !munitionBereit(w.art) ? `<p class="dreieckHinweis schlecht">${ka.icon} Du hast keine ${ka.munition === "pfeile" ? "Pfeile" : "Zauberperlen"} gewählt – ohne sie bist du ganz schwach! Tippe in der 🎒 Ausrüstung auf ${ka.munition === "pfeile" ? "den Köcher" : "die Perlen"}.</p>` : "";
+  const werte = `<div class="karte"><h3>🎯 Kampfstil <small>${ka.icon} ${ka.name}${w.art === "nah" ? "" : ` mit ${ka.waffe}`}</small></h3><div class="stile">${stile}</div>
+    <p class="werte">💥 Stärkster Schlag: <b>${w.maxSchlag}</b> · 🛡️ Weniger Schaden: <b>${prozent(w.weniger)}</b>${gegnerTreff}</p>${dreieckText}${ohneMun}
+    <p class="hinweis">Die Waffe bestimmt die Kampfart: 🗡️ Schwert = Nahkampf, 🏹 Bogen = Fernkampf, 🪄 Zauberstab = Magie.</p></div>`;
 
   // ----- Ausrüstung & Essen -----
   const plaetze = PLAETZE.map(p => {
@@ -66,13 +72,21 @@ function zeichneAbenteuer() {
   const essen = spiel.essen && anzahl(spiel.essen) ? spiel.essen : null;
   const essenKnopf = `<button type="button" class="platz essenPlatz" data-platz="essen">${essen ? symbolHtml(essen) : `<span class="platzLeer">🍽️</span>`}
     <small>${essen ? `${GEGENSTAENDE[essen].name} ×${zahl(anzahl(essen))}` : "Essen wählen"}</small></button>`;
-  const ausruestung = `<div class="karte"><h3>🎒 Ausrüstung</h3><div class="plaetze">${plaetze}${essenKnopf}</div>
-    <p class="hinweis">Ausrüstung schmiedest du beim 🔨 Schmieden aus Barren. ${figur} isst automatisch, wenn weniger als die Hälfte der Herzen übrig ist.</p></div>`;
+  const munKnopf = ka.munition ? (() => {
+    const id = spiel.munition?.[ka.munition], da = id && anzahl(id) > 0;
+    return `<button type="button" class="platz essenPlatz" data-platz="${ka.munition}">${da ? symbolHtml(id) : `<span class="platzLeer">${ka.munition === "pfeile" ? "➳" : "🔮"}</span>`}
+      <small>${da ? `${GEGENSTAENDE[id].name} ×${zahl(anzahl(id))}` : ka.munition === "pfeile" ? "Pfeile wählen" : "Perlen wählen"}</small></button>`;
+  })() : "";
+  const ausruestung = `<div class="karte"><h3>🎒 Ausrüstung <small>${ka.icon} ${ka.name}</small></h3><div class="plaetze">${plaetze}${essenKnopf}${munKnopf}</div>
+    <p class="hinweis">Schwert, Helm, Schild und Rüstung schmiedest du beim 🔨 Schmieden, Bögen und Pfeile beim 🪚 Schnitzen, Zauberstäbe und Zauberperlen beim 💍 Goldschmieden. ${figur} isst automatisch, wenn weniger als die Hälfte der Herzen übrig ist.</p></div>`;
 
   // ----- Gebiete -----
+  const legende = `<p class="hinweis dreieckLegende">Jedes Monster kämpft auf seine Art (Zeichen oben links): ⚔️ Nahkampf · 🏹 Fernkampf · 🪄 Magie.
+    ⚔️ ist stark gegen 🏹, 🏹 stark gegen 🪄, 🪄 stark gegen ⚔️. <b class="gut">Grün</b> = gut für deine Waffe, <b class="schlecht">rot</b> = schwer.</p>`;
   const gebiete = GEBIETE.map(g => `<div class="gebiet" style="--farbe:${g.farbe}">
       <h3>${g.icon} ${g.name} <small>empfohlen ab Kampfstufe ${g.ab}</small></h3>
       <div class="monsterListe">${g.monster.map(mo => `<button type="button" class="monsterKarte${a?.monster === mo.id ? " laeuft" : ""}${mo.chef ? " chef" : ""}" data-monster="${mo.id}">
+        <span class="mArt${dreieck(mo, w.art) > 0 ? " gut" : dreieck(mo, w.art) < 0 ? " schlecht" : ""}" title="${KAMPFARTEN[monsterArt(mo)].name}">${KAMPFARTEN[monsterArt(mo)].icon}</span>
         <span class="mBild">${monsterSvg(mo.aussehen)}</span><b>${mo.name}</b><small>Stufe ${mo.stufe}${spiel.besiegt?.[mo.id] ? ` · 💤 ${zahl(spiel.besiegt[mo.id])}` : ""}</small>
         <span class="mBeute">${(mo.beute || []).map(b => symbolHtml(b.id, "mini")).join("")}</span></button>`).join("")}</div>
       ${beuteTabelle(g.monster)}
@@ -94,7 +108,7 @@ function zeichneAbenteuer() {
     }).join("")}</div>`;
   const reiter = `<div class="ichReiter abenteuerReiter">${ABENTEUER_REITER.map(([id, icon, name]) =>
     `<button type="button" data-tab="${id}" class="${abenteuerTab === id ? "aktiv" : ""}"><span>${icon}</span>${name}${id === "kampf" && a ? " ●" : ""}</button>`).join("")}</div>`;
-  const inhalt = { kampf: kampf + werte, ausruestung, gebiete: seasonGebiet + gebiete, pfade }[abenteuerTab] || kampf + werte;
+  const inhalt = { kampf: kampf + werte, ausruestung, gebiete: legende + seasonGebiet + gebiete, pfade }[abenteuerTab] || kampf + werte;
   seite.innerHTML = reiter + inhalt;
   for (const b of seite.querySelectorAll(".abenteuerReiter button")) b.addEventListener("click", () => { ton.klick(); zeigeAbenteuerTab(b.dataset.tab); $("inhalt").scrollTop = 0; });
 
@@ -156,19 +170,24 @@ function zeichneKampfLive() {
 // ----- Ausrüstung / Essen wählen -----
 function zeigePlatzWahl(platz) {
   const ziel = $("wahlInhalt");
-  const istEssen = platz === "essen";
+  const istMun = platz === "pfeile" || platz === "perlen";
+  const istEssen = platz === "essen" || istMun;
   const p = PLAETZE.find(x => x.id === platz);
   const ids = Object.keys(spiel.bank).filter(id => anzahl(id) > 0 &&
-    (istEssen ? GEGENSTAENDE[id].heilt : GEGENSTAENDE[id].platz === platz));
-  let html = `<h2>${istEssen ? "🍽️ Essen für den Kampf" : `${p.icon} ${p.name}`}</h2>`;
-  const jetzt = istEssen ? spiel.essen : spiel.ausruestung[platz];
+    (istMun ? GEGENSTAENDE[id].munition === platz : istEssen ? GEGENSTAENDE[id].heilt : GEGENSTAENDE[id].platz === platz));
+  let html = `<h2>${platz === "pfeile" ? "➳ Pfeile für den Bogen" : platz === "perlen" ? "🔮 Zauberperlen" : istEssen ? "🍽️ Essen für den Kampf" : `${p.icon} ${p.name}`}</h2>`;
+  const jetzt = istMun ? spiel.munition?.[platz] : istEssen ? spiel.essen : spiel.ausruestung[platz];
   if (jetzt && !istEssen) html += `<p>Jetzt: <b>${GEGENSTAENDE[jetzt].name}</b></p><button type="button" class="knopf leise" data-ab="1">Ablegen</button>`;
-  if (!ids.length) html += `<p class="hinweis">${istEssen ? "Du hast noch kein Essen. Koche Fisch beim 🍳 Kochen!" : "Du hast nichts Passendes in der Bank. Schmiede etwas beim 🔨 Schmieden!"}</p>`;
+  if (!ids.length) html += `<p class="hinweis">${platz === "pfeile" ? "Du hast keine Pfeile. Schnitze welche beim 🪚 Schnitzen (Holz + Barren)!"
+    : platz === "perlen" ? "Du hast keine Zauberperlen. Mach welche beim 💍 Goldschmieden aus Erz!"
+    : istEssen ? "Du hast noch kein Essen. Koche Fisch beim 🍳 Kochen!"
+    : platz === "waffe" ? "Du hast keine Waffe in der Bank. Schwerter gibt es beim 🔨 Schmieden, Bögen beim 🪚 Schnitzen und Zauberstäbe beim 💍 Goldschmieden!"
+    : "Du hast nichts Passendes in der Bank. Schmiede etwas beim 🔨 Schmieden!"}</p>`;
   html += `<div class="wahlListe">${ids.map(id => {
     const g = GEGENSTAENDE[id];
-    const ok = istEssen || darfTragen(g);
-    const info = istEssen ? `heilt ${g.heilt} ❤️ · ×${zahl(anzahl(id))}`
-      : g.schmuckText ? `✨ ${g.schmuckText}` : [g.bonus.treff && `🎯 +${g.bonus.treff}`, g.bonus.kraft && `💥 +${g.bonus.kraft}`, g.bonus.abwehr && `🛡️ +${g.bonus.abwehr}`, g.bonus.weniger && `−${g.bonus.weniger} % Schaden`].filter(Boolean).join(" · ");
+    const ok = (istEssen && !istMun) || darfTragen(g);
+    const info = istMun ? `💥 +${g.bonus.kraft} · ×${zahl(anzahl(id))}` : istEssen ? `heilt ${g.heilt} ❤️ · ×${zahl(anzahl(id))}`
+      : g.schmuckText ? `✨ ${g.schmuckText}` : (g.kampfart ? `${KAMPFARTEN[g.kampfart].icon} ${KAMPFARTEN[g.kampfart].name} · ` : "") + [g.bonus.treff && `🎯 +${g.bonus.treff}`, g.bonus.kraft && `💥 +${g.bonus.kraft}`, g.bonus.abwehr && `🛡️ +${g.bonus.abwehr}`, g.bonus.weniger && `−${g.bonus.weniger} % Schaden`].filter(Boolean).join(" · ");
     const sperre = ok ? "" : ` · 🔒 ${Object.entries(g.braucht).map(([f, l]) => `${fertigkeit(f).name} ${l}`).join(", ")}`;
     return `<button type="button" class="wahlZeile${ok ? "" : " gesperrt"}${jetzt === id ? " aktiv" : ""}" data-id="${id}" ${ok ? "" : "disabled"}>${symbolHtml(id)}<span><b>${g.name}</b><small>${info}${sperre}</small></span></button>`;
   }).join("")}</div>`;
@@ -179,7 +198,8 @@ function zeigePlatzWahl(platz) {
   });
   for (const b of ziel.querySelectorAll(".wahlZeile")) b.addEventListener("click", () => {
     ton.klick();
-    if (istEssen) spiel.essen = b.dataset.id; else ruesteAus(b.dataset.id);
+    if (istMun) (spiel.munition = spiel.munition || {})[platz] = b.dataset.id;
+    else if (istEssen) spiel.essen = b.dataset.id; else ruesteAus(b.dataset.id);
     nachWahl();
   });
   $("wahlOverlay").hidden = false;

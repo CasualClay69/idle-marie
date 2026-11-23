@@ -1143,3 +1143,16 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .sePunkte i { width: 9px; height: 9px; border-radius: 50%; background: var(--rand); }
 .sePunkte i.an { background: var(--akzent); }
 .seKnoepfe { display: flex; gap: 8px; justify-content: center; }
+
+/* ----- Fernkampf & Magie ----- */
+.monsterKarte { position: relative; }
+.mArt { position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 8px;
+  background: #f3eef8; font-size: 0.85rem; border: 2px solid #fff; }
+.mArt.gut { background: #c9f0cf; border-color: #4fc27a; }
+.mArt.schlecht { background: #ffd6d6; border-color: #e05570; }
+.dreieckHinweis { margin: 6px 0 0; padding: 6px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 800; }
+.dreieckHinweis.gut { background: #e3f7e6; color: #2f8a4a; }
+.dreieckHinweis.schlecht { background: #ffe6e6; color: #c0394f; }
+.dreieckLegende .gut { color: #2f8a4a; }
+.dreieckLegende .schlecht { color: #c0394f; }
+.karte h3 small { font-size: 0.75rem; color: var(--text-sanft); font-weight: 700; }

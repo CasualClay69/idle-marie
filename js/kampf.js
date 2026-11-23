@@ -12,14 +12,51 @@ function ausgeruestet(platz) {
 function ausruestungsBonus(art) {
   return PLAETZE.reduce((s, p) => s + (ausgeruestet(p.id)?.bonus[art] || 0), 0);
 }
+// Kampfstufe: die beste Angriffs-Art zählt (Nahkampf = Mittel aus Mut und Kraft, Fernkampf, Magie)
 function kampfStufe() {
-  return Math.floor((stufe("mut") + stufe("kraft") + stufe("schutz") + stufe("herzen")) / 4);
+  const angriff = Math.max((stufe("mut") + stufe("kraft")) / 2, stufe("fernkampf"), stufe("magie"));
+  return Math.floor((2 * angriff + stufe("schutz") + stufe("herzen")) / 4);
+}
+// Die Waffe bestimmt die Kampfart
+function kampfArt() { return ausgeruestet("waffe")?.kampfart || "nah"; }
+// Der Kampfstil muss zur Kampfart passen (sonst der erste passende)
+function erlaubteStile(art = kampfArt()) { return [...KAMPFSTILE.filter(s => s.kampfart === art), ...KAMPFSTILE.filter(s => s.kampfart === "alle")]; }
+function aktiverStil() {
+  const erlaubt = erlaubteStile();
+  return erlaubt.some(s => s.id === spiel.kampfstil) ? spiel.kampfstil : erlaubt[0].id;
+}
+// Gewählte Munition (Pfeile / Zauberperlen), wenn noch welche da sind und man sie benutzen darf
+function munitionBereit(art = kampfArt()) {
+  const was = KAMPFARTEN[art].munition;
+  if (!was) return null;
+  const id = spiel.munition?.[was];
+  const g = id && GEGENSTAENDE[id];
+  return g && anzahl(id) > 0 && darfTragen(g) ? g : null;
+}
+// Kampf-Dreieck: +Bonus (stark), −Malus (schwach) oder 0
+function dreieck(m, art = kampfArt()) {
+  const ma = monsterArt(m);
+  if (KAMPFARTEN[art].stark === ma) return KAMPF.dreieckStark;
+  if (KAMPFARTEN[ma].stark === art) return -KAMPF.dreieckSchwach;
+  return 0;
 }
 function maxHp() { return Math.round(stufe("herzen") * KAMPF.hpProStufe * (1 + schmuckBonus("herzen") + sternBonus("herzen"))); }
-function spielerWerte() {
+function spielerWerte(m = null) {
+  const art = kampfArt();
+  let treffStufe = stufe("mut"), kraftStufe = stufe("kraft"), treffB = ausruestungsBonus("treff"), kraftB = ausruestungsBonus("kraft");
+  if (art !== "nah") {
+    // Fernkampf und Magie: eine Fertigkeit für Treffen UND Schlag – aber nur mit Munition richtig stark
+    treffStufe = kraftStufe = stufe(KAMPFARTEN[art].fertigkeit);
+    const mun = munitionBereit(art);
+    if (mun) kraftB += mun.bonus.kraft;
+    else { treffB = Math.round(treffB / 3); kraftB = 0; kraftStufe = Math.round(kraftStufe / 3); }
+  }
+  const d = m ? dreieck(m, art) : 0;
   return {
-    genauigkeit: Math.round((stufe("mut") + 8) * (64 + ausruestungsBonus("treff")) * (1 + trankKampf("treff") + haustierBonus("treff") + schmuckBonus("treff") + sternBonus("treff"))),
-    maxSchlag: Math.floor((15 + stufe("kraft") * 1.6 + ausruestungsBonus("kraft") * 1.5) * (1 + trankKampf("kraft") + haustierBonus("kraft") + schmuckBonus("kraft") + sternBonus("kraft"))),
+    art,
+    dreieck: d,
+    genauigkeit: Math.round((treffStufe + 8) * (64 + treffB) * (1 + d + trankKampf("treff") + haustierBonus("treff") + schmuckBonus("treff") + sternBonus("treff"))),
+    maxSchlag: Math.floor((15 + kraftStufe * 1.6 + kraftB * 1.5) * (1 + d + trankKampf("kraft") + haustierBonus("kraft") + schmuckBonus("kraft") + sternBonus("kraft"))),
     ausweichen: (stufe("schutz") + 8) * (64 + ausruestungsBonus("abwehr")),
     weniger: Math.min(0.6, ausruestungsBonus("weniger") / 100 + trankKampf("schutz") + haustierBonus("schutz") + sternBonus("schutz")),
     tempo: KAMPF.ohneWaffeTempo,
@@ -86,7 +123,7 @@ function isst(ergebnis) {
 }
 
 function gibKampfXp(schaden, ergebnis) {
-  const stil = spiel.kampfstil || "mut";
+  const stil = aktiverStil();
   const f = trankFaktorXp() * (1 + baumhausBonus("kampfxp"));
   for (const [fid, xp] of [[stil, schaden * KAMPF.xpProSchaden * (f + sternBonus("xp", stil))], ["herzen", schaden * KAMPF.herzenXpProSchaden * (f + sternBonus("xp", "herzen"))]]) {
     const vorher = stufe(fid);
@@ -113,10 +150,11 @@ function kampfTick(jetzt, ergebnis) {
     }
     const naechster = Math.min(a.spielerNaechster, a.monsterNaechster);
     if (naechster > jetzt) break;
-    const w = spielerWerte();
+    const w = spielerWerte(m);
     if (a.spielerNaechster <= a.monsterNaechster) {
       // Die Figur ist dran
       a.spielerNaechster += w.tempo * 1000;
+      if (w.art !== "nah") verbraucheMunition(w.art, ergebnis);
       if (Math.random() < trefferChance(w.genauigkeit, m.ausweichen)) {
         const schaden = Math.min(a.mhp, zufall(1, w.maxSchlag));
         a.mhp -= schaden;
@@ -152,7 +190,22 @@ function kampfTick(jetzt, ergebnis) {
   }
 }
 
+// Ein Pfeil / eine Zauberperle pro Angriff (Pfeile kann man manchmal wieder aufsammeln)
+function verbraucheMunition(art, ergebnis) {
+  const g = munitionBereit(art);
+  if (!g) {
+    if (!spiel.aktiv.ohneMunition) { spiel.aktiv.ohneMunition = true; logge(art === "fern" ? `🏹 Keine Pfeile mehr – ${figurNameKurz()} schubst mit dem Bogen` : `🪄 Keine Zauberperlen mehr – nur noch kleine Funken`); }
+    return;
+  }
+  spiel.aktiv.ohneMunition = false;
+  if (art === "fern" && Math.random() < KAMPF.pfeilZurueck) return;
+  nimmAusBank(g.id, 1);
+  ergebnis.verbraucht[g.id] = (ergebnis.verbraucht[g.id] || 0) + 1;
+}
+
 function besiegt(m, ergebnis) {
+  const statKey = { nah: "besiegtNah", fern: "besiegtFern", magie: "besiegtMagie" }[kampfArt()];
+  spiel.statistik[statKey] = (spiel.statistik[statKey] || 0) + 1;
   ergebnis.durchgaenge++;
   ergebnis.besiegt = (ergebnis.besiegt || 0) + 1;
   spiel.statistik.besiegt = (spiel.statistik.besiegt || 0) + 1;

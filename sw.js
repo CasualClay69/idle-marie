@@ -36,6 +36,7 @@ const DATEIEN = [
   "js/daten-pfade.js",
   "js/daten-schmuck.js",
   "js/daten-sterne.js",
+  "js/daten-fernkampf.js",
   "js/symbole.js",
   "js/ikonen.js",
   "js/ikonen-natur.js",

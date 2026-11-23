@@ -52,7 +52,12 @@ const WIKI_REGELN = [
     <p><b>Kampfstil:</b> „Mutig“ übt Mut (öfter treffen), „Kräftig“ übt Kraft (stärker schlagen), „Vorsichtig“ übt Schutz (seltener getroffen werden). ❤️ Herzen steigen immer mit.</p>
     <p>Wenn deine Herzen unter ${Math.round(KAMPF.essenUnter * 100)} % fallen, isst deine Figur automatisch das gewählte Essen. Nach jedem eingeschlafenen Monster gibt es +${Math.round(KAMPF.verschnaufen * 100)} % Herzen zurück.</p>
     <p>Sind alle Herzen weg, geht deine Figur nach Hause und ruht sich aus – du verlierst nichts.</p>
-    <p>Deine <b>Kampfstufe</b> ist der Durchschnitt aus Mut, Kraft, Schutz und Herzen. Jedes Gebiet zeigt, ab welcher Kampfstufe es empfohlen ist.</p>` },
+    <p>Deine <b>Kampfstufe</b> zählt deine beste Angriffs-Art (Mut und Kraft, Fernkampf oder Magie) doppelt, dazu Schutz und Herzen. Jedes Gebiet zeigt, ab welcher Kampfstufe es empfohlen ist.</p>` },
+  { id: "kampfarten", icon: "🏹", titel: "Nahkampf, Fernkampf und Magie", text: () => `
+    <p>Die <b>Waffe</b> bestimmt, wie du kämpfst: 🗡️ Schwert = ⚔️ Nahkampf (übt Mut oder Kraft), 🏹 Bogen = Fernkampf, 🪄 Zauberstab = Magie.</p>
+    <p>Der <b>Bogen</b> braucht Pfeile (beim 🪚 Schnitzen aus Holz und Barren). ${Math.round(KAMPF.pfeilZurueck * 100)} % der Pfeile sammelst du wieder auf. Der <b>Zauberstab</b> braucht Zauberperlen (beim 💍 Goldschmieden aus Erz) – jeder Zauber verbraucht eine. Ohne Munition bist du ganz schwach!</p>
+    <p><b>Kampf-Dreieck:</b> Jedes Monster kämpft auf seine Art. ⚔️ ist stark gegen 🏹-Monster, 🏹 stark gegen 🪄-Monster, 🪄 stark gegen ⚔️-Monster. Stark = +${Math.round(KAMPF.dreieckStark * 100)} % Treffer und Schlag, schwach = −${Math.round(KAMPF.dreieckSchwach * 100)} %.</p>
+    <p>Fernkampf und Magie sind je <b>eine</b> Fertigkeit für Treffen und Schlag. Schutz und Herzen helfen bei jeder Kampfart.</p>` },
   { id: "ausruestung", icon: "🛡️", titel: "Ausrüstung", text: () => `
     <p>Schwert, Helm, Schild und Rüstung schmiedest du beim 🔨 Schmieden aus Barren. Zum Anlegen brauchst du Mut (Schwert) oder Schutz (Rest) auf der Stufe des Materials.</p>
     <p>Dazu kommen 💍 Ring und 📿 Kette vom Goldschmieden – jeder Edelstein hat eine andere Kraft.</p>` },
@@ -102,6 +107,24 @@ const GUIDE_EINSCHUEBE = [
   { nach: "Verdiene 30 Münzen", schritt: { id: "rad:1", icon: "🎁", titel: "Dreh das Glücksrad",
     text: "Oben auf der 🌟 Fertigkeiten-Seite wartet jeden Tag ein Geschenk. Dreh das Glücksrad – am besten jeden Tag!",
     ziel: 1, wert: () => spiel.gluecksrad?.gedreht || 0, hilfe: { seite: "seiteFertigkeiten", ziel: "#gluecksKarte" } } },
+  { nach: "Trink einen Trank", schritt: { id: "fern:1", icon: "🏹", titel: "Schnitze einen Kurzbogen",
+    text: "Beim 🪚 Schnitzen machst du aus 3 Ästchen einen Kurzbogen. Mit Pfeil und Bogen kämpfst du aus der Ferne!",
+    ziel: 1, wert: () => gemacht("bogen0"), hilfe: { fertigkeit: "schnitzen", ziel: '.taetigkeit[data-id="schnitzen-bogen0"]' } } },
+  { nach: "Trink einen Trank", schritt: { id: "fern:2", icon: "➳", titel: "Schnitze 30 Kupfer-Pfeile",
+    text: "Pfeile schnitzt du aus Holz und einem Barren – 15 Stück auf einmal.",
+    ziel: 30, wert: () => gemacht("pfeil0"), hilfe: { fertigkeit: "schnitzen", ziel: '.taetigkeit[data-id="schnitzen-pfeil0"]' } } },
+  { nach: "Trink einen Trank", schritt: { id: "fern:3", icon: "🏹", titel: "10 Monster mit Pfeil und Bogen",
+    text: "Leg den Bogen an, wähle die Pfeile und lass 10 Monster einschlafen. Tipp: Bogen ist stark gegen 🪄-Monster!",
+    ziel: 10, wert: () => spiel.statistik.besiegtFern || 0, fertigkeitId: "fernkampf", hilfe: { seite: "seiteAbenteuer" } } },
+  { nach: "Schaffe den Flüsterpfad", schritt: { id: "magie:1", icon: "🪄", titel: "Mach dir einen Zauberstab",
+    text: "Beim 💍 Goldschmieden wird aus 2 Ästchen und einem Bernstein ein Zauberstab.",
+    ziel: 1, wert: () => gemacht("stab0"), hilfe: { fertigkeit: "schmuck", ziel: '.taetigkeit[data-id="schmuck-stab0"]' } } },
+  { nach: "Schaffe den Flüsterpfad", schritt: { id: "magie:2", icon: "🔮", titel: "Mach 30 Zauberperlen",
+    text: "Zauberperlen machst du beim 💍 Goldschmieden aus Erz – 15 Stück auf einmal. Jeder Zauber braucht eine.",
+    ziel: 30, wert: () => gemacht("perle0"), hilfe: { fertigkeit: "schmuck", ziel: '.taetigkeit[data-id="schmuck-perle0"]' } } },
+  { nach: "Schaffe den Flüsterpfad", schritt: { id: "magie:3", icon: "🪄", titel: "10 Monster mit Magie",
+    text: "Leg den Zauberstab an, wähle die Perlen und lass 10 Monster einschlafen. Tipp: Magie ist stark gegen ⚔️-Monster!",
+    ziel: 10, wert: () => spiel.statistik.besiegtMagie || 0, fertigkeitId: "magie", hilfe: { seite: "seiteAbenteuer" } } },
   { nach: "Schaffe den Pusteblumen-Pfad", schritt: { id: "sterne:1", icon: "🔭", titel: "Beobachte die Sterne",
     text: "Nach deinem ersten Pfad öffnet sich die 🔭 Sternenkunde. Beobachte das Eichhörnchen-Sternbild und sammle 30 Sternsplitter.",
     ziel: 30, wert: () => spiel.zaehler?.sternsplitter2 || 0, hilfe: { fertigkeit: "sterne" } } },

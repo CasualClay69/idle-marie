@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.15", datum: "2026-11-23", neu: ["🏹 Fernkampf: Schnitze Bögen und Pfeile und kämpfe aus der Ferne. Manche Pfeile sammelst du wieder auf.", "🪄 Magie: Mach beim Goldschmieden Zauberstäbe und Zauberperlen – jeder Zauber braucht eine Perle.", "🔺 Kampf-Dreieck: Jedes Monster kämpft auf seine Art. ⚔️ ist stark gegen 🏹, 🏹 gegen 🪄, 🪄 gegen ⚔️. Grün auf der Monster-Karte = gut für deine Waffe.", "Zwei neue Fertigkeiten (Fernkampf und Magie), neue Erfolge, Guide-Schritte und Wiki-Seiten."] },
   { v: "1.14", datum: "2026-11-23", neu: ["🔭 Neue Fertigkeit Sternenkunde – sie öffnet sich nach deinem ersten Abenteuer-Pfad. Beobachte 8 Sternbilder und sammle 💫 Sternsplitter und seltene 🌟 Goldsplitter.", "✨ Jedes Sternbild gehört zu zwei Fertigkeiten. Lass seine Sterne leuchten: schneller, öfter doppelt, mehr Erfahrung – und ein goldener Stern mit besonderer Kraft.", "🦋 Neues Haustier: Nachtfalter Mondi. Dazu neue Erfolge, Season-Aufgaben, Wiki-Seite und eine Einführung.", "Im Abenteuer sind die Beute-Tabellen jetzt am Anfang zugeklappt."] },
   { v: "1.13", datum: "2026-11-23", neu: ["💰 Abenteuer → Gebiete: Jedes Monster zeigt seine Beute. Unter jedem Gebiet steht „Wer lässt was fallen?“ – mit Chance, Menge, Münzen und bei Chefs Pokal und Haustier.", "Der rote Schließen-Knopf hat jetzt runde Ecken."] },
   { v: "1.12.1", datum: "2026-11-23", neu: ["Das Übungs- und das Fortschritts-Fenster haben oben rechts einen roten Schließen-Knopf, der auch beim Scrollen sichtbar bleibt."] },

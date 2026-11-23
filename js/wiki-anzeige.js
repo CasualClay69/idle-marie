@@ -68,6 +68,7 @@ function wikiIndex() {
     if (g.heilt) dazu(nutz, id, "🍽️ Essen im Abenteuer und für Haustiere");
     if (g.platz) dazu(nutz, id, "⚔️ Anlegen im Abenteuer");
     if (g.trank) dazu(nutz, id, "🧪 Trinken in der Bank");
+    if (g.munition) dazu(nutz, id, g.munition === "pfeile" ? "🏹 Pfeile für den Bogen" : "🪄 Zauberperlen für den Zauberstab");
   }
   return (wikiIndex.fertig = { her, nutz });
 }
@@ -111,6 +112,8 @@ const KAMPF_TEXTE = {
   mut: "Mut lässt dich öfter treffen. Du übst ihn mit dem Kampfstil „⚔️ Mutig“. Für Schwerter brauchst du Mut.",
   kraft: "Kraft macht deinen Schlag stärker – Monster schlafen schneller ein. Du übst sie mit dem Kampfstil „💪 Kräftig“.",
   schutz: "Schutz lässt dich öfter ausweichen. Du übst ihn mit dem Kampfstil „🛡️ Vorsichtig“. Für Helm, Schild und Rüstung brauchst du Schutz.",
+  fernkampf: "Fernkampf ist Treffen und Schlag mit Pfeil und Bogen. Du übst ihn mit einem Bogen und dem Kampfstil „🏹 Schießen“. Bögen und Pfeile schnitzt du beim 🪚 Schnitzen.",
+  magie: "Magie ist Treffen und Schlag mit dem Zauberstab. Du übst sie mit einem Zauberstab und dem Kampfstil „🪄 Zaubern“. Zauberstäbe und Zauberperlen machst du beim 💍 Goldschmieden.",
   herzen: () => `Herzen sind deine Lebenspunkte (Stufe × ${KAMPF.hpProStufe}). Sie steigen bei jedem Kampf mit und beginnen bei Stufe 10.`,
 };
 function wikiFertigkeiten() {
@@ -172,13 +175,14 @@ function wikiMonsterZeile(m) {
   const tier = HAUSTIERE.find(h => h.chef === m.id);
   const beute = (m.beute || []).map(b => `${wSym(b.id)} ${Math.round(b.chance * 100)} %`).join(" ");
   return `<div class="wikiMonster${mal ? "" : " neu"}"><span class="wMonster">${monsterSvg(m.aussehen)}</span>
-    <div><b>${wName(m.name)}</b>${m.waechter ? " <small>(Pfad-Wächter)</small>" : m.chef ? " <small>(Chef)</small>" : ""}
+    <div><b>${KAMPFARTEN[monsterArt(m)].icon} ${wName(m.name)}</b>${m.waechter ? " <small>(Pfad-Wächter)</small>" : m.chef ? " <small>(Chef)</small>" : ""}
     <small>Stufe ${m.stufe} · ❤️ ${zahl(m.hp)} · 💥 bis ${m.maxSchlag} · ${muenzeHtml("muenze klein")} ${zahl(m.muenzen[0])}–${zahl(m.muenzen[1])}</small>
     ${beute ? `<small>Beute: ${beute}</small>` : ""}${tier ? `<small>Haustier: ${tier.emoji} ${tier.name} (1 von ${Math.round(1 / HAUSTIER_REGEL.chefChance)})</small>` : ""}
     <small>${mal ? `💤 ${zahl(mal)}× eingeschlafen` : "Noch nie eingeschlafen"}</small></div></div>`;
 }
 function wikiAbenteuer() {
-  let html = wEintrag("r-kampf2", "⚔️ So funktioniert der Kampf", WIKI_REGELN.find(r => r.id === "kampf").text());
+  let html = wEintrag("r-kampf2", "⚔️ So funktioniert der Kampf", WIKI_REGELN.find(r => r.id === "kampf").text())
+    + wEintrag("r-kampfarten2", "🏹 Nahkampf, Fernkampf und Magie", WIKI_REGELN.find(r => r.id === "kampfarten").text());
   for (const g of GEBIETE) {
     html += wEintrag(`a-${g.id}`, `${g.icon} ${g.name} <small>ab Kampfstufe ${g.ab}</small>`, g.monster.map(wikiMonsterZeile).join(""));
   }

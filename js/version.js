@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.14";
-const APP_NEU = "Neu: Sternenkunde! Nach deinem ersten Abenteuer-Pfad kannst du Sternbilder beobachten und ihre Sterne leuchten lassen.";
+const APP_VERSION = "1.15";
+const APP_NEU = "Neu: Kämpfe mit Pfeil und Bogen oder mit Magie – und nutze das Kampf-Dreieck!";

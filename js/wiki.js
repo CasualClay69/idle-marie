@@ -7,7 +7,7 @@
 //  und zwar auf die beste Stelle dafür (z.B. die beste Tätigkeit, das richtige Monster, das leere Beet).
 // =====================================================
 
-const KAMPF_IDS = ["mut", "kraft", "schutz", "herzen"];
+const KAMPF_IDS = ["mut", "kraft", "schutz", "herzen", "fernkampf", "magie"];
 let ROUTE = null;
 
 function route() {
@@ -78,11 +78,30 @@ function besteTaetigkeit(fid) {
 function besterGegner() {
   const L = kampfStufe();
   const passend = GEBIETE.flatMap(g => g.monster).filter(m => !m.chef && m.stufe <= L);
-  return passend.sort((a, b) => b.stufe - a.stufe)[0] || GEBIETE[0].monster[0];
+  // stärkste passende zuerst, bei fast gleicher Stufe lieber eins, gegen das die Waffe stark ist
+  const wert = m => m.stufe + dreieck(m) * 20;
+  return passend.sort((a, b) => wert(b) - wert(a))[0] || GEBIETE[0].monster[0];
 }
 function kampfZiel(fid) {
+  // Passende Waffe (und Munition) für Mut/Kraft, Fernkampf oder Magie?
+  const brauchtArt = fid === "fernkampf" ? "fern" : fid === "magie" ? "magie" : ["mut", "kraft"].includes(fid) ? "nah" : null;
+  if (brauchtArt && kampfArt() !== brauchtArt) {
+    const ka = KAMPFARTEN[brauchtArt];
+    const passt = id => GEGENSTAENDE[id]?.platz === "waffe" && (GEGENSTAENDE[id].kampfart || "nah") === brauchtArt && darfTragen(GEGENSTAENDE[id]);
+    if (Object.keys(spiel.bank).some(id => anzahl(id) > 0 && passt(id)) || brauchtArt === "nah")
+      return { seite: "seiteAbenteuer", abenteuerTab: "ausruestung", ziel: '.platz[data-platz="waffe"]', hinweis: `Leg ${brauchtArt === "nah" ? "ein Schwert" : `einen ${ka.waffe}`} an – dann übst du ${fertigkeit(fid).name.replaceAll("\u00ad", "")}.` };
+    const t = brauchtArt === "fern" ? "schnitzen-bogen0" : "schmuck-stab0";
+    return { fertigkeit: brauchtArt === "fern" ? "schnitzen" : "schmuck", ziel: `.taetigkeit[data-id="${t}"]`, hinweis: `Mach dir zuerst einen ${ka.waffe}: ${taetigkeitNachId(t).name}.` };
+  }
+  const mun = brauchtArt && KAMPFARTEN[brauchtArt].munition;
+  if (mun && !munitionBereit(brauchtArt)) {
+    const hat = Object.keys(spiel.bank).some(id => anzahl(id) > 0 && GEGENSTAENDE[id]?.munition === mun && darfTragen(GEGENSTAENDE[id]));
+    if (hat) return { seite: "seiteAbenteuer", abenteuerTab: "ausruestung", ziel: `.platz[data-platz="${mun}"]`, hinweis: `Wähle ${mun === "pfeile" ? "deine Pfeile" : "deine Zauberperlen"} aus.` };
+    const t = mun === "pfeile" ? "schnitzen-pfeil0" : "schmuck-perle0";
+    return { fertigkeit: mun === "pfeile" ? "schnitzen" : "schmuck", ziel: `.taetigkeit[data-id="${t}"]`, hinweis: `Mach dir zuerst ${mun === "pfeile" ? "Pfeile" : "Zauberperlen"}: ${taetigkeitNachId(t).name}.` };
+  }
   const stil = fid === "herzen" ? null : fid;
-  if (stil && (spiel.kampfstil || "mut") !== stil) {
+  if (stil && aktiverStil() !== stil) {
     const k = KAMPFSTILE.find(x => x.id === stil);
     return { seite: "seiteAbenteuer", abenteuerTab: "kampf", ziel: `.stilKnopf[data-stil="${stil}"]`, hinweis: `Wähle den Kampfstil „${k.icon} ${k.name}“ – der übt ${fertigkeit(fid).name}.` };
   }
