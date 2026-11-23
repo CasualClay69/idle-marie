@@ -1186,3 +1186,32 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .dKosten { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
 .dGrund { grid-column: 2 / -1; font-size: 0.68rem; color: #c0394f; font-weight: 800; text-align: right; }
 .dGrossBilder span { font-size: 3rem; }
+
+/* ----- Lagerfeuer ----- */
+#feuerBereich { display: grid; gap: 10px; margin-bottom: 10px; }
+#feuerBereich[hidden] { display: none; }
+#feuerBereich .karte { margin: 0; }
+.feuerKarte { display: grid; grid-template-columns: 96px 1fr; gap: 6px 12px; align-items: center; }
+.feuerKarte.an { background: linear-gradient(140deg, #fff1c2, #ffe1d0); border-color: #ffb347; }
+.feuerKarte p { margin: 4px 0; font-size: 0.85rem; line-height: 1.4; }
+.feuerKarte small { font-size: 0.72rem; color: var(--text-sanft); }
+.lagerfeuerBild { width: 96px; height: auto; }
+.lagerfeuerBild .flammen { transform-origin: 50% 62px; animation: flackern 0.9s ease-in-out infinite alternate; }
+@keyframes flackern { from { transform: scaleY(0.92) skewX(-2deg); } to { transform: scaleY(1.06) skewX(2deg); } }
+.lagerfeuerBild .funke { animation: funken 1.6s ease-in infinite; }
+.lagerfeuerBild .funke.f2 { animation-delay: 0.8s; }
+@keyframes funken { from { transform: translateY(20px); opacity: 1; } to { transform: translateY(-6px); opacity: 0; } }
+.feuerHolzListe { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.feuerHolz { display: flex; align-items: center; gap: 6px; padding: 6px 8px; border-radius: 14px; border: 2px solid #ffd2a8; background: #fff; text-align: left; }
+.feuerHolz:disabled { opacity: 0.5; }
+.feuerHolz span { display: grid; min-width: 0; }
+.feuerHolz b { font-size: 0.78rem; }
+.feuerHolz small { font-size: 0.66rem; color: var(--text-sanft); }
+.ascheKarte { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; }
+.ascheKarte > div { display: grid; gap: 2px; }
+.ascheKarte small { font-size: 0.72rem; color: var(--text-sanft); line-height: 1.35; }
+.feuerChip { background: linear-gradient(120deg, #fff1c2, #ffd8b8); }
+.feuerMarke { background: #ffb347; }
+.duengerKarte { margin-top: 8px; }
+.beet { position: relative; }
+.beetDuenger { position: absolute; top: 4px; right: 4px; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; background: rgba(255, 255, 255, 0.85); font-size: 0.8rem; }

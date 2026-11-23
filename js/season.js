@@ -50,6 +50,7 @@ const AUFGABEN_VORLAGEN = [
   ["streicheln", null, 3, 15, n => `Streichle ${n}× deine Haustiere`, () => (spiel.haustiere || []).length > 0],
   ["aktion", "schmuck", 10, 60, n => `Mach ${n} Schmuckstücke`, () => stufe("schmuck") >= 5],
   ["aktion", "sterne", 40, 250, n => `Beobachte ${n}× die Sterne`, () => sterneFrei()],
+  ["aktion", "feuer", 50, 300, n => `Leg ${n}× Holz ins Lagerfeuer`, () => feuerFrei()],
   ["truhe", null, 1, 6, n => `Öffne ${n === 1 ? "eine Schatztruhe" : `${n} Schatztruhen`} auf einem Abenteuer-Pfad`, () => PFADE.some(pfadFrei)],
 ];
 

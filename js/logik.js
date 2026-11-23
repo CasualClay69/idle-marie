@@ -122,6 +122,7 @@ function verkaufe(id, n) {
 function hindernis(t) {
   if (t.kleidung && (spiel.garderobe || []).includes(t.kleidung)) return "Fertig genäht – zieh es im 👗 Kleiderschrank an!";
   if (t.fertigkeit === "sterne" && !sterneFrei()) return "Schaffe zuerst einen Abenteuer-Pfad";
+  if (t.fertigkeit === "feuer" && !feuerFrei()) return "Schaffe zuerst drei Abenteuer-Pfade";
   if (stufe(t.fertigkeit) < t.stufe) return `Erst ab Stufe ${t.stufe}`;
   for (const [id, n] of Object.entries(t.braucht || {})) {
     if (anzahl(id) < n) return `Es fehlt: ${GEGENSTAENDE[id].name}`;

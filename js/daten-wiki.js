@@ -97,6 +97,10 @@ const WIKI_REGELN = [
     <p>Alle ${DORF.tickMinuten} Minuten ist ein <b>Dorf-Tag</b> (auch wenn das Spiel zu ist, bis zu einer Woche): Die Wichtel essen Korn, arbeiten in den Gebäuden und legen Holz, Erz, Fisch, Kräuter und Münzen ins Dorflager. Von dort holst du alles in die Bank.</p>
     <p>In jedem Wichtelhaus wohnen ${DORF.bewohnerProHaus} Wichtel. Arbeits-Gebäude brauchen Wichtel – fehlen welche, wird langsamer gearbeitet. Reicht das Korn nicht, sinkt die <b>Gesundheit</b>. Der Spielplatz macht <b>glücklich</b>. Gesundheit und Glück bestimmen den Fleiß.</p>
     <p>Mit jedem Dorf-Tag steigt die Dorf-Stufe: mehr Bauplätze (${4} + Stufe) und bessere Sorten. Von jedem Gebäude kannst du ${DORF.maxJeGebaeude} Stück bauen – jedes weitere kostet mehr.</p>` },
+  { id: "lagerfeuer", icon: "🔥", titel: "Lagerfeuer", text: () => `
+    <p>Das Lagerfeuer gibt es, sobald du <b>drei Abenteuer-Pfade</b> geschafft hast. Du verbrennst Holz und bekommst dafür Erfahrung und <b>Asche</b>.</p>
+    <p><b>Großes Lagerfeuer:</b> Mit ${FEUER.holz} Holz brennt es ${FEUER.minuten} Minuten lang (auch wenn das Spiel zu ist). Solange gibt es mehr Erfahrung bei allem: +${Math.round(FEUER.bonusBasis * 100)} % mit Ästchen bis +${Math.round(feuerBonusFuer(7) * 100)} % mit Regenbogenholz.</p>
+    <p><b>Asche ist Dünger:</b> Im Garten düngst du wachsende Beete (je nach Pflanze 1–8 Asche). Sie sind sofort ${Math.round(FEUER.duengerSchneller * 100)} % weiter und bringen ${Math.round(FEUER.duengerMehr * 100)} % mehr Ernte.</p>` },
   { id: "gluecksrad", icon: "🎁", titel: "Tägliches Glücksrad", text: () => `
     <p>Jeden Tag darfst du einmal am Glücksrad drehen – die Karte dafür ist oben auf der 🌟 Fertigkeiten-Seite. Jeder ${GLUECKSRAD.serieBonus}. Tag in Folge bringt ein <b>doppeltes</b> Geschenk.</p>
     <p>Mögliche Geschenke: ${GLUECKSRAD.felder.map(f => `${f.icon} ${f.name}`).join(", ")}. Die Geschenke wachsen mit deiner Gesamtstufe mit.</p>` },
@@ -139,6 +143,15 @@ const GUIDE_EINSCHUEBE = [
   { nach: "Schaffe den Flüsterpfad", schritt: { id: "dorf:3", icon: "🧚", titel: "24 Wichtel im Dorf",
     text: "Bau ein zweites Wichtelhaus – mehr Wichtel können mehr arbeiten. Vergiss den Bauernhof nicht!",
     ziel: 24, wert: () => (spiel.dorf ? dorfBewohnerPlatz() : 0), hilfe: { fertigkeit: "dorf", ziel: '.dGebaeude[data-gebaeude="haus"]' } } },
+  { nach: "Schaffe den Spukgang", schritt: { id: "feuer:1", icon: "🔥", titel: "Verbrenne 30 Ästchen",
+    text: "Nach deinem dritten Pfad gibt es das 🔥 Lagerfeuer. Leg Holz ins Feuer – dafür gibt es Erfahrung und Asche.",
+    ziel: 30, wert: () => spiel.zaehler?.asche0 || 0, hilfe: { fertigkeit: "feuer" } } },
+  { nach: "Schaffe den Spukgang", schritt: { id: "feuer:2", icon: "✨", titel: "Zünde ein großes Lagerfeuer an",
+    text: "Mit 25 Holz brennt ein großes Lagerfeuer 60 Minuten lang – und du bekommst mehr Erfahrung bei allem!",
+    ziel: 1, wert: () => spiel.statistik.lagerfeuer || 0, hilfe: { fertigkeit: "feuer", ziel: ".feuerHolz:not([disabled])" } } },
+  { nach: "Schaffe den Spukgang", schritt: { id: "feuer:3", icon: "🌱", titel: "Dünge 5 Beete mit Asche",
+    text: "Im 🌱 Garten gibt es den Knopf „Mit Asche düngen“. Gedüngte Beete wachsen schneller und bringen mehr Ernte.",
+    ziel: 5, wert: () => spiel.statistik.geduengt || 0, hilfe: { fertigkeit: "garten", ziel: "#duengen" } } },
   { nach: "Schaffe den Pusteblumen-Pfad", schritt: { id: "sterne:1", icon: "🔭", titel: "Beobachte die Sterne",
     text: "Nach deinem ersten Pfad öffnet sich die 🔭 Sternenkunde. Beobachte das Eichhörnchen-Sternbild und sammle 30 Sternsplitter.",
     ziel: 30, wert: () => spiel.zaehler?.sternsplitter2 || 0, hilfe: { fertigkeit: "sterne" } } },

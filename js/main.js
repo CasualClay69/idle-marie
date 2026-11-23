@@ -228,6 +228,7 @@ function starteSpiel() {
   richteFortschrittEin();
   richteSterneEin();
   richteDorfEin();
+  richteFeuerEin();
   richteWikiEin();
   holeOfflineNach();
   ruheAus();

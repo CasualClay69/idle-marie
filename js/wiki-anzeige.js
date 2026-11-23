@@ -59,6 +59,8 @@ function wikiIndex() {
   EDELSTEINE.forEach((e, i) => dazu(her, `stein${i}`, `⛏️ Bergbau: ${Math.round(SCHMUCK.edelsteinChance * 100)} % Glück bei ${GEGENSTAENDE[`erz${i}`].name}`));
   for (const g of DORF_GEBAEUDE.filter(x => x.macht)) for (let i = 0; i < 8; i++) dazu(her, `${g.macht}${i}`, `🏘️ Wichteldorf: ${g.name} (ab Dorf-Stufe ${STUFEN[i]})`);
   dazu(her, "goldsplitter5", `🔭 Sternenkunde: ${(STERNE.goldChance * 100).toLocaleString("de-DE")} % Glück bei jeder Beobachtung`);
+  dazu(nutz, "asche0", "🌱 Dünger im Garten");
+  for (let i = 0; i < 8; i++) dazu(nutz, `holz${i}`, `🔥 Großes Lagerfeuer (${FEUER.holz}×)`);
   dazu(nutz, "sternsplitter2", "🔭 Sterne der Sternbilder leuchten lassen");
   dazu(nutz, "goldsplitter5", "🌟 Goldene Sterne der Sternbilder");
   BAU_STUFEN.forEach((s, k) => {

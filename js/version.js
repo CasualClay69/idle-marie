@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.16.1";
-const APP_NEU = "Die Farben der Seltenheiten Einfach und Normal sind getauscht.";
+const APP_VERSION = "1.17";
+const APP_NEU = "Neu: Das Lagerfeuer! Nach deinem dritten Abenteuer-Pfad kannst du Holz verbrennen, ein großes Feuer für mehr Erfahrung anzünden und mit Asche düngen.";

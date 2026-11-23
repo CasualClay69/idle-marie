@@ -32,6 +32,7 @@
   <script src="js/daten-sterne.js" defer></script>
   <script src="js/daten-fernkampf.js" defer></script>
   <script src="js/daten-dorf.js" defer></script>
+  <script src="js/daten-feuer.js" defer></script>
   <script src="js/symbole.js" defer></script>
   <script src="js/ikonen.js" defer></script>
   <script src="js/ikonen-natur.js" defer></script>
@@ -65,6 +66,7 @@
   <script src="js/fortschritt.js" defer></script>
   <script src="js/sterne-anzeige.js" defer></script>
   <script src="js/dorf-anzeige.js" defer></script>
+  <script src="js/feuer-anzeige.js" defer></script>
   <script src="js/rueckkehr.js" defer></script>
   <script src="js/daten-wiki.js" defer></script>
   <script src="js/wiki.js" defer></script>
@@ -124,6 +126,7 @@
         <button id="zurueck" class="zurueck" type="button">‹ Alle Fertigkeiten</button>
         <div id="fertigkeitKopf" class="fertigkeitKopf"></div>
         <div id="baumhausBereich" hidden></div>
+        <div id="feuerBereich" hidden></div>
         <div id="taetigkeitenRaster" class="taetigkeitenRaster"></div>
         <div id="sternBereich" hidden></div>
       </section>
@@ -380,6 +383,14 @@
       <button type="button" class="zuX" id="dorfIntroX" aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6L18 18M18 6L6 18" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg></button>
       <div id="dorfIntroInhalt"></div>
       <div class="seKnoepfe"><button id="dorfIntroZurueck" class="knopf leise" type="button">‹ Zurück</button><button id="dorfIntroWeiter" class="knopf" type="button">Weiter ›</button></div>
+    </div>
+  </div>
+
+  <div id="feuerIntroOverlay" class="overlay" hidden>
+    <div class="fenster sternIntro">
+      <button type="button" class="zuX" id="feuerIntroX" aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6L18 18M18 6L6 18" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg></button>
+      <div id="feuerIntroInhalt"></div>
+      <div class="seKnoepfe"><button id="feuerIntroZurueck" class="knopf leise" type="button">‹ Zurück</button><button id="feuerIntroWeiter" class="knopf" type="button">Weiter ›</button></div>
     </div>
   </div>
 

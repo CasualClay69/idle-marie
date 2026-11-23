@@ -45,5 +45,8 @@ ikon("🦋", B.e(9, 11, 7, 7, "#b48cff") + B.e(23, 11, 7, 7, "#b48cff") + B.e(10
 // Holzscheit
 ikon("🪵", B.r(3, 11, 24, 12, 6, "#c98a5a") + B.e(26, 17, 4, 6, "#f2c896") + B.e(26, 17, 2, 3, "none") + `<ellipse cx="26" cy="17" rx="2" ry="3" fill="none" stroke="#c98a5a" stroke-width="1"/>` + B.l("M7 15H17M9 19H21", "#a8693a", 1.2));
 
+// Glühwürmchen
+ikon("🪲", B.k(16, 26, 6, "#fff6b0", `opacity=".7"`) + B.e(16, 22, 6, 7, "#ffe066") + B.e(10, 13, 5, 3.5, "#e8f6ff", `fill-opacity=".9" transform="rotate(-25 10 13)"`) + B.e(22, 13, 5, 3.5, "#e8f6ff", `fill-opacity=".9" transform="rotate(25 22 13)"`) + B.k(16, 12, 5, "#5b4a6e") + B.augen(14, 18, 12, 1) + B.l("M14 8L12 4M18 8L20 4", "#5b4a6e", 1.2));
+
 // Alle Zeichnungen sind geladen -> ab jetzt wird jedes Emoji als Zeichnung angezeigt (auch schon im Ladebildschirm)
 starteIkonen();

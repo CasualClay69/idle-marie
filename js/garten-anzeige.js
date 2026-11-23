@@ -28,9 +28,15 @@ function zeichneGarten(ziel) {
     html += `<button type="button" class="beet${fertig ? " reif" : ""}" data-nr="${nr}">
       <span class="beetPflanze" data-gross="${fertig ? 1 : 0}">${fertig ? p.emoji : "🌱"}</span><b>${p.name}</b>
       <span class="balken"><div style="width:${(beetFortschritt(b) * 100).toFixed(1)}%"></div></span>
-      <small class="beetRest">${fertig ? "✨ Ernten!" : restText(beetRestMs(b))}</small></button>`;
+      <small class="beetRest">${fertig ? "✨ Ernten!" : restText(beetRestMs(b))}</small>${b.geduengt ? `<span class="beetDuenger" title="gedüngt">🌫️</span>` : ""}</button>`;
   });
   html += `</div>`;
+  if (feuerFrei()) {
+    const bedarf = duengerBedarf(), beete = duengbareBeete().length;
+    html += `<div class="ladenKarte duengerKarte">${symbolHtml("asche0")}<div class="lText"><b>Mit Asche düngen</b>
+      <small>${beete ? `${beete} Beet${beete === 1 ? "" : "e"} · braucht ${bedarf} Asche (du hast ${zahl(anzahl("asche0"))})` : "Gerade wächst nichts Ungedüngtes."} · +${Math.round(FEUER.duengerMehr * 100)} % Ernte, ${Math.round(FEUER.duengerSchneller * 100)} % schneller</small></div>
+      <button type="button" class="knopf kaufen" id="duengen" ${beete && anzahl("asche0") >= duengerKosten(duengbareBeete()[0]) ? "" : "disabled"}>Düngen</button></div>`;
+  }
   const preis = beetPreis();
   if (preis !== undefined) {
     html += `<div class="ladenKarte"><span class="lIcon">🟫</span><div class="lText"><b>Neues Beet</b><small>Du hast ${g.beete.length} Beete.</small></div>
@@ -49,6 +55,13 @@ function zeichneGarten(ziel) {
   html += `</div><p class="hinweis">🌱 Pflanzen wachsen von ganz allein – auch wenn ${figurName()} gerade etwas anderes macht oder das Spiel zu ist. Gemüse kannst du kochen, Kräuter brauchst du für Tränke 🧪, und aus Fasern webst du beim 🧵 Nähen Stoff.</p><button type="button" class="knopf leise ueKnopf" id="gartenUebung">⭐ Übung im Garten ansehen</button>`;
   ziel.innerHTML = html;
 
+  ziel.querySelector("#duengen")?.addEventListener("click", () => {
+    const n = duengeAlle();
+    if (!n) { ton.nein(); return; }
+    ton.muenze(); melde(`🌱 ${n} Beet${n === 1 ? "" : "e"} gedüngt – das wächst jetzt prächtig!`);
+    for (const e of pruefeErfolge()) melde(`🏆 Erfolg: ${e.name}! +${zahl(e.muenzen)} Münzen`, "gross");
+    nachGarten();
+  });
   ziel.querySelector("#gartenUebung")?.addEventListener("click", () => { ton.klick(); zeigeUebung("garten"); });
   ziel.querySelector("#alleErnten")?.addEventListener("click", () => {
     gartenStand().beete.forEach((b, nr) => { if (b && beetFortschritt(b) >= 1) ernteMitMeldung(nr); });
@@ -118,6 +131,7 @@ function zeichneGartenLive() {
 function zeichneTrankLeiste() {
   const leiste = $("trankLeiste");
   const aktiv = aktiveTraenke();
-  leiste.hidden = !aktiv.length;
-  leiste.innerHTML = aktiv.map(t => `<span class="trankChip" title="${t.text}">${symbolHtml(t.id, "mini")} ${t.name} <b>${t.ladungen}</b></span>`).join("");
+  const feuer = feuerBrennt() ? `<span class="trankChip feuerChip" title="Großes Lagerfeuer">🔥 +${Math.round(feuerBonus() * 100)} % EP <b>${feuerRestText()}</b></span>` : "";
+  leiste.hidden = !aktiv.length && !feuer;
+  leiste.innerHTML = feuer + aktiv.map(t => `<span class="trankChip" title="${t.text}">${symbolHtml(t.id, "mini")} ${t.name} <b>${t.ladungen}</b></span>`).join("");
 }

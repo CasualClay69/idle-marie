@@ -41,6 +41,7 @@ function ernte(nr) {
   const uebungsId = `garten-${p.id}`;
   let menge = p.menge[0] + Math.floor(Math.random() * (p.menge[1] - p.menge[0] + 1));
   if (Math.random() < Math.floor(stufeAusXp(spiel.uebung[uebungsId] || 0) / 10) * SPIEL.uebungDoppeltProZehn + haustierBonus("doppelt", "garten") + baumhausBonus("doppelt") + sternBonus("doppelt", "garten")) menge *= 2;
+  if (beet.geduengt) menge = Math.round(menge * (1 + FEUER.duengerMehr));
   gibInBank(p.ertrag, menge);
   zaehle(p.ertrag, menge);
   let samen = 0;
@@ -109,7 +110,7 @@ function verbraucheTrank(t) {
   }
 }
 function trankFaktorXp() {   // Tränke und Haustiere zusammen
-  return 1 + haustierBonus("xp") + baumhausBonus("xp") + schmuckBonus("xp") + trankWirkung(w => w.art === "xp").reduce((s, t) => s + t.wirkung.wert, 0);
+  return 1 + feuerBonus() + haustierBonus("xp") + baumhausBonus("xp") + schmuckBonus("xp") + trankWirkung(w => w.art === "xp").reduce((s, t) => s + t.wirkung.wert, 0);
 }
 // Bonus für eine Tätigkeit (ohne zu verbrauchen)
 function trankDoppelt(t) {

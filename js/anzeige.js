@@ -114,21 +114,22 @@ function zeichneFertigkeiten() {
     }
     const xp = spiel.xp[f.id] || 0;
     const aktiv = spiel.aktiv && (spiel.aktiv.kampf ? f.id === aktiverStil() : taetigkeitNachId(spiel.aktiv.id).fertigkeit === f.id);
-    const zu = (f.id === "sterne" && !sterneFrei()) || (f.id === "dorf" && !dorfFrei());
+    const zu = (f.id === "sterne" && !sterneFrei()) || (f.id === "dorf" && !dorfFrei()) || (f.id === "feuer" && !feuerFrei());
     const karte = el("button", "fertigkeitKarte" + (aktiv ? " laeuft" : "") + (zu ? " zu" : ""));
     karte.type = "button";
     karte.style.setProperty("--farbe", f.farbe);
     karte.dataset.id = f.id;
     karte.innerHTML = `<span class="fIcon">${f.icon}</span>
       <span class="fName">${f.name}</span>
-      <span class="fStufe">${zu ? `🔒 nach dem ${f.id === "dorf" ? 2 : 1}. Pfad` : `Stufe <b>${stufeAusXp(xp)}</b> / ${SPIEL.maxStufe}`}</span>
+      <span class="fStufe">${zu ? `🔒 nach dem ${{ dorf: 2, feuer: 3 }[f.id] || 1}. Pfad` : `Stufe <b>${stufeAusXp(xp)}</b> / ${SPIEL.maxStufe}`}</span>
       <span class="balken"><div style="width:${(fortschrittInStufe(xp) * 100).toFixed(1)}%"></div></span>
       ${aktiv ? `<span class="laeuftMarke">▶</span>` : ""}
-      ${f.id === "garten" && reifeBeete() ? `<span class="laeuftMarke reifMarke">${reifeBeete()}</span>` : ""}`;
+      ${f.id === "garten" && reifeBeete() ? `<span class="laeuftMarke reifMarke">${reifeBeete()}</span>` : ""}
+      ${f.id === "feuer" && feuerBrennt() ? `<span class="laeuftMarke feuerMarke">🔥</span>` : ""}`;
     karte.addEventListener("click", () => {
       ton.klick();
       if (f.art === "kampf") { zeigeSeite("seiteAbenteuer"); return; }
-      if (zu) { melde(f.id === "dorf" ? "🏘️ Das Wichteldorf öffnet sich, wenn du zwei Abenteuer-Pfade geschafft hast." : "🔭 Die Sternenkunde öffnet sich, wenn du deinen ersten Abenteuer-Pfad geschafft hast."); return; }
+      if (zu) { melde(f.id === "feuer" ? "🔥 Das Lagerfeuer gibt es, wenn du drei Abenteuer-Pfade geschafft hast." : f.id === "dorf" ? "🏘️ Das Wichteldorf öffnet sich, wenn du zwei Abenteuer-Pfade geschafft hast." : "🔭 Die Sternenkunde öffnet sich, wenn du deinen ersten Abenteuer-Pfad geschafft hast."); return; }
       offeneFertigkeit = f.id; zeigeSeite("seiteFertigkeit");
     });
     raster.append(karte);
@@ -162,6 +163,8 @@ function zeichneFertigkeit() {
   raster.classList.toggle("garten", f.id === "garten");
   $("baumhausBereich").hidden = f.id !== "bauen";
   $("sternBereich").hidden = f.id !== "sterne";
+  $("feuerBereich").hidden = f.id !== "feuer" || !feuerFrei();
+  if (f.id === "feuer" && feuerFrei()) zeichneFeuerBereich($("feuerBereich"));
   if (f.id === "sterne") zeichneSternBereich($("sternBereich"));
   if (f.id === "bauen") zeichneBaumhaus($("baumhausBereich"));
   raster.classList.toggle("dorfRaster", f.id === "dorf");
