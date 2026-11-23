@@ -107,7 +107,7 @@ function zeigeFortschritt() { zeichneFortschritt(); $("fortschrittOverlay").hidd
 function zeichneFortschrittKnopf() { $("fortschrittKnopf").innerHTML = `🏁 ${fortschrittText(spielFortschritt())}`; }
 
 function richteFortschrittEin() {
-  $("fortschrittZu").addEventListener("click", () => { ton.klick(); $("fortschrittOverlay").hidden = true; });
+  for (const id of ["fortschrittZu", "fortschrittX"]) $(id).addEventListener("click", () => { ton.klick(); $("fortschrittOverlay").hidden = true; });
   $("fortschrittOverlay").addEventListener("click", e => { if (e.target.id === "fortschrittOverlay") $("fortschrittOverlay").hidden = true; });
   $("fortschrittKnopf").addEventListener("click", () => { ton.klick(); zeigeFortschritt(); });
   $("fortschrittIch").addEventListener("click", () => { ton.klick(); zeigeFortschritt(); });

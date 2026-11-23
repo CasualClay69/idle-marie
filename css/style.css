@@ -1078,3 +1078,12 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .fsText b { font-size: 0.88rem; }
 .fsText small { font-size: 0.7rem; color: var(--text-sanft); font-weight: 700; }
 .fsProzent { font-weight: 900; color: var(--akzent-dunkel); font-size: 0.9rem; min-width: 3em; text-align: right; }
+
+/* Schließen-Knopf oben rechts: rotes Viereck mit weißem X (bleibt beim Scrollen sichtbar) */
+.zuX {
+  position: sticky; top: 0; float: right; z-index: 5; width: 38px; height: 38px; margin: -6px -6px 0 4px; padding: 0;
+  display: grid; place-items: center; border: 2px solid #fff; border-radius: 10px;
+  background: linear-gradient(160deg, #ff6b6b, #e03131); box-shadow: 0 3px 8px rgba(224, 49, 49, 0.4);
+}
+.zuX svg { width: 22px; height: 22px; display: block; }
+.zuX:active { transform: scale(0.92); }

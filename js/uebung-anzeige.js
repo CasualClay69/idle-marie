@@ -85,7 +85,7 @@ function zeigeUebung(filter) {
 }
 
 function richteUebungEin() {
-  $("uebungZu").addEventListener("click", () => { ton.klick(); $("uebungOverlay").hidden = true; });
+  for (const id of ["uebungZu", "uebungX"]) $(id).addEventListener("click", () => { ton.klick(); $("uebungOverlay").hidden = true; });
   $("uebungOverlay").addEventListener("click", e => { if (e.target.id === "uebungOverlay") $("uebungOverlay").hidden = true; });
   $("uebungIch").addEventListener("click", () => { ton.klick(); zeigeUebung("alle"); });
 }

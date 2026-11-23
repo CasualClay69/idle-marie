@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.12";
-const APP_NEU = "Neu: Sieh nach, wie viel Prozent vom ganzen Spiel du schon geschafft hast – und woraus sich das zusammensetzt.";
+const APP_VERSION = "1.12.1";
+const APP_NEU = "Übungs- und Fortschritts-Fenster haben jetzt oben rechts einen roten Schließen-Knopf.";
