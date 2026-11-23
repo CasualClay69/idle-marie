@@ -1106,3 +1106,40 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .btDing b { font-size: 0.74rem; line-height: 1.15; overflow-wrap: anywhere; }
 .btDing small { font-size: 0.66rem; color: var(--text-sanft); }
 .btTier { font-size: 1.2rem; width: 22px; text-align: center; flex: none; }
+
+/* ----- Sternenkunde ----- */
+.fertigkeitKarte.zu { opacity: 0.6; filter: grayscale(0.5); }
+.sternKopf { display: grid; gap: 6px; }
+.sternVorrat { display: flex; flex-wrap: wrap; gap: 6px 14px; justify-content: center; font-weight: 800; }
+.sternVorrat span { display: inline-flex; align-items: center; gap: 4px; }
+.sternKopf .knopf { justify-self: center; }
+.sbBild { display: block; width: 100%; height: auto; border-radius: 14px; margin-bottom: 6px; }
+.sbBild.klein { width: 90px; flex: none; margin: 0; }
+.sternbildKarte h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; margin: 2px 0 6px; }
+.sternbildKarte h3 small { font-size: 0.72rem; color: var(--text-sanft); font-weight: 700; }
+.sternbildKarte.zu { display: flex; gap: 10px; align-items: center; opacity: 0.65; }
+.sternbildKarte.zu > div { display: grid; gap: 2px; }
+.sternbildKarte.zu small { font-size: 0.75rem; color: var(--text-sanft); }
+.sternZeile { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-top: 1px dashed var(--rand); }
+.sternZeile.golden { background: linear-gradient(90deg, #fff6d0, transparent); border-radius: 12px; padding-left: 4px; }
+.sternIcon { font-size: 1.3rem; flex: none; width: 28px; text-align: center; }
+.sternText { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.sternText b { font-size: 0.82rem; line-height: 1.2; }
+.sternText small { font-size: 0.68rem; color: var(--text-sanft); }
+.sternPunkte { display: flex; gap: 3px; }
+.sternPunkte i { width: 11px; height: 11px; clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); background: #d8dcef; }
+.sternPunkte i.an { background: #7a8fe0; }
+.sternPunkte i.gold.an { background: #f5b942; }
+.sternKaufen { padding: 6px 10px; font-size: 0.8rem; white-space: nowrap; }
+.sternVoll, .sternSperre { font-size: 0.72rem; font-weight: 800; color: var(--text-sanft); white-space: nowrap; }
+.sternIntro { position: relative; }
+.sternIntro h2 { margin-top: 4px; }
+.seBild { margin: 6px auto 10px; max-width: 280px; }
+.seBild .sbBild { border-radius: 18px; }
+.seBilder { display: flex; justify-content: center; gap: 16px; }
+.seBilder .symbol { width: 70px; height: 70px; }
+.sternIntro p { line-height: 1.45; }
+.sePunkte { display: flex; justify-content: center; gap: 6px; margin: 8px 0; }
+.sePunkte i { width: 9px; height: 9px; border-radius: 50%; background: var(--rand); }
+.sePunkte i.an { background: var(--akzent); }
+.seKnoepfe { display: flex; gap: 8px; justify-content: center; }

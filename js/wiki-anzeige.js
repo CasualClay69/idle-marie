@@ -15,6 +15,7 @@ const WIKI_TABS = [
   { id: "garten",       name: "Garten",       icon: "🌱", html: () => wikiGarten() },
   { id: "haustiere",    name: "Haustiere",    icon: "🐾", html: () => wikiHaustiere() },
   { id: "baumhaus",     name: "Baumhaus",     icon: "🏡", html: () => wikiBaumhaus() },
+  { id: "sterne",       name: "Sterne",       icon: "🔭", html: () => wikiSterne() },
   { id: "aussehen",     name: "Aussehen",     icon: "👗", html: () => wikiAussehen() },
   { id: "erfolge",      name: "Erfolge",      icon: "🏆", html: () => wikiErfolge() },
   { id: "season",       name: "Season",       icon: "🎟️", html: () => wikiSeason() },
@@ -55,6 +56,9 @@ function wikiIndex() {
   }
   for (const p of PFADE) for (const s of p.truhe.sachen) dazu(her, s.id, `🧰 Schatztruhe: ${p.name}`);
   EDELSTEINE.forEach((e, i) => dazu(her, `stein${i}`, `⛏️ Bergbau: ${Math.round(SCHMUCK.edelsteinChance * 100)} % Glück bei ${GEGENSTAENDE[`erz${i}`].name}`));
+  dazu(her, "goldsplitter5", `🔭 Sternenkunde: ${(STERNE.goldChance * 100).toLocaleString("de-DE")} % Glück bei jeder Beobachtung`);
+  dazu(nutz, "sternsplitter2", "🔭 Sterne der Sternbilder leuchten lassen");
+  dazu(nutz, "goldsplitter5", "🌟 Goldene Sterne der Sternbilder");
   BAU_STUFEN.forEach((s, k) => {
     dazu(nutz, `brett${s.brett}`, `🏡 Baumhaus: ${s.vorsilbe}-Stufe (${s.bretter}× je Platz)`);
     if (s.barrenAnzahl) dazu(nutz, `barren${s.barren}`, `🏡 Baumhaus: ${s.vorsilbe}-Stufe (${s.barrenAnzahl}× je Platz)`);
@@ -319,4 +323,18 @@ function richteWikiSeiteEin() {
   let uhr = 0;
   $("wikiSuche").addEventListener("input", () => { clearTimeout(uhr); uhr = setTimeout(zeichneWiki, 250); });
   $("wikiZurueck").addEventListener("click", () => { ton.klick(); zeigeSeite(wikiZurueck); });
+}
+
+// ===================== STERNE =====================
+function wikiSterne() {
+  let html = wEintrag("r-sterne2", "🔭 So funktioniert die Sternenkunde", WIKI_REGELN.find(r => r.id === "sternenkunde").text());
+  html += STERNBILDER.map(sb => {
+    const st = sternStand(sb.id);
+    const kraefte = sb.kraefte.map((k, i) => wZeile(KRAFT_ICONS[k.art], kraftText(sb, k.art, STERNE.maxNormal) + " <small>(voll)</small>",
+      `${STERNE.maxNormal} Stufen · ${Array.from({ length: STERNE.maxNormal }, (_, j) => { const n = Math.round(STERNE.splitterBasis[sb.nr] * Math.pow(j + 1, 1.5)); return zahl(n); }).join(" / ")} Sternsplitter · du hast Stufe ${st.k[i]}`, st.k[i] > 0)).join("");
+    const gold = wZeile("🌟", goldText(sb, STERNE.maxGold) + " <small>(voll)</small>",
+      `${STERNE.maxGold} Stufen · ${STERNE.goldBasis.map(g => zahl(Math.round(g * (1 + sb.nr * 0.5)))).join(" / ")} Goldsplitter · ab Stufe ${STERNE.goldBasis.map((_, k) => Math.min(SPIEL.maxStufe, sb.stufe + (k + 1) * STERNE.goldAbstand)).join(" / ")} · du hast Stufe ${st.g}`, st.g > 0);
+    return wEintrag(`s-${sb.id}`, `${sb.icon} ${sb.name} <small>ab Stufe ${sb.stufe} · für ${sternName(sb)}</small>`, sternbildSvg(sb) + kraefte + gold);
+  }).join("");
+  return html;
 }

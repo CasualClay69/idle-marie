@@ -35,6 +35,7 @@ function verarbeite(ergebnis) {
       for (const t of neu) melde(`🔓 Neu freigeschaltet: ${t.name}`, "gross");
     }
     if (e.neueUebung && e.neueUebung % 10 === 0) melde(`⭐ Übung ${e.neueUebung}: ${e.taetigkeit.name}`);
+    if (e.goldsplitter) { ton.muenze(); melde("🌟 Ein Goldsplitter funkelt am Himmel!", "gross"); }
     if (e.edelstein) { ton.muenze(); melde(`💎 Ein ${GEGENSTAENDE[e.edelstein].name} gefunden!`); }
     if (e.kleidung) { const k = teilNachId(e.kleidung); ton.stufe(); melde(`🧵 ${k.icon} ${k.name} ist fertig genäht!`, "gross"); }
     if (e.doppelt) {   // kein Text (käme sonst ständig) – die Leiste blitzt golden
@@ -225,6 +226,7 @@ function starteSpiel() {
   richteGluecksradEin();
   richteUebungEin();
   richteFortschrittEin();
+  richteSterneEin();
   richteWikiEin();
   holeOfflineNach();
   ruheAus();

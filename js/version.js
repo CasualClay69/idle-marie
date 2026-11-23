@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.13";
-const APP_NEU = "Im Abenteuer siehst du jetzt bei jedem Monster genau, was es fallen lässt.";
+const APP_VERSION = "1.14";
+const APP_NEU = "Neu: Sternenkunde! Nach deinem ersten Abenteuer-Pfad kannst du Sternbilder beobachten und ihre Sterne leuchten lassen.";

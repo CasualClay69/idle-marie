@@ -16,7 +16,7 @@ function baumhausBonus(art) {
     const k = bauStufe(p.id);
     if (k && p.bonus.art === art) summe += p.bonus.werte[k - 1];
   }
-  return ["bank", "offline"].includes(art) ? summe : summe / 100;
+  return (["bank", "offline"].includes(art) ? summe : summe / 100) + sternGold(art);   // + goldene Sterne der Sternenkunde
 }
 
 // Kann der nächste Ausbau gebaut werden? Rückgabe: null = ja, sonst ein Grund

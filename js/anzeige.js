@@ -114,19 +114,21 @@ function zeichneFertigkeiten() {
     }
     const xp = spiel.xp[f.id] || 0;
     const aktiv = spiel.aktiv && (spiel.aktiv.kampf ? f.id === (spiel.kampfstil || "mut") : taetigkeitNachId(spiel.aktiv.id).fertigkeit === f.id);
-    const karte = el("button", "fertigkeitKarte" + (aktiv ? " laeuft" : ""));
+    const zu = f.id === "sterne" && !sterneFrei();
+    const karte = el("button", "fertigkeitKarte" + (aktiv ? " laeuft" : "") + (zu ? " zu" : ""));
     karte.type = "button";
     karte.style.setProperty("--farbe", f.farbe);
     karte.dataset.id = f.id;
     karte.innerHTML = `<span class="fIcon">${f.icon}</span>
       <span class="fName">${f.name}</span>
-      <span class="fStufe">Stufe <b>${stufeAusXp(xp)}</b> / ${SPIEL.maxStufe}</span>
+      <span class="fStufe">${zu ? "🔒 nach dem 1. Pfad" : `Stufe <b>${stufeAusXp(xp)}</b> / ${SPIEL.maxStufe}`}</span>
       <span class="balken"><div style="width:${(fortschrittInStufe(xp) * 100).toFixed(1)}%"></div></span>
       ${aktiv ? `<span class="laeuftMarke">▶</span>` : ""}
       ${f.id === "garten" && reifeBeete() ? `<span class="laeuftMarke reifMarke">${reifeBeete()}</span>` : ""}`;
     karte.addEventListener("click", () => {
       ton.klick();
       if (f.art === "kampf") { zeigeSeite("seiteAbenteuer"); return; }
+      if (zu) { melde("🔭 Die Sternenkunde öffnet sich, wenn du deinen ersten Abenteuer-Pfad geschafft hast."); return; }
       offeneFertigkeit = f.id; zeigeSeite("seiteFertigkeit");
     });
     raster.append(karte);
@@ -159,6 +161,8 @@ function zeichneFertigkeit() {
   raster.textContent = "";
   raster.classList.toggle("garten", f.id === "garten");
   $("baumhausBereich").hidden = f.id !== "bauen";
+  $("sternBereich").hidden = f.id !== "sterne";
+  if (f.id === "sterne") zeichneSternBereich($("sternBereich"));
   if (f.id === "bauen") zeichneBaumhaus($("baumhausBereich"));
   if (f.id === "garten") { zeichneGarten(raster); return; }
   for (const t of taetigkeitenVon(f.id).sort((x, y) => x.stufe - y.stufe)) {

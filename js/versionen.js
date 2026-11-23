@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.14", datum: "2026-11-23", neu: ["🔭 Neue Fertigkeit Sternenkunde – sie öffnet sich nach deinem ersten Abenteuer-Pfad. Beobachte 8 Sternbilder und sammle 💫 Sternsplitter und seltene 🌟 Goldsplitter.", "✨ Jedes Sternbild gehört zu zwei Fertigkeiten. Lass seine Sterne leuchten: schneller, öfter doppelt, mehr Erfahrung – und ein goldener Stern mit besonderer Kraft.", "🦋 Neues Haustier: Nachtfalter Mondi. Dazu neue Erfolge, Season-Aufgaben, Wiki-Seite und eine Einführung.", "Im Abenteuer sind die Beute-Tabellen jetzt am Anfang zugeklappt."] },
   { v: "1.13", datum: "2026-11-23", neu: ["💰 Abenteuer → Gebiete: Jedes Monster zeigt seine Beute. Unter jedem Gebiet steht „Wer lässt was fallen?“ – mit Chance, Menge, Münzen und bei Chefs Pokal und Haustier.", "Der rote Schließen-Knopf hat jetzt runde Ecken."] },
   { v: "1.12.1", datum: "2026-11-23", neu: ["Das Übungs- und das Fortschritts-Fenster haben oben rechts einen roten Schließen-Knopf, der auch beim Scrollen sichtbar bleibt."] },
   { v: "1.12", datum: "2026-11-23", neu: ["🏁 Neues Fortschritts-Fenster: Wie viel Prozent vom ganzen Spiel hast du schon geschafft? Mit allen Bereichen – Fertigkeiten, Aufträge, Erfolge, Baumhaus, Haustiere, Ausrüstung, Kleiderschrank, Monster, Pfade, Werkzeuge und Beete.", "Tippe einen Bereich an, um direkt hinzukommen. Du findest das Fenster oben auf der Fertigkeiten-Seite (🏁), im Guide und unter Ich → Statistik.", "Der Kompass zeigt jetzt dieselbe Prozentzahl – sie wächst viel feiner mit."] },

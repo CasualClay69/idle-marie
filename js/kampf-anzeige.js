@@ -191,7 +191,7 @@ function nachWahl() {
 }
 
 // ----- Wer lässt was fallen? (Tabelle unter jedem Gebiet) -----
-let beuteOffen = (() => { try { return localStorage.getItem("idleMarie-beuteOffen") !== "0"; } catch (e) { return true; } })();
+let beuteOffen = (() => { try { return localStorage.getItem("idleMarie-beuteOffen") === "1"; } catch (e) { return false; } })();
 function beuteTabelle(liste) {
   const zeilen = liste.map(m => {
     const tier = HAUSTIERE.find(h => h.chef === m.id);

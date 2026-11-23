@@ -78,13 +78,14 @@ function dauer(t) {
   if (f.werkzeug) faktor -= WERKZEUG_BONUS * (spiel.werkzeuge[f.werkzeug] || 0);
   if (uebungStufe(t.id) >= SPIEL.maxStufe) faktor -= SPIEL.meisterSchneller;
   faktor -= trankSchneller(t);
+  faktor -= sternBonus("schneller", t.fertigkeit);
   if (f.art === "machen") faktor -= haustierBonus("schneller", t.fertigkeit);
   if (f.art === "sammeln") faktor -= baumhausBonus("sammeln") + schmuckBonus("sammeln");
   if (f.art === "machen") faktor -= baumhausBonus("machen") + schmuckBonus("machen");
   return Math.max(0.5, t.zeit * faktor);
 }
 function doppeltChance(t) {
-  return Math.floor(uebungStufe(t.id) / 10) * SPIEL.uebungDoppeltProZehn + trankDoppelt(t) + haustierBonus("doppelt", t.fertigkeit) + baumhausBonus("doppelt") + schmuckBonus("doppelt");
+  return Math.floor(uebungStufe(t.id) / 10) * SPIEL.uebungDoppeltProZehn + trankDoppelt(t) + haustierBonus("doppelt", t.fertigkeit) + baumhausBonus("doppelt") + schmuckBonus("doppelt") + sternBonus("doppelt", t.fertigkeit);
 }
 
 // ----- Bank -----
@@ -120,6 +121,7 @@ function verkaufe(id, n) {
 // ----- Kann die Tätigkeit laufen? Rückgabe: null = ja, sonst ein Grund -----
 function hindernis(t) {
   if (t.kleidung && (spiel.garderobe || []).includes(t.kleidung)) return "Fertig genäht – zieh es im 👗 Kleiderschrank an!";
+  if (t.fertigkeit === "sterne" && !sterneFrei()) return "Schaffe zuerst einen Abenteuer-Pfad";
   if (stufe(t.fertigkeit) < t.stufe) return `Erst ab Stufe ${t.stufe}`;
   for (const [id, n] of Object.entries(t.braucht || {})) {
     if (anzahl(id) < n) return `Es fehlt: ${GEGENSTAENDE[id].name}`;
@@ -139,11 +141,14 @@ function fuehreAus(t) {
   ereignisse.doppelt = mal === 2;
   for (const [id, n] of Object.entries(t.gibt)) { gibInBank(id, n * mal); zaehle(id, n * mal); }
   if (t.kleidung) { gibTeil(t.kleidung); ereignisse.kleidung = t.kleidung; }
-  if (t.fertigkeit === "bergbau" && Math.random() < SCHMUCK.edelsteinChance) {
+  if (t.fertigkeit === "sterne" && Math.random() < STERNE.goldChance && passtInBank("goldsplitter5")) {
+    gibInBank("goldsplitter5", 1); zaehle("goldsplitter5", 1); ereignisse.goldsplitter = true;
+  }
+  if (t.fertigkeit === "bergbau" && Math.random() < SCHMUCK.edelsteinChance + baumhausBonus("edelstein")) {
     const stein = `stein${t.id.replace(/\D/g, "")}`;
     if (passtInBank(stein)) { gibInBank(stein, 1); zaehle(stein, 1); ereignisse.edelstein = stein; }
   }
-  const xp = Math.round(t.xp * trankFaktorXp());
+  const xp = Math.round(t.xp * (trankFaktorXp() + sternBonus("xp", t.fertigkeit)));
   ereignisse.xp = xp;
   spiel.xp[t.fertigkeit] = (spiel.xp[t.fertigkeit] || 0) + xp;
   spiel.uebung[t.id] = (spiel.uebung[t.id] || 0) + xp;

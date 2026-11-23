@@ -11,10 +11,10 @@
 
 const ohneSeason = liste => liste.filter(x => !x.season);
 const FORTSCHRITT_BEREICHE = [
-  { id: "fertigkeiten", name: "Fertigkeiten auf 99", icon: "🌟", gewicht: 30,
+  { id: "fertigkeiten", name: "Fertigkeiten auf 99", icon: "🌟", gewicht: 28,
     stand: () => [FERTIGKEITEN.reduce((s, f) => s + Math.min(SPIEL.maxStufe, stufe(f.id)), 0), FERTIGKEITEN.length * SPIEL.maxStufe],
     hilfe: { seite: "seiteFertigkeiten" } },
-  { id: "auftraege", name: "Aufträge", icon: "📜", gewicht: 10,
+  { id: "auftraege", name: "Aufträge", icon: "📜", gewicht: 8,
     stand: () => [Math.min(spiel.quest || 0, QUESTS.length), QUESTS.length], quest: true },
   { id: "erfolge", name: "Erfolge (ohne Season)", icon: "🏆", gewicht: 10,
     stand: () => { const e = ERFOLGE.filter(x => !x.id.startsWith("season")); return [e.filter(erfolgErreicht).length, e.length]; },
@@ -22,6 +22,8 @@ const FORTSCHRITT_BEREICHE = [
   { id: "baumhaus", name: "Baumhaus (alle Plätze, alle Stufen)", icon: "🏡", gewicht: 8,
     stand: () => [BAUPLAETZE.reduce((s, p) => s + (spiel.baumhaus?.[p.id] || 0), 0), BAUPLAETZE.length * BAU_STUFEN.length],
     hilfe: { fertigkeit: "bauen" } },
+  { id: "sterne", name: "Sternbilder (alle Sterne)", icon: "🔭", gewicht: 4,
+    stand: () => [sternStufenSumme(), sternStufenMax()], hilfe: { fertigkeit: "sterne", ziel: ".sternKaufen" } },
   { id: "haustiere", name: "Haustiere gefunden", icon: "🐾", gewicht: 6,
     stand: () => { const h = ohneSeason(HAUSTIERE); return [h.filter(x => hatHaustier(x.id)).length, h.length]; },
     hilfe: { seite: "seiteIch", ichTab: "tiere" } },

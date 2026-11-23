@@ -83,6 +83,10 @@ const WIKI_REGELN = [
     <p><b>Tipp:</b> Tippe eine Aufgabe an – dann bringt dich das Spiel direkt zur richtigen Stelle und lässt sie leuchten.</p>
     <p>${SEASON.punkteProStufe} Punkte = 1 Stufe. Bei ${SEASON.stufen} Stufen gibt es Rahmen, Kleidung, Hut und am Ende ein Season-Haustier.</p>
     <p>Die Season zählt nicht zu den 100 % im Guide – sie ist ein Extra für jeden Monat.</p>` },
+  { id: "sternenkunde", icon: "🔭", titel: "Sternenkunde", text: () => `
+    <p>Die Sternenkunde öffnet sich, sobald du deinen <b>ersten Abenteuer-Pfad</b> geschafft hast. Dann beobachtest du Sternbilder – wie beim Holzsammeln. Dafür gibt es Erfahrung und 💫 Sternsplitter, ganz selten (${(STERNE.goldChance * 100).toLocaleString("de-DE")} %) einen 🌟 Goldsplitter.</p>
+    <p>Es gibt ${STERNBILDER.length} Sternbilder (ab Stufe ${STUFEN.join(", ")}). Jedes gehört zu zwei Fertigkeiten. Mit Sternsplittern lässt du seine 3 Sterne leuchten (je ${STERNE.maxNormal} Stufen, jede Stufe +${Math.round(STERNE.proStufe * 100)} %). Mit Goldsplittern den goldenen Stern (${STERNE.maxGold} Stufen) mit einer besonderen Kraft.</p>
+    <p>Höhere Stern-Stufen brauchen eine höhere Sternenkunde-Stufe. Alle Sternbilder und Kräfte stehen in der Wiki unter 🔭 Sterne.</p>` },
   { id: "gluecksrad", icon: "🎁", titel: "Tägliches Glücksrad", text: () => `
     <p>Jeden Tag darfst du einmal am Glücksrad drehen – die Karte dafür ist oben auf der 🌟 Fertigkeiten-Seite. Jeder ${GLUECKSRAD.serieBonus}. Tag in Folge bringt ein <b>doppeltes</b> Geschenk.</p>
     <p>Mögliche Geschenke: ${GLUECKSRAD.felder.map(f => `${f.icon} ${f.name}`).join(", ")}. Die Geschenke wachsen mit deiner Gesamtstufe mit.</p>` },
@@ -98,6 +102,12 @@ const GUIDE_EINSCHUEBE = [
   { nach: "Verdiene 30 Münzen", schritt: { id: "rad:1", icon: "🎁", titel: "Dreh das Glücksrad",
     text: "Oben auf der 🌟 Fertigkeiten-Seite wartet jeden Tag ein Geschenk. Dreh das Glücksrad – am besten jeden Tag!",
     ziel: 1, wert: () => spiel.gluecksrad?.gedreht || 0, hilfe: { seite: "seiteFertigkeiten", ziel: "#gluecksKarte" } } },
+  { nach: "Schaffe den Pusteblumen-Pfad", schritt: { id: "sterne:1", icon: "🔭", titel: "Beobachte die Sterne",
+    text: "Nach deinem ersten Pfad öffnet sich die 🔭 Sternenkunde. Beobachte das Eichhörnchen-Sternbild und sammle 30 Sternsplitter.",
+    ziel: 30, wert: () => spiel.zaehler?.sternsplitter2 || 0, hilfe: { fertigkeit: "sterne" } } },
+  { nach: "Schaffe den Pusteblumen-Pfad", schritt: { id: "sterne:2", icon: "🌟", titel: "Lass deinen ersten Stern leuchten",
+    text: "Kauf bei der Sternenkunde mit Sternsplittern einen Stern – er hilft dir für immer.",
+    ziel: 1, wert: () => sternStufenSumme(), hilfe: { fertigkeit: "sterne", ziel: ".sternKaufen" } } },
 ];
 
 // ===================== 2. GUIDE NACH DEN AUFTRÄGEN =====================
@@ -119,6 +129,10 @@ function guideVervollstaendigen() {
   schritt({ id: "g:beete", kapitel: K1, icon: "🟫", titel: `Alle ${alleBeete} Beete`,
     text: "Mehr Beete = mehr Ernte. Kauf neue Beete im 🌱 Garten. Die letzten 3 bekommst du mit dem 🌷 Blumenkasten im Baumhaus.",
     ziel: alleBeete, wert: () => gartenStand().beete.length, hilfe: { fertigkeit: "garten", ziel: "#beetKaufen" } });
+
+  schritt({ id: "sterne:alle", kapitel: K1, icon: "✨", titel: "Der ganze Himmel leuchtet",
+    text: "Bring alle Sterne aller Sternbilder auf die höchste Stufe. Höhere Stufen brauchen eine höhere Sternenkunde-Stufe.",
+    ziel: sternStufenMax(), wert: () => sternStufenSumme(), hilfe: { fertigkeit: "sterne", ziel: ".sternKaufen" } });
 
   // --- Alles sammeln ---
   const K2 = "Alles sammeln";

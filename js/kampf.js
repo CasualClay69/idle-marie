@@ -15,13 +15,13 @@ function ausruestungsBonus(art) {
 function kampfStufe() {
   return Math.floor((stufe("mut") + stufe("kraft") + stufe("schutz") + stufe("herzen")) / 4);
 }
-function maxHp() { return Math.round(stufe("herzen") * KAMPF.hpProStufe * (1 + schmuckBonus("herzen"))); }
+function maxHp() { return Math.round(stufe("herzen") * KAMPF.hpProStufe * (1 + schmuckBonus("herzen") + sternBonus("herzen"))); }
 function spielerWerte() {
   return {
-    genauigkeit: Math.round((stufe("mut") + 8) * (64 + ausruestungsBonus("treff")) * (1 + trankKampf("treff") + haustierBonus("treff") + schmuckBonus("treff"))),
-    maxSchlag: Math.floor((15 + stufe("kraft") * 1.6 + ausruestungsBonus("kraft") * 1.5) * (1 + trankKampf("kraft") + haustierBonus("kraft") + schmuckBonus("kraft"))),
+    genauigkeit: Math.round((stufe("mut") + 8) * (64 + ausruestungsBonus("treff")) * (1 + trankKampf("treff") + haustierBonus("treff") + schmuckBonus("treff") + sternBonus("treff"))),
+    maxSchlag: Math.floor((15 + stufe("kraft") * 1.6 + ausruestungsBonus("kraft") * 1.5) * (1 + trankKampf("kraft") + haustierBonus("kraft") + schmuckBonus("kraft") + sternBonus("kraft"))),
     ausweichen: (stufe("schutz") + 8) * (64 + ausruestungsBonus("abwehr")),
-    weniger: Math.min(0.6, ausruestungsBonus("weniger") / 100 + trankKampf("schutz") + haustierBonus("schutz")),
+    weniger: Math.min(0.6, ausruestungsBonus("weniger") / 100 + trankKampf("schutz") + haustierBonus("schutz") + sternBonus("schutz")),
     tempo: KAMPF.ohneWaffeTempo,
   };
 }
@@ -88,7 +88,7 @@ function isst(ergebnis) {
 function gibKampfXp(schaden, ergebnis) {
   const stil = spiel.kampfstil || "mut";
   const f = trankFaktorXp() * (1 + baumhausBonus("kampfxp"));
-  for (const [fid, xp] of [[stil, schaden * KAMPF.xpProSchaden * f], ["herzen", schaden * KAMPF.herzenXpProSchaden * f]]) {
+  for (const [fid, xp] of [[stil, schaden * KAMPF.xpProSchaden * (f + sternBonus("xp", stil))], ["herzen", schaden * KAMPF.herzenXpProSchaden * (f + sternBonus("xp", "herzen"))]]) {
     const vorher = stufe(fid);
     spiel.xp[fid] = (spiel.xp[fid] || 0) + xp;
     ergebnis.xp[fid] = (ergebnis.xp[fid] || 0) + xp;
