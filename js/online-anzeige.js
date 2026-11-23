@@ -63,10 +63,12 @@ function zeichneBestenliste() {
     <button type="button" class="knopf leise" id="listeAustreten">Austreten</button></div>`;
   for (const b of ziel.querySelectorAll(".listeTabs button")) b.addEventListener("click", () => { ton.klick(); listeTab = b.dataset.tab; zeichneBestenliste(); });
   $("listeNeu").addEventListener("click", () => { ton.klick(); listeCache = null; zeichneBestenliste(); ladeListe(true); });
-  $("listeAustreten").addEventListener("click", async () => {
-    if (!confirm("Willst du wirklich aus der Bestenliste austreten? Dein Eintrag wird gelöscht.")) return;
-    try { await verlasseListe(); melde("👋 Du bist ausgetreten."); } catch (e) { melde(`🙈 ${e.message}`); }
-    listeCache = null; zeichneBestenliste();
+  $("listeAustreten").addEventListener("click", () => {
+    ton.klick();
+    frage("👋 Austreten?", "Willst du wirklich aus der Bestenliste austreten? Dein Eintrag wird gelöscht.", "Ja, austreten", async () => {
+      try { await verlasseListe(); melde("👋 Du bist ausgetreten."); } catch (e) { melde(`🙈 ${e.message}`); }
+      listeCache = null; zeichneBestenliste();
+    });
   });
 }
 

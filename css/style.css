@@ -897,3 +897,6 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 
 .samenZeile .lText { flex: 1 1 120px; }
 .taetigkeit > * { max-width: 100%; }
+
+/* ----- Gezeichnete Bilder statt Emojis ----- */
+.ik { width: 1.15em; height: 1.15em; display: inline-block; vertical-align: -0.2em; flex-shrink: 0; overflow: visible; }

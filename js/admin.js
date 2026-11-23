@@ -92,9 +92,10 @@ async function zeigeAdminListe() {
       if (!name) return;
       try { await adminAufruf("admin_eintrag_umbenennen", { p_spieler_id: b.dataset.um, p_name: name }); zeigeAdminListe(); } catch (e) { $("adminFehler").textContent = e.message; }
     });
-    for (const b of $("adminListe").querySelectorAll("[data-weg]")) b.addEventListener("click", async () => {
-      if (!confirm("Diesen Eintrag wirklich löschen?")) return;
-      try { await adminAufruf("admin_eintrag_loeschen", { p_spieler_id: b.dataset.weg }); zeigeAdminListe(); } catch (e) { $("adminFehler").textContent = e.message; }
+    for (const b of $("adminListe").querySelectorAll("[data-weg]")) b.addEventListener("click", () => {
+      frage("🗑️ Löschen?", "Diesen Eintrag wirklich löschen?", "Ja, löschen", async () => {
+        try { await adminAufruf("admin_eintrag_loeschen", { p_spieler_id: b.dataset.weg }); zeigeAdminListe(); } catch (e) { $("adminFehler").textContent = e.message; }
+      });
     });
   } catch (e) { $("adminListe").textContent = e.message; }
 }
