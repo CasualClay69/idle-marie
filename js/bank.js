@@ -7,8 +7,8 @@
 
 // ----- Seltenheit (wie in Abenteuer-Rollenspielen) -----
 const SELTENHEITEN = [
-  { name: "Einfach",    farbe: "#9aa0a6" },
-  { name: "Normal",     farbe: "#d8dbe2" },
+  { name: "Einfach",    farbe: "#d8dbe2" },
+  { name: "Normal",     farbe: "#9aa0a6" },
   { name: "Gut",        farbe: "#4fc27a" },
   { name: "Selten",     farbe: "#4a8fe0" },
   { name: "Episch",     farbe: "#a05be0" },

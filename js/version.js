@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.16";
-const APP_NEU = "Neu: Das Wichteldorf! Nach deinem zweiten Abenteuer-Pfad ziehen Wichtel zu dir.";
+const APP_VERSION = "1.16.1";
+const APP_NEU = "Die Farben der Seltenheiten Einfach und Normal sind getauscht.";
