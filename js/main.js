@@ -100,7 +100,7 @@ function schleife() {
 // ----- Knöpfe -----
 function richteKnoepfeEin() {
   for (const b of document.querySelectorAll("#untenNav button")) {
-    b.addEventListener("click", () => { ton.klick(); zeigeSeite(b.dataset.seite); });
+    b.addEventListener("click", () => { ton.klick(); if (b.dataset.seite === "seiteBank") bankTab = "alle"; zeigeSeite(b.dataset.seite); });
   }
   $("zurueck").addEventListener("click", () => { ton.klick(); zeigeSeite("seiteFertigkeiten"); });
   $("aktivStopp").addEventListener("click", () => {
@@ -221,6 +221,7 @@ function starteSpiel() {
   richteSicherungEin();
   richteEinfuehrungEin();
   richteQuestsEin();
+  richteBankEin();
   holeOfflineNach();
   ruheAus();
   zeichneKopf();

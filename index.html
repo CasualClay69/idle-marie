@@ -43,6 +43,7 @@
   <script src="js/baumhaus.js" defer></script>
   <script src="js/sound.js" defer></script>
   <script src="js/anzeige.js" defer></script>
+  <script src="js/bank.js" defer></script>
   <script src="js/kampf-anzeige.js" defer></script>
   <script src="js/garten-anzeige.js" defer></script>
   <script src="js/sammlung-anzeige.js" defer></script>
@@ -122,6 +123,12 @@
 
       <section id="seiteBank" class="seite" hidden>
         <h2 class="seitenTitel">🏦 Bank <small id="bankFaecher"></small></h2>
+        <div id="bankReiter" class="ichReiter bankReiter"></div>
+        <div class="bankKnoepfe">
+          <button type="button" class="knopf leise" id="bankSortieren">🔀 Sortieren</button>
+          <button type="button" class="knopf leise" id="bankAllesAusser1">💰 Alles außer 1</button>
+          <button type="button" class="knopf leise" id="bankAllesVerkaufen">💰 Alles verkaufen</button>
+        </div>
         <p class="hinweis" id="bankWert"></p>
         <div id="bankRaster" class="bankRaster"></div>
       </section>
@@ -293,6 +300,16 @@
     <div class="fenster">
       <div id="wahlInhalt"></div>
       <button id="wahlZu" class="knopf leise" type="button">Schließen</button>
+    </div>
+  </div>
+
+  <!-- Ja/Nein-Frage -->
+  <div id="frageOverlay" class="overlay" hidden>
+    <div class="fenster">
+      <h2 id="frageTitel"></h2>
+      <p id="frageText"></p>
+      <button id="frageJa" class="knopf" type="button"></button>
+      <button id="frageNein" class="knopf leise" type="button">Nein, lieber nicht</button>
     </div>
   </div>
 

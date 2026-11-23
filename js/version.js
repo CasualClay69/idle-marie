@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.6";
-const APP_NEU = "Neu: Willkommen zurück! Ein Fenster zeigt, wie lange du weg warst und was alles passiert ist.";
+const APP_VERSION = "1.7";
+const APP_NEU = "Neue Bank: Reiter für jede Art, bunte Rahmen nach Seltenheit, Sortieren und alles auf einmal verkaufen.";

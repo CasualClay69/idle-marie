@@ -693,6 +693,31 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .rkName { flex: 1; min-width: 0; }
 .offlineListe .hell { margin-left: 6px; }
 
+/* ----- Bank: Reiter, Knöpfe, Seltenheit ----- */
+.bankReiter { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.bankReiter button { position: relative; font-size: 0.66rem; padding: 6px 1px; }
+.bankReiter button span { font-size: 1.3rem; }
+.bankReiter button i { position: absolute; top: -6px; right: -4px; min-width: 18px; padding: 0 4px; border-radius: 999px;
+  background: var(--lila); color: #fff; font-style: normal; font-size: 0.62rem; line-height: 18px; }
+.bankReiter button.leerReiter { opacity: 0.55; }
+.bankKnoepfe { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-bottom: 4px; }
+.bankKnoepfe .knopf { margin: 0; padding: 8px 4px; font-size: 0.78rem; }
+.bankFeld.selten {
+  border: 3px solid var(--selten);
+  background: radial-gradient(circle at 50% 40%, #fff 30%, color-mix(in srgb, var(--selten) 30%, #fff) 100%);
+}
+.bankFeld.selten .symbol { border-color: transparent; background: transparent; }
+.bankFeld.regenbogen, .seltenRahmen.regenbogen {
+  border: 3px solid transparent;
+  background: radial-gradient(circle at 50% 40%, #fff 30%, #ffe6f3 100%) padding-box,
+              conic-gradient(#ff7a7a, #ffd54f, #8fcf6a, #7ad7f0, #b48cff, #ff7a7a) border-box;
+}
+.seltenRahmen { display: inline-grid; place-items: center; padding: 4px; border-radius: 50%; border: 3px solid var(--selten);
+  background: radial-gradient(circle, #fff 40%, color-mix(in srgb, var(--selten) 30%, #fff)); flex: none; }
+.seltenRahmen .symbol { border-color: transparent; }
+.seltenName { display: inline-block; margin-bottom: 4px; padding: 1px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 800;
+  background: color-mix(in srgb, var(--selten) 25%, #fff); color: color-mix(in srgb, var(--selten) 70%, #3b2240); border: 2px solid var(--selten); }
+
 /* ----- Navigation unten ----- */
 #untenNav {
   display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px;

@@ -189,32 +189,13 @@ function zeichneFertigkeit() {
 }
 
 // ----- Bank -----
-function zeichneBank() {
-  $("bankFaecher").textContent = `${belegteFaecher()} / ${bankFaecher()} Fächer`;
-  const ids = Object.keys(spiel.bank).filter(id => spiel.bank[id] > 0);
-  const wert = ids.reduce((s, id) => s + anzahl(id) * GEGENSTAENDE[id].wert, 0);
-  $("bankWert").innerHTML = ids.length ? `Alles zusammen ist ${muenzeHtml("muenze klein")} <b>${zahl(wert)}</b> Münzen wert. Tippe etwas an, um es zu verkaufen.`
-                                       : "Deine Bank ist noch leer. Sammle etwas!";
-  const raster = $("bankRaster");
-  raster.textContent = "";
-  const reihenfolge = Object.keys(GEGENSTAENDE);
-  ids.sort((a, b) => reihenfolge.indexOf(a) - reihenfolge.indexOf(b));
-  for (const id of ids) {
-    const feld = el("button", "bankFeld", `${symbolHtml(id)}<span class="bankZahl">${zahl(anzahl(id))}</span>`);
-    feld.type = "button";
-    feld.title = GEGENSTAENDE[id].name;
-    feld.addEventListener("click", () => { ton.klick(); zeigeGegenstand(id); });
-    raster.append(feld);
-  }
-  for (let i = ids.length; i < bankFaecher(); i++) raster.append(el("div", "bankFeld leer"));
-}
-
 function zeigeGegenstand(id) {
   const g = GEGENSTAENDE[id];
   const n = anzahl(id);
   const inhalt = $("gegenstandInhalt");
   if (!n) { $("gegenstandOverlay").hidden = true; return; }
-  inhalt.innerHTML = `<div class="gKopf">${symbolHtml(id, "symbol gross")}<div><h2>${g.name}</h2>
+  inhalt.innerHTML = `<div class="gKopf"><span class="seltenRahmen${seltenKlasse(id)}" style="${seltenheitStil(id)}">${symbolHtml(id, "symbol gross")}</span><div><h2>${g.name}</h2>
+      <span class="seltenName" style="${seltenheitStil(id)}">${SELTENHEITEN[seltenheit(id)].name}</span>
       <p>Du hast <b>${zahl(n)}</b> Stück · je ${muenzeHtml("muenze klein")} ${zahl(g.wert)}${g.heilt ? ` · heilt ${g.heilt} ❤️` : ""}</p></div></div>
     ${g.platz ? `<p class="hinweis">${g.schmuckText ? `✨ ${g.schmuckText} ` : ""}${[g.bonus.treff && `🎯 Treffen +${g.bonus.treff}`, g.bonus.kraft && `💥 Schlag +${g.bonus.kraft}`, g.bonus.abwehr && `🛡️ Ausweichen +${g.bonus.abwehr}`, g.bonus.weniger && `${g.bonus.weniger} % weniger Schaden`].filter(Boolean).join(" · ")}
       · braucht ${Object.entries(g.braucht).map(([f, l]) => `${fertigkeit(f).icon} ${fertigkeit(f).name} ${l}`).join(", ")}</p>
@@ -233,7 +214,9 @@ function zeigeGegenstand(id) {
     ton.klick(); spiel.essen = id; melde(`🍽️ ${figurName()} nimmt ${g.name} mit ins Abenteuer`); speichern(); zeigeGegenstand(id);
   });
   const knoepfe = inhalt.querySelector(".verkaufKnoepfe");
-  const mengen = [[1, "1"], [10, "10"], [Math.floor(n / 2), "Hälfte"], [n, "Alle"]].filter(([m], i, a) => m > 0 && (i === a.length - 1 || m < n));
+  const gesehen = new Set();
+  const mengen = [[1, "1"], [10, "10"], [Math.floor(n / 2), "Hälfte"], [n - 1, "Alle außer 1"], [n, "Alle"]]
+    .filter(([m], i, a) => m > 0 && (i === a.length - 1 || m < n) && !gesehen.has(m) && gesehen.add(m));
   for (const [m, text] of mengen) {
     const b = el("button", "knopf", `Verkaufe ${text}<small>${muenzeHtml("muenze klein")} ${zahl(m * g.wert)}</small>`);
     b.type = "button";

@@ -49,6 +49,7 @@ const DATEIEN = [
   "js/baumhaus.js",
   "js/sound.js",
   "js/anzeige.js",
+  "js/bank.js",
   "js/kampf-anzeige.js",
   "js/garten-anzeige.js",
   "js/sammlung-anzeige.js",
