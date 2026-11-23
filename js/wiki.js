@@ -23,6 +23,7 @@ function route() {
     if (q === letzter) guideVervollstaendigen().forEach(dazu);
     dazu({ id: `q:${q.titel}`, kapitel: q === letzter && liste.length ? liste[liste.length - 1].kapitel : q.kapitel || "Aufträge", nurAbholen: q.nurAbholen, titel: q.titel, text: q.text, quest: q, questNr: i,
       ziel: q.ziel, wert: q.wert, fertigkeitId: q.fertigkeitId, hilfe: q.hilfe, icon: q.icon, symbol: q.symbol });
+    for (const e of GUIDE_EINSCHUEBE.filter(x => x.nach === q.titel)) dazu({ ...e.schritt, kapitel: q.kapitel || "Aufträge" });
   });
   if (!letzter) guideVervollstaendigen().forEach(dazu);
   ROUTE = liste;

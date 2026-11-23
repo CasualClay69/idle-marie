@@ -13,6 +13,37 @@ function belohnungKurz(b) {
   return "";
 }
 
+// ----- Season-Logo mit Jahreszahl (Banner-Stil wie bei Marie Clicker) -----
+// Season 1 = November 2026 (Start des Season-Passes), danach jeden Monat eine mehr
+function seasonNummer(id) { return (Number(id.slice(0, 4)) - 2026) * 12 + Number(id.slice(5)) - 10; }
+function seasonLogoSvg(t, id) {
+  const titel = `${t.titel} ${id.slice(0, 4)}`.replace(/&/g, "&amp;");
+  const groesse = Math.min(34, Math.floor(262 / (0.6 * titel.length)));
+  const hell = t.farben[0], kraeftig = t.farben[1];
+  const rand = toene(kraeftig, -0.45), enden = toene(kraeftig, -0.12), schatten = toene(kraeftig, -0.4);
+  const g = `sl${id.replace("-", "")}`;
+  const motive = [t.icon, ...(t.rahmenEmoji || [])];
+  const deko = [[motive[0], 0, 48, 44], [motive[1] || motive[0], 314, 46, 40], [motive[2] || motive[0], 44, 139, 25], [motive[0], 292, 139, 25]]
+    .map(([e, x, y, gr]) => `<text x="${x}" y="${y}" font-size="${gr}">${e}</text>`).join("");
+  return `<svg viewBox="0 0 360 140" role="img" aria-label="Season ${seasonNummer(id)}: ${titel}">
+  <defs>
+    <linearGradient id="${g}b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${toene(kraeftig, 0.35)}"/><stop offset="1" stop-color="${kraeftig}"/></linearGradient>
+    <linearGradient id="${g}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="${hell}"/></linearGradient>
+  </defs>
+  <path d="M12 66 H60 V116 H12 L27 91 Z" fill="${enden}"/>
+  <path d="M348 66 H300 V116 H348 L333 91 Z" fill="${enden}"/>
+  <path d="M60 116 L46 104 H60 Z" fill="${schatten}"/>
+  <path d="M300 116 L314 104 H300 Z" fill="${schatten}"/>
+  <rect x="42" y="52" width="276" height="70" rx="18" fill="url(#${g}b)" stroke="${rand}" stroke-width="4"/>
+  <path d="M62 62 H298" stroke="#fff" stroke-opacity=".45" stroke-width="5" stroke-linecap="round"/>
+  <text x="180" y="105" text-anchor="middle" font-family="ui-rounded, 'Arial Rounded MT Bold', Nunito, sans-serif" font-size="${groesse}" font-weight="900"
+        fill="url(#${g}s)" stroke="${rand}" stroke-width="7" stroke-linejoin="round" paint-order="stroke">${titel}</text>
+  <rect x="124" y="31" width="112" height="28" rx="14" fill="#ffffff" stroke="${rand}" stroke-width="3"/>
+  <text x="180" y="50.5" text-anchor="middle" font-family="ui-rounded, 'Arial Rounded MT Bold', Nunito, sans-serif" font-size="14" font-weight="900" fill="${rand}" letter-spacing="3">SEASON ${seasonNummer(id)}</text>
+  ${deko}
+</svg>`;
+}
+
 // ----- Banner (oben auf der Fertigkeiten-Seite) -----
 function zeichneSeasonBanner() {
   const t = aktuellesThema(), s = spiel.season;
@@ -23,7 +54,7 @@ function zeichneSeasonBanner() {
   b.style.setProperty("--s1", t.farben[0]);
   b.style.setProperty("--s2", t.farben[1]);
   b.innerHTML = `<span class="sbIcon">${t.icon}</span>
-    <span class="sbText"><b>Season: ${t.titel}</b><small>Stufe ${st} / ${SEASON.stufen} · noch ${seasonTageUebrig()} Tage</small>
+    <span class="sbText"><b>Season ${seasonNummer(s.id)}: ${t.titel} ${s.id.slice(0, 4)}</b><small>Stufe ${st} / ${SEASON.stufen} · noch ${seasonTageUebrig()} Tage</small>
       <span class="balken duenn"><div style="width:${(anteil * 100).toFixed(1)}%"></div></span></span>
     ${fertig ? `<span class="sbMarke">🎁 ${fertig}</span>` : `<span class="sbPfeil">›</span>`}`;
 }
@@ -33,9 +64,9 @@ function zeichneSeason() {
   const t = aktuellesThema(), s = spiel.season;
   const st = seasonStufe();
   const naechste = st >= SEASON.stufen ? null : (st + 1) * SEASON.punkteProStufe;
-  const kopf = `<div class="seasonKopf" style="--s1:${t.farben[0]};--s2:${t.farben[1]}">
-      <span class="skIcon">${t.icon}</span>
-      <div><small>Season ${MONATSNAMEN[Number(s.id.slice(5)) - 1]} · noch ${seasonTageUebrig()} Tage</small><h2>${t.titel}</h2>
+  const kopf = `<div class="seasonKopf mitLogo" style="--s1:${t.farben[0]};--s2:${t.farben[1]}">
+      <div class="seasonLogo">${seasonLogoSvg(t, s.id)}</div>
+      <div><small>${MONATSNAMEN[Number(s.id.slice(5)) - 1]} ${s.id.slice(0, 4)} · noch ${seasonTageUebrig()} Tage</small>
       <div class="skStufe">Stufe <b>${st}</b> / ${SEASON.stufen}</div>
       <div class="balken dick"><div style="width:${naechste ? ((s.punkte % SEASON.punkteProStufe) / SEASON.punkteProStufe * 100).toFixed(1) : 100}%"></div></div>
       <small>${naechste ? `${zahl(s.punkte)} / ${zahl(naechste)} Season-Punkte` : `🎉 Alle Stufen geschafft! Jede weiteren 100 Punkte bringen Münzen.`}</small></div></div>`;

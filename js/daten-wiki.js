@@ -82,9 +82,21 @@ const WIKI_REGELN = [
     <p><b>Tipp:</b> Tippe eine Aufgabe an – dann bringt dich das Spiel direkt zur richtigen Stelle und lässt sie leuchten.</p>
     <p>${SEASON.punkteProStufe} Punkte = 1 Stufe. Bei ${SEASON.stufen} Stufen gibt es Rahmen, Kleidung, Hut und am Ende ein Season-Haustier.</p>
     <p>Die Season zählt nicht zu den 100 % im Guide – sie ist ein Extra für jeden Monat.</p>` },
+  { id: "gluecksrad", icon: "🎁", titel: "Tägliches Glücksrad", text: () => `
+    <p>Jeden Tag darfst du einmal am Glücksrad drehen – die Karte dafür ist oben auf der 🌟 Fertigkeiten-Seite. Jeder ${GLUECKSRAD.serieBonus}. Tag in Folge bringt ein <b>doppeltes</b> Geschenk.</p>
+    <p>Mögliche Geschenke: ${GLUECKSRAD.felder.map(f => `${f.icon} ${f.name}`).join(", ")}. Die Geschenke wachsen mit deiner Gesamtstufe mit.</p>` },
   { id: "online", icon: "🏅", titel: "Bestenliste, Codes und Sichern", text: () => `
     <p>In der Bestenliste unter 👤 Ich kannst du mit einem Spitznamen mitmachen. Es zählt die Gesamtstufe und die Erfahrung der Woche.</p>
     <p>Mit einem Belohnungs-Code bekommst du Geschenke. Unter ⚙️ Optionen kannst du deinen Spielstand als Code oder Datei sichern – heb ihn gut auf!</p>` },
+];
+
+// ===================== 2a. EINSCHÜBE IN DIE AUFTRAGS-KETTE =====================
+// Zusätzliche Guide-Schritte direkt NACH einem bestimmten Auftrag (Titel). So ändert sich die
+// Nummerierung der Aufträge nicht (spiel.quest zählt mit Nummern!).
+const GUIDE_EINSCHUEBE = [
+  { nach: "Verdiene 30 Münzen", schritt: { id: "rad:1", icon: "🎁", titel: "Dreh das Glücksrad",
+    text: "Oben auf der 🌟 Fertigkeiten-Seite wartet jeden Tag ein Geschenk. Dreh das Glücksrad – am besten jeden Tag!",
+    ziel: 1, wert: () => spiel.gluecksrad?.gedreht || 0, hilfe: { seite: "seiteFertigkeiten", ziel: "#gluecksKarte" } } },
 ];
 
 // ===================== 2. GUIDE NACH DEN AUFTRÄGEN =====================

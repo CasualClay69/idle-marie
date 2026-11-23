@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.10", datum: "2026-11-23", neu: ["🎁 Tägliches Glücksrad: Jeden Tag einmal drehen – Münzen, Samen, Essen, Tränke, Edelsteine, Season-Punkte oder sogar ein Schatz! Jeder 7. Tag in Folge bringt ein doppeltes Geschenk.", "🏆 3 neue Erfolge fürs Glücksrad.", "🎟️ Jede Season hat jetzt ein eigenes Logo mit Season-Nummer und Jahreszahl."] },
   { v: "1.9.1", datum: "2026-11-23", neu: ["🎟️ Tippe eine Tages- oder Wochenaufgabe an – das Spiel bringt dich direkt zur richtigen Stelle und lässt sie leuchten.", "Behoben: In der Bestenliste ist das Haustier wieder klein und verdeckt die Figur nicht mehr.", "Behoben: Die Sterne der Haustiere stehen wieder nebeneinander."] },
   { v: "1.9", datum: "2026-11-23", neu: ["📖 Neu: die Wiki! Unten rechts findest du alles über alles: Fertigkeiten, Gegenstände (woher sie kommen und wofür man sie braucht), Monster, Haustiere, Baumhaus, Aussehen, Erfolge und Season – mit Suche.", "🧭 Der Guide in der Wiki zeigt den besten Weg vom Start bis 100 %. Geschaffte Schritte werden von allein abgehakt.", "Der Kompass-Knopf zeigt dir jederzeit den nächsten Schritt und lässt die richtige Stelle im Spiel leuchten."] },
   { v: "1.8", datum: "2026-11-23", neu: ["🖌️ Alles ist jetzt gemalt: Jedes Bild im Spiel – Tiere, Essen, Werkzeuge, Knöpfe, Herzen und Sterne – ist eine eigene Zeichnung im selben Stil. Keine Emojis mehr.", "Sicherheitsfragen erscheinen jetzt im Spiel-Fenster statt im grauen Browser-Kasten."] },

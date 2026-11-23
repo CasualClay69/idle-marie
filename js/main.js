@@ -77,7 +77,7 @@ function schleife() {
     pruefeQuest();
     if (!document.hidden) merkeSchnappschuss();
     if (pruefeSeasonWechsel()) { speichern(); melde(`🎟️ Neue Season-Aufgaben sind da!`); }
-    if (aktuelleSeite === "seiteFertigkeiten") zeichneSeasonBanner();
+    if (aktuelleSeite === "seiteFertigkeiten") { zeichneSeasonBanner(); zeichneGluecksKarte(); }
     if (aktuelleSeite === "seiteSeason") {
       const stand = spiel.season.aufgaben.map(a => aufgabeStand(a).wert).join();
       if (stand !== letzterSeasonStand) { letzterSeasonStand = stand; zeichneSeason(); }
@@ -222,6 +222,7 @@ function starteSpiel() {
   richteEinfuehrungEin();
   richteQuestsEin();
   richteBankEin();
+  richteGluecksradEin();
   richteWikiEin();
   holeOfflineNach();
   ruheAus();
