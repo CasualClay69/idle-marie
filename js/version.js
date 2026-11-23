@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.12.1";
-const APP_NEU = "Übungs- und Fortschritts-Fenster haben jetzt oben rechts einen roten Schließen-Knopf.";
+const APP_VERSION = "1.13";
+const APP_NEU = "Im Abenteuer siehst du jetzt bei jedem Monster genau, was es fallen lässt.";

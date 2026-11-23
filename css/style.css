@@ -1082,8 +1082,27 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 /* Schließen-Knopf oben rechts: rotes Viereck mit weißem X (bleibt beim Scrollen sichtbar) */
 .zuX {
   position: sticky; top: 0; float: right; z-index: 5; width: 38px; height: 38px; margin: -6px -6px 0 4px; padding: 0;
-  display: grid; place-items: center; border: 2px solid #fff; border-radius: 10px;
+  display: grid; place-items: center; border: 2px solid #fff; border-radius: 14px;
   background: linear-gradient(160deg, #ff6b6b, #e03131); box-shadow: 0 3px 8px rgba(224, 49, 49, 0.4);
 }
 .zuX svg { width: 22px; height: 22px; display: block; }
 .zuX:active { transform: scale(0.92); }
+
+/* ----- Beute der Monster im Abenteuer ----- */
+.mBeute { display: flex; flex-wrap: wrap; justify-content: center; gap: 1px; margin-top: 2px; }
+.mBeute .mini { width: 17px; height: 17px; }
+.beuteTabelle { margin-top: 8px; padding: 6px 10px; border-radius: 14px; background: rgba(255, 255, 255, 0.75); }
+.beuteTabelle summary { cursor: pointer; font-weight: 900; font-size: 0.85rem; }
+.btZeile { padding: 8px 0 6px; border-top: 1px dashed var(--rand); }
+.btZeile:first-of-type { border-top: 0; }
+.btKopf { display: flex; align-items: center; gap: 8px; }
+.btKopf b { font-size: 0.85rem; flex: 1; }
+.btKopf small { font-size: 0.72rem; font-weight: 800; color: #b07a10; white-space: nowrap; }
+.btBild { width: 30px; height: 30px; flex: none; }
+.btBild svg { width: 100%; height: 100%; }
+.btDinge { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 8px; margin-top: 4px; padding-left: 38px; }
+.btDing { display: flex; align-items: center; gap: 5px; min-width: 0; }
+.btDing > span:last-child { display: grid; min-width: 0; }
+.btDing b { font-size: 0.74rem; line-height: 1.15; overflow-wrap: anywhere; }
+.btDing small { font-size: 0.66rem; color: var(--text-sanft); }
+.btTier { font-size: 1.2rem; width: 22px; text-align: center; flex: none; }

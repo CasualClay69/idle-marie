@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.13", datum: "2026-11-23", neu: ["💰 Abenteuer → Gebiete: Jedes Monster zeigt seine Beute. Unter jedem Gebiet steht „Wer lässt was fallen?“ – mit Chance, Menge, Münzen und bei Chefs Pokal und Haustier.", "Der rote Schließen-Knopf hat jetzt runde Ecken."] },
   { v: "1.12.1", datum: "2026-11-23", neu: ["Das Übungs- und das Fortschritts-Fenster haben oben rechts einen roten Schließen-Knopf, der auch beim Scrollen sichtbar bleibt."] },
   { v: "1.12", datum: "2026-11-23", neu: ["🏁 Neues Fortschritts-Fenster: Wie viel Prozent vom ganzen Spiel hast du schon geschafft? Mit allen Bereichen – Fertigkeiten, Aufträge, Erfolge, Baumhaus, Haustiere, Ausrüstung, Kleiderschrank, Monster, Pfade, Werkzeuge und Beete.", "Tippe einen Bereich an, um direkt hinzukommen. Du findest das Fenster oben auf der Fertigkeiten-Seite (🏁), im Guide und unter Ich → Statistik.", "Der Kompass zeigt jetzt dieselbe Prozentzahl – sie wächst viel feiner mit."] },
   { v: "1.11", datum: "2026-11-23", neu: ["⭐ Neues Übungs-Fenster: Für jede Tätigkeit und jede Garten-Pflanze siehst du deine Übungs-Stufe, was sie dir gerade bringt (doppelte Ausbeute, Meister-Tempo) und wie oft du noch bis zum nächsten Bonus brauchst.", "Du findest es unten auf jeder Fertigkeits-Seite, im Garten und unter Ich → Statistik."] },

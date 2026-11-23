@@ -73,14 +73,17 @@ function zeichneAbenteuer() {
   const gebiete = GEBIETE.map(g => `<div class="gebiet" style="--farbe:${g.farbe}">
       <h3>${g.icon} ${g.name} <small>empfohlen ab Kampfstufe ${g.ab}</small></h3>
       <div class="monsterListe">${g.monster.map(mo => `<button type="button" class="monsterKarte${a?.monster === mo.id ? " laeuft" : ""}${mo.chef ? " chef" : ""}" data-monster="${mo.id}">
-        <span class="mBild">${monsterSvg(mo.aussehen)}</span><b>${mo.name}</b><small>Stufe ${mo.stufe}${spiel.besiegt?.[mo.id] ? ` · 💤 ${zahl(spiel.besiegt[mo.id])}` : ""}</small></button>`).join("")}</div>
+        <span class="mBild">${monsterSvg(mo.aussehen)}</span><b>${mo.name}</b><small>Stufe ${mo.stufe}${spiel.besiegt?.[mo.id] ? ` · 💤 ${zahl(spiel.besiegt[mo.id])}` : ""}</small>
+        <span class="mBeute">${(mo.beute || []).map(b => symbolHtml(b.id, "mini")).join("")}</span></button>`).join("")}</div>
+      ${beuteTabelle(g.monster)}
     </div>`).join("");
 
   const sm = MONSTER.season, th = aktuellesThema();
   const seasonGebiet = `<div class="gebiet" style="--farbe:${th.farben[1]}">
       <h3>🎟️ Season: ${th.titel} <small>passt sich deiner Kampfstufe an · ⭐ ${SEASON.monsterPunkte} Season-Punkte pro Einschlafen</small></h3>
       <div class="monsterListe"><button type="button" class="monsterKarte chef${a?.monster === "season" ? " laeuft" : ""}" data-monster="season">
-        <span class="mBild">${monsterSvg(sm.aussehen)}</span><b>${sm.name}</b><small>Stufe ${sm.stufe}</small></button></div></div>`;
+        <span class="mBild">${monsterSvg(sm.aussehen)}</span><b>${sm.name}</b><small>Stufe ${sm.stufe}</small>
+        <span class="mBeute">${(sm.beute || []).map(b => symbolHtml(b.id, "mini")).join("")}</span></button></div>${beuteTabelle([sm])}</div>`;
   const pfade = `<p class="hinweis">Mehrere Monster hintereinander – ohne Ausruhen. Am Ende wartet ein Wächter und eine 🧰 Schatztruhe! Nimm genug Essen mit.</p>
     <div class="pfadListe">${PFADE.map(p => {
       const frei = pfadFrei(p), w = MONSTER[p.waechter], laeuft = a?.pfad?.id === p.id;
@@ -186,3 +189,24 @@ function nachWahl() {
   speichern();
   zeichneSeite();
 }
+
+// ----- Wer lässt was fallen? (Tabelle unter jedem Gebiet) -----
+let beuteOffen = (() => { try { return localStorage.getItem("idleMarie-beuteOffen") !== "0"; } catch (e) { return true; } })();
+function beuteTabelle(liste) {
+  const zeilen = liste.map(m => {
+    const tier = HAUSTIERE.find(h => h.chef === m.id);
+    const sachen = (m.beute || []).map(b => `<span class="btDing">${symbolHtml(b.id, "mini")}<span><b>${GEGENSTAENDE[b.id].name}</b>
+      <small>${Math.round(b.chance * 100)} % · ${b.anzahl[0] === b.anzahl[1] ? b.anzahl[0] : `${b.anzahl[0]}–${b.anzahl[1]}`} Stück</small></span></span>`).join("");
+    return `<div class="btZeile${m.chef ? " chef" : ""}"><div class="btKopf"><span class="btBild">${monsterSvg(m.aussehen)}</span>
+        <b>${m.name}${m.chef ? " 👑" : ""}</b><small>${muenzeHtml("muenze klein")} ${zahl(m.muenzen[0])}–${zahl(m.muenzen[1])}</small></div>
+      <div class="btDinge">${sachen}${tier ? `<span class="btDing"><span class="btTier">${tier.emoji}</span><span><b>${tier.name} (${tier.tier})</b>
+        <small>1 von ${Math.round(1 / HAUSTIER_REGEL.chefChance)} · Haustier${hatHaustier(tier.id) ? " ✅" : ""}</small></span></span>` : ""}</div></div>`;
+  }).join("");
+  return `<details class="beuteTabelle"${beuteOffen ? " open" : ""}><summary>💰 Wer lässt was fallen?</summary>${zeilen}</details>`;
+}
+// Auf- und Zuklappen merken (für alle Gebiete gleich)
+document.addEventListener("toggle", e => {
+  if (!e.target.classList?.contains("beuteTabelle")) return;
+  beuteOffen = e.target.open;
+  try { localStorage.setItem("idleMarie-beuteOffen", beuteOffen ? "1" : "0"); } catch (x) { /* egal */ }
+}, true);
