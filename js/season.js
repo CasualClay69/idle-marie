@@ -32,6 +32,7 @@ const AUFGABEN_TYPEN = {
   ernte:   { wert: () => spiel.statistik.geerntet || 0 },
   truhe:   { wert: () => spiel.statistik.truhen || 0 },
   streicheln: { wert: () => spiel.statistik.gestreichelt || 0 },
+  jagd: { wert: () => spiel.statistik.jagdAuftraege || 0 },
 };
 // Vorlagen: [typ, fertigkeit, Menge am Tag, Menge in der Woche, Text]
 const AUFGABEN_VORLAGEN = [
@@ -50,6 +51,7 @@ const AUFGABEN_VORLAGEN = [
   ["streicheln", null, 3, 15, n => `Streichle ${n}× deine Haustiere`, () => (spiel.haustiere || []).length > 0],
   ["aktion", "schmuck", 10, 60, n => `Mach ${n} Schmuckstücke`, () => stufe("schmuck") >= 5],
   ["aktion", "sterne", 40, 250, n => `Beobachte ${n}× die Sterne`, () => sterneFrei()],
+  ["jagd", null, 1, 5, n => (n === 1 ? "Schaffe einen Monster-Auftrag" : `Schaffe ${n} Monster-Aufträge`), () => jagdFrei()],
   ["aktion", "feuer", 50, 300, n => `Leg ${n}× Holz ins Lagerfeuer`, () => feuerFrei()],
   ["truhe", null, 1, 6, n => `Öffne ${n === 1 ? "eine Schatztruhe" : `${n} Schatztruhen`} auf einem Abenteuer-Pfad`, () => PFADE.some(pfadFrei)],
 ];

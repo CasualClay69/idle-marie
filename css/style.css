@@ -682,7 +682,8 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 }
 .ichReiter button span { font-size: 1.5rem; line-height: 1.1; }
 .ichReiter button.aktiv { border-color: var(--akzent); background: #ffe9f3; color: var(--akzent-dunkel); }
-.abenteuerReiter { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.abenteuerReiter { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.abenteuerReiter button { font-size: 0.66rem; }
 
 /* ----- Willkommen zurück ----- */
 .rkZeit { display: flex; flex-direction: column; align-items: center; padding: 10px; margin: 6px 0 10px; border-radius: 18px;
@@ -1215,3 +1216,25 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .duengerKarte { margin-top: 8px; }
 .beet { position: relative; }
 .beetDuenger { position: absolute; top: 4px; right: 4px; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; background: rgba(255, 255, 255, 0.85); font-size: 0.8rem; }
+
+/* ----- Monster-Aufträge ----- */
+.jaegerinBild { width: 76px; height: 76px; flex: none; }
+.jagdKopf, .jagdZu { display: flex; gap: 12px; align-items: center; }
+.jagdKopf p { margin: 2px 0 6px; font-size: 0.85rem; }
+.jagdMuenzen { font-size: 0.78rem; color: var(--text-sanft); font-weight: 700; }
+.jagdMuenzen b { color: var(--akzent-dunkel); }
+.jagdAuftrag { display: grid; grid-template-columns: 64px 1fr; gap: 6px 10px; align-items: center; border-color: #b8d98f; background: linear-gradient(140deg, #f0f9e6, #fff); }
+.jagdAuftrag .mBild { width: 64px; height: 64px; }
+.jaText { display: grid; gap: 3px; }
+.jaText small { font-size: 0.72rem; color: var(--text-sanft); font-weight: 700; }
+.jaText b { font-size: 0.95rem; }
+.jaKnoepfe { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.jaLaeuft { font-weight: 800; color: #2f8a4a; font-size: 0.85rem; }
+.jagdArten { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.jagdHolen { display: grid; justify-items: center; gap: 2px; padding: 10px 4px; border-radius: 16px; border: 2px solid #fff; background: #fff; box-shadow: var(--schatten); }
+.jagdHolen span { font-size: 1.6rem; }
+.jagdHolen small { font-size: 0.68rem; color: var(--text-sanft); font-weight: 700; }
+.jagdHolen:disabled { opacity: 0.5; }
+.jagdWare { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-top: 1px dashed var(--rand); }
+.linkKnopf { border: 0; background: none; padding: 0; color: var(--akzent-dunkel); font-weight: 800; text-decoration: underline; }
+.mJagd { position: absolute; top: 3px; right: 3px; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 8px; background: #fff1c2; border: 2px solid #ffd54f; font-size: 0.8rem; }

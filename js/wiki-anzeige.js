@@ -196,6 +196,8 @@ function wikiAbenteuer() {
     const abwehr = ["helm", "schild", "ruestung"].map(a => w(`${a}${i}`).abwehr).join(" / ");
     return wZeile(STUFEN[i], `${wSym(`schwert${i}`)} ${erz}`, `Schwert: Treffen +${sw.treff}, Schlag +${sw.kraft} · Helm/Schild/Rüstung: Abwehr ${abwehr}`, stufe("schmieden") >= STUFEN[i]);
   }).join("") + `<p class="hinweis">Die Zahl vorne ist die Stufe, die du zum Anlegen brauchst (Mut fürs Schwert, Schutz für den Rest).</p>`);
+  html += wEintrag("a-jagd", "📋 Monster-Aufträge und Jagd-Laden", WIKI_REGELN.find(r => r.id === "jagd").text()
+    + JAGD_LADEN.map(x => wZeile(x.icon, x.name, `${x.kleidung ? x.text : x.text.replace("{w}", x.wert) + " je Stufe"} · ${x.preise.map(zahl).join(" / ")} 🏅 · ab Jagd ${x.ab.join(" / ")}`, jagdLaden(x.id) > 0)).join(""));
   for (const p of PFADE) {
     const chef = MONSTER[p.chef];
     const mal = spiel.pfade?.[p.id] || 0;
@@ -229,6 +231,7 @@ function wikiGarten() {
 function haustierQuelle(h) {
   if (h.season) return `🎟️ Season ${MONATSNAMEN[h.season - 1]}: Stufe ${SEASON.stufen}`;
   if (h.start) return "📜 Belohnung für einen frühen Auftrag";
+  if (h.jagd) return `📋 Am Ende eines Monster-Auftrags: 1 von ${Math.round(1 / JAGD.haustierChance)}`;
   if (h.chef) return `💤 ${wName(MONSTER[h.chef].name)} (Chef): 1 von ${Math.round(1 / HAUSTIER_REGEL.chefChance)}`;
   if (h.truhe) return `🧰 Schatztruhen der Pfade: 1 von ${Math.round(1 / PFAD_REGEL.kikiChance)}`;
   if (h.fertigkeit === "garten") return `🌱 Beim Ernten: 1 von ${Math.round(1 / HAUSTIER_REGEL.gartenChance)}`;
@@ -265,6 +268,7 @@ function teilQuelle(t) {
   if (genaeht) return `🧵 Nähen ab Stufe ${genaeht.stufe}: ${wSachen(genaeht.braucht)}`;
   if (t.season) return `🎟️ Season ${MONATSNAMEN[t.season - 1]}`;
   if (t.pfad) return `🧰 Schatztruhe: ${t.pfad} (${Math.round(PFAD_REGEL.rahmenChance * 100)} %)`;
+  if (t.jagd) return "🏅 Jagd-Laden bei der Jägerin";
   if (t.questNr) return `📜 Belohnung für Auftrag ${t.questNr}`;
   if (t.quest) return `📜 Belohnung: ${t.quest}`;
   if (t.preis) return `${muenzeHtml("muenze klein")} ${zahl(t.preis)} Münzen im Kleiderschrank`;

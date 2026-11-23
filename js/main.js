@@ -24,6 +24,7 @@ function verarbeite(ergebnis) {
     if (e.haustier) zeigeHaustierFund(e.haustier);
     if (e.seasonStufen) { zeigeSeasonStufen(e.seasonStufen); continue; }
     if (e.truhe) { zeigeTruhe(e.truhe); continue; }
+    if (e.jagdFertig) { ton.stufe(); melde(`📋 Auftrag geschafft! +${zahl(e.jagdFertig.bonus)} 🏅 Bonus – hol dir bei ${JAGD_JAEGERIN} einen neuen.`, "gross"); continue; }
     if (!e.taetigkeit && !e.pokal && !e.kampfStufe) continue;
     if (e.pokal) { ton.stufe(); melde(`🏆 Wow! ${GEGENSTAENDE[e.pokal].name} gefunden!`, "gross"); continue; }
     if (e.kampfStufe) { const f = fertigkeit(e.kampfStufe); ton.stufe(); melde(`🎉 ${f.icon} ${f.name}: Stufe ${e.neueStufe}!`, "gross"); continue; }
@@ -229,6 +230,7 @@ function starteSpiel() {
   richteSterneEin();
   richteDorfEin();
   richteFeuerEin();
+  richteJagdEin();
   richteWikiEin();
   holeOfflineNach();
   ruheAus();

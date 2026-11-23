@@ -122,10 +122,19 @@ function gartenZiel(s) {
   if (anzahl(p.samen) > 0) return { ...h, ziel: ".beet.leer", hinweis: `Pflanze ${p.name} in ein leeres Beet.` };
   return { ...h, ziel: `[data-samen="${p.samen}"][data-n="10"]`, hinweis: `Kauf ${p.name}-Samen und pflanze sie ein.` };
 }
+// Monster-Aufträge: erst einen holen, dann zum Monster
+function jagdZiel() {
+  const a = jagdFrei() && jagd().auftrag;
+  if (!jagdFrei()) return { seite: "seiteAbenteuer", abenteuerTab: "gebiete", ziel: '.monsterKarte[data-monster="pusteriese"]', hinweis: "Bring zuerst den Pusteblumen-Riesen zum Einschlafen." };
+  if (!a) return { seite: "seiteAbenteuer", abenteuerTab: "jagd", ziel: ".jagdHolen:not([disabled])", hinweis: `Hol dir bei ${JAGD_JAEGERIN} einen Monster-Auftrag.` };
+  if (spiel.aktiv?.monster !== a.monster) return { seite: "seiteAbenteuer", abenteuerTab: "jagd", ziel: "#jagdZumMonster", hinweis: `Kämpfe gegen ${MONSTER[a.monster].name.replaceAll("\u00ad", "")} – das ist dein Auftrag.` };
+  return { seite: "seiteAbenteuer", abenteuerTab: "kampf", hinweis: "Du kämpfst schon gegen dein Auftrags-Monster. Weiter so!" };
+}
 // Ziel-Stelle für einen Schritt
 function wegZiel(s) {
   const h = { ...(s.hilfe || {}) };
   if (h.ziel && h.ziel.includes('data-id=""')) delete h.ziel;
+  if (s.fertigkeitId === "jagd" || h.jagd) return jagdZiel();
   if (s.fertigkeitId && KAMPF_IDS.includes(s.fertigkeitId)) return kampfZiel(s.fertigkeitId);
   if (h.fertigkeit === "garten" && (!h.ziel || h.ziel === ".beete")) return gartenZiel(s);
   if (h.fertigkeit && !h.ziel) {

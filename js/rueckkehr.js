@@ -95,6 +95,7 @@ function zeigeRueckkehr(s, weg) {
   if (streichel) warten.push(`<li>💖 <span class="rkName">${streichel} Haustier${streichel === 1 ? " möchte" : "e möchten"} gestreichelt werden</span></li>`);
   if (dorfFrei() && !dorfLagerLeer()) warten.push(`<li>🏘️ <span class="rkName">Im Dorflager liegen Sachen zum Abholen</span></li>`);
   if (feuerFrei() && !feuerBrennt()) warten.push(`<li>🔥 <span class="rkName">Dein großes Lagerfeuer ist aus – zünde ein neues an!</span></li>`);
+  if (jagdFrei() && !spiel.jagd?.auftrag) warten.push(`<li>📋 <span class="rkName">Die Jägerin ${JAGD_JAEGERIN} hat einen neuen Auftrag für dich</span></li>`);
   if (kannDrehen()) warten.push(`<li>🎁 <span class="rkName">Dein tägliches Glücksrad wartet – dreh es!</span></li>`);
   const q = aktuellerQuest();
   if (q && questStand(q).fertig) warten.push(`<li>📜 <span class="rkName">Auftrag geschafft – Belohnung abholen!</span></li>`);

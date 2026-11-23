@@ -6,7 +6,7 @@
 function prozent(x) { return `${Math.round(x * 100)} %`; }
 
 // Unter-Reiter der Abenteuer-Seite (wird gemerkt)
-const ABENTEUER_REITER = [["kampf", "⚔️", "Kampf"], ["ausruestung", "🎒", "Ausrüstung"], ["gebiete", "🗺️", "Gebiete"], ["pfade", "🧭", "Pfade"]];
+const ABENTEUER_REITER = [["kampf", "⚔️", "Kampf"], ["ausruestung", "🎒", "Ausrüstung"], ["gebiete", "🗺️", "Gebiete"], ["pfade", "🧭", "Pfade"], ["jagd", "📋", "Aufträge"]];
 let abenteuerTab = (() => { try { return localStorage.getItem("idleMarie-abenteuerTab") || "kampf"; } catch (e) { return "kampf"; } })();
 function zeigeAbenteuerTab(teil) {
   abenteuerTab = teil;
@@ -86,6 +86,7 @@ function zeichneAbenteuer() {
   const gebiete = GEBIETE.map(g => `<div class="gebiet" style="--farbe:${g.farbe}">
       <h3>${g.icon} ${g.name} <small>empfohlen ab Kampfstufe ${g.ab}</small></h3>
       <div class="monsterListe">${g.monster.map(mo => `<button type="button" class="monsterKarte${a?.monster === mo.id ? " laeuft" : ""}${mo.chef ? " chef" : ""}" data-monster="${mo.id}">
+        ${spiel.jagd?.auftrag?.monster === mo.id ? `<span class="mJagd" title="Dein Auftrag">📋</span>` : ""}
         <span class="mArt${dreieck(mo, w.art) > 0 ? " gut" : dreieck(mo, w.art) < 0 ? " schlecht" : ""}" title="${KAMPFARTEN[monsterArt(mo)].name}">${KAMPFARTEN[monsterArt(mo)].icon}</span>
         <span class="mBild">${monsterSvg(mo.aussehen)}</span><b>${mo.name}</b><small>Stufe ${mo.stufe}${spiel.besiegt?.[mo.id] ? ` · 💤 ${zahl(spiel.besiegt[mo.id])}` : ""}</small>
         <span class="mBeute">${(mo.beute || []).map(b => symbolHtml(b.id, "mini")).join("")}</span></button>`).join("")}</div>
@@ -108,11 +109,12 @@ function zeichneAbenteuer() {
     }).join("")}</div>`;
   const reiter = `<div class="ichReiter abenteuerReiter">${ABENTEUER_REITER.map(([id, icon, name]) =>
     `<button type="button" data-tab="${id}" class="${abenteuerTab === id ? "aktiv" : ""}"><span>${icon}</span>${name}${id === "kampf" && a ? " ●" : ""}</button>`).join("")}</div>`;
-  const inhalt = { kampf: kampf + werte, ausruestung, gebiete: legende + seasonGebiet + gebiete, pfade }[abenteuerTab] || kampf + werte;
+  const inhalt = { kampf: kampf + werte, ausruestung, gebiete: legende + seasonGebiet + gebiete, pfade, jagd: jagdHtml() }[abenteuerTab] || kampf + werte;
   seite.innerHTML = reiter + inhalt;
   for (const b of seite.querySelectorAll(".abenteuerReiter button")) b.addEventListener("click", () => { ton.klick(); zeigeAbenteuerTab(b.dataset.tab); $("inhalt").scrollTop = 0; });
 
   // ----- Knöpfe -----
+  if (abenteuerTab === "jagd") verdrahteJagd(seite);
   seite.querySelector("#weglaufen")?.addEventListener("click", () => {
     ton.klick(); stoppe(); ruheAus(); speichern(); zeichneAktivLeiste(); zeichneAbenteuer();
   });

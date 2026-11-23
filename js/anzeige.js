@@ -128,7 +128,7 @@ function zeichneFertigkeiten() {
       ${f.id === "feuer" && feuerBrennt() ? `<span class="laeuftMarke feuerMarke">🔥</span>` : ""}`;
     karte.addEventListener("click", () => {
       ton.klick();
-      if (f.art === "kampf") { zeigeSeite("seiteAbenteuer"); return; }
+      if (f.art === "kampf") { if (f.id === "jagd") abenteuerTab = "jagd"; zeigeSeite("seiteAbenteuer"); return; }
       if (zu) { melde(f.id === "feuer" ? "🔥 Das Lagerfeuer gibt es, wenn du drei Abenteuer-Pfade geschafft hast." : f.id === "dorf" ? "🏘️ Das Wichteldorf öffnet sich, wenn du zwei Abenteuer-Pfade geschafft hast." : "🔭 Die Sternenkunde öffnet sich, wenn du deinen ersten Abenteuer-Pfad geschafft hast."); return; }
       offeneFertigkeit = f.id; zeigeSeite("seiteFertigkeit");
     });

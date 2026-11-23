@@ -36,7 +36,7 @@ function munitionBereit(art = kampfArt()) {
 // Kampf-Dreieck: +Bonus (stark), −Malus (schwach) oder 0
 function dreieck(m, art = kampfArt()) {
   const ma = monsterArt(m);
-  if (KAMPFARTEN[art].stark === ma) return KAMPF.dreieckStark;
+  if (KAMPFARTEN[art].stark === ma) return KAMPF.dreieckStark + jagdWert("talisman");
   if (KAMPFARTEN[ma].stark === art) return -KAMPF.dreieckSchwach;
   return 0;
 }
@@ -52,10 +52,11 @@ function spielerWerte(m = null) {
     else { treffB = Math.round(treffB / 3); kraftB = 0; kraftStufe = Math.round(kraftStufe / 3); }
   }
   const d = m ? dreieck(m, art) : 0;
+  const fernglas = m && spiel.jagd?.auftrag?.monster === m.id ? jagdWert("fernglas") : 0;
   return {
     art,
     dreieck: d,
-    genauigkeit: Math.round((treffStufe + 8) * (64 + treffB) * (1 + d + trankKampf("treff") + haustierBonus("treff") + schmuckBonus("treff") + sternBonus("treff"))),
+    genauigkeit: Math.round((treffStufe + 8) * (64 + treffB) * (1 + d + fernglas + trankKampf("treff") + haustierBonus("treff") + schmuckBonus("treff") + sternBonus("treff"))),
     maxSchlag: Math.floor((15 + kraftStufe * 1.6 + kraftB * 1.5) * (1 + d + trankKampf("kraft") + haustierBonus("kraft") + schmuckBonus("kraft") + sternBonus("kraft"))),
     ausweichen: (stufe("schutz") + 8) * (64 + ausruestungsBonus("abwehr")),
     weniger: Math.min(0.6, ausruestungsBonus("weniger") / 100 + trankKampf("schutz") + haustierBonus("schutz") + sternBonus("schutz")),
@@ -198,7 +199,8 @@ function verbraucheMunition(art, ergebnis) {
     return;
   }
   spiel.aktiv.ohneMunition = false;
-  if (art === "fern" && Math.random() < KAMPF.pfeilZurueck) return;
+  if (art === "fern" && Math.random() < KAMPF.pfeilZurueck + jagdWert("koecher")) return;
+  if (art === "magie" && Math.random() < jagdWert("perlen")) return;
   nimmAusBank(g.id, 1);
   ergebnis.verbraucht[g.id] = (ergebnis.verbraucht[g.id] || 0) + 1;
 }
@@ -215,6 +217,7 @@ function besiegt(m, ergebnis) {
     if (neu.length) ergebnis.ereignisse.push({ seasonStufen: neu });
   }
   trankNachSieg();
+  jagdNachSieg(m, ergebnis);
   spiel.besiegt = spiel.besiegt || {};
   spiel.besiegt[m.id] = (spiel.besiegt[m.id] || 0) + 1;
   const muenzen = Math.round(zufall(m.muenzen[0], m.muenzen[1]) * (1 + haustierBonus("muenzen") + baumhausBonus("muenzen")));
