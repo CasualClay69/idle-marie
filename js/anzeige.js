@@ -188,6 +188,10 @@ function zeichneFertigkeit() {
     raster.append(karte);
   }
   raster.append(el("p", "hinweis", `⭐ <b>Übung:</b> Je öfter du etwas machst, desto besser wirst du darin. Alle 10 Übungs-Stufen gibt es öfter doppelte Ausbeute (+5 %). Mit ⭐ 99 bist du Meister und ${SPIEL.meisterSchneller * 100} % schneller.`));
+  const ueKnopf = el("button", "knopf leise ueKnopf", `⭐ Übung bei ${f.name} ansehen`);
+  ueKnopf.type = "button";
+  ueKnopf.addEventListener("click", () => { ton.klick(); zeigeUebung(f.id); });
+  raster.append(ueKnopf);
 }
 
 // ----- Bank -----

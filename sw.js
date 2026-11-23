@@ -64,6 +64,7 @@ const DATEIEN = [
   "js/einfuehrung.js",
   "js/season-anzeige.js",
   "js/gluecksrad.js",
+  "js/uebung-anzeige.js",
   "js/rueckkehr.js",
   "js/daten-wiki.js",
   "js/wiki.js",

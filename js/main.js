@@ -223,6 +223,7 @@ function starteSpiel() {
   richteQuestsEin();
   richteBankEin();
   richteGluecksradEin();
+  richteUebungEin();
   richteWikiEin();
   holeOfflineNach();
   ruheAus();

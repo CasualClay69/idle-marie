@@ -30,7 +30,8 @@ const WIKI_REGELN = [
   { id: "uebung", icon: "⭐", titel: "Übung und doppelte Ausbeute", text: () => `
     <p>Jede einzelne Tätigkeit hat ihre eigene <b>Übungs-Stufe ⭐</b> (bis 99). Je öfter du sie machst, desto besser wirst du darin.</p>
     <p>Alle 10 Übungs-Stufen gibt es ${Math.round(SPIEL.uebungDoppeltProZehn * 100)} % mehr Chance auf <b>doppelte Ausbeute</b>. Bei ⭐ 99 bist du Meister und ${Math.round(SPIEL.meisterSchneller * 100)} % schneller.</p>
-    <p>Doppelte Ausbeute gibt es außerdem durch Haustiere, Tränke, Schmuck (Smaragd) und das Regal im Baumhaus.</p>` },
+    <p>Doppelte Ausbeute gibt es außerdem durch Haustiere, Tränke, Schmuck (Smaragd) und das Regal im Baumhaus.</p>
+    <p>Deine Übung bei allem siehst du im Übungs-Fenster: unten auf jeder Fertigkeits-Seite oder unter 👤 Ich → 📊 Statistik.</p>` },
   { id: "offline", icon: "🌙", titel: "Wenn das Spiel zu ist", text: () => `
     <p>Deine Figur arbeitet weiter, auch wenn das Spiel zu ist – bis zu ${SPIEL.offlineMaxStunden} Stunden. Mit dem 🛏️ Bett im Baumhaus wird diese Zeit länger.</p>
     <p>Der Garten wächst sowieso immer weiter. Wenn du zurückkommst, zeigt dir ein Fenster, was in der Zeit alles passiert ist.</p>

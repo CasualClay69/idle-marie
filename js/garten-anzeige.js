@@ -46,9 +46,10 @@ function zeichneGarten(ziel) {
       ${gesperrt ? "" : `<button type="button" class="knopf kaufen" data-samen="${p.samen}" data-n="1" ${spiel.muenzen < s.preis ? "disabled" : ""}>1</button>
       <button type="button" class="knopf kaufen" data-samen="${p.samen}" data-n="10" ${spiel.muenzen < s.preis * 10 ? "disabled" : ""}>10</button>`}</div>`;
   }
-  html += `</div><p class="hinweis">🌱 Pflanzen wachsen von ganz allein – auch wenn ${figurName()} gerade etwas anderes macht oder das Spiel zu ist. Gemüse kannst du kochen, Kräuter brauchst du für Tränke 🧪, und aus Fasern webst du beim 🧵 Nähen Stoff.</p>`;
+  html += `</div><p class="hinweis">🌱 Pflanzen wachsen von ganz allein – auch wenn ${figurName()} gerade etwas anderes macht oder das Spiel zu ist. Gemüse kannst du kochen, Kräuter brauchst du für Tränke 🧪, und aus Fasern webst du beim 🧵 Nähen Stoff.</p><button type="button" class="knopf leise ueKnopf" id="gartenUebung">⭐ Übung im Garten ansehen</button>`;
   ziel.innerHTML = html;
 
+  ziel.querySelector("#gartenUebung")?.addEventListener("click", () => { ton.klick(); zeigeUebung("garten"); });
   ziel.querySelector("#alleErnten")?.addEventListener("click", () => {
     gartenStand().beete.forEach((b, nr) => { if (b && beetFortschritt(b) >= 1) ernteMitMeldung(nr); });
     nachGarten();

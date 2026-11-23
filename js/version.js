@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.10";
-const APP_NEU = "Neu: Jeden Tag ein Geschenk am Glücksrad! Und jede Season hat jetzt ihr eigenes Logo mit Jahreszahl.";
+const APP_VERSION = "1.11";
+const APP_NEU = "Neu: Das Übungs-Fenster zeigt deine Übung bei allem – und was sie dir bringt.";
