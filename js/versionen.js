@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.29.3", datum: "2026-11-24", neu: ["🌙 Willkommen zurück zeigt jetzt für jede Fertigkeit: von welcher Stufe auf welche Stufe du gekommen bist, wie viele EP – und darunter alle Gegenstände, die du dabei bekommen hast. Beute aus dem Abenteuer steht extra."] },
   { v: "1.29.2", datum: "2026-11-24", neu: ["Im Season-Pass verschwinden erledigte Tagesaufgaben – es stehen nur noch die offenen (und die zum Abholen) da."] },
   { v: "1.29.1", datum: "2026-11-24", neu: ["Behoben: Im Kampf laufen die Balken unter Hannah/Marie und unter dem Monster wieder (Herzen und Takt).", "Bei den Fertigkeiten bleibt die Stufe mit dem Fortschritts-Balken oben stehen, auch wenn man nach unten scrollt.", "Im Wiki-Guide klappen aufgeklappte Kapitel nicht mehr von allein zu, wenn eine Tätigkeit fertig wird."] },
   { v: "1.29", datum: "2026-11-24", neu: ["🌈 Das große Finale: Der Regenbogen-Gipfel (ab Kampfstufe 99). Der Graue Nebel hat ihm alle Farben gestohlen – besiege den Nebelkönig und schaffe den Regenbogenpfad gegen den Großen Nebeldrachen!", "👑 Wer das schafft, erlebt das Finale und bekommt die Regenbogen-Krone, den Heldinnen-Rahmen und den Erfolg „Heldin des Regenbogens“.", "🕊️ Neues Haustier: Regenbogen-Taube Prisma. Dazu neue Beute, der Heldinnen-Pokal und der Regenbogenpfad-Rahmen."] },

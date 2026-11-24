@@ -1396,3 +1396,15 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .abspann { display: grid; gap: 2px; margin: 12px 0; padding: 12px; border-radius: 16px; background: linear-gradient(120deg, #ffe1ee, #e8f4ff); text-align: center; }
 .abspann b { font-size: 1.15rem; color: var(--akzent-dunkel); }
 .abspann small { color: var(--text-sanft); font-weight: 700; }
+
+/* ----- Willkommen zurück: ein Block pro Fertigkeit ----- */
+.rkBlock { text-align: left; margin: 6px 0; padding: 8px 10px; border-radius: 16px; background: #fff;
+  border-left: 5px solid var(--farbe, var(--rand)); box-shadow: 0 2px 6px rgba(91, 42, 79, 0.08); }
+.rkKopf { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.rkIcon { font-size: 1.15rem; }
+.rkStufe { margin-left: auto; padding: 1px 9px; border-radius: 999px; background: #f6e3ef; color: var(--text-sanft); font-size: 0.78rem; font-weight: 800; white-space: nowrap; }
+.rkStufe.neu { background: linear-gradient(90deg, #ffe27a, #ff9fd0); color: #7a2a5a; }
+.rkEp { display: block; color: var(--text-sanft); font-weight: 700; font-size: 0.8rem; margin: 2px 0 0 2px; }
+.rkSachen { margin: 6px 0 0; }
+.rkSachen li { background: #fff7fb; padding: 4px 8px; }
+.rkGesamt { display: block; color: var(--akzent-dunkel); font-size: 0.82rem; margin: 2px 0 0 2px; }
