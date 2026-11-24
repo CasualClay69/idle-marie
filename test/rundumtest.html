@@ -161,6 +161,12 @@ async function spieleDurch() {
   await schritt("Ganze Insel offen", `for (const id in INSEL) { spiel.karte.offen[id] = true; entdecke(INSEL[id]); } zeigeSeite("seiteFertigkeiten"); offeneFertigkeit = "karte"; zeigeSeite("seiteFertigkeit")`, 150);
   await schritt("Finale", `spiel.pfade["p-gipfel"] = 1; spiel.finale = null; pruefeFinale(); if (document.getElementById("finaleOverlay").hidden) zeigeFinale()`, 150);
   alleFensterZu();
+  await schritt("Hinweis-Punkte", `aktualisiereNavPunkte()`);
+  await schritt("Danach weitermachen", `const koch = TAETIGKEITEN.find(t => t.fertigkeit === "kochen" && t.stufe === 1); for (const id of Object.keys(koch.braucht)) spiel.bank[id] = koch.braucht[id]; starte(koch); zeigeSeite("seiteFertigkeiten"); aktualisiereDanachKnopf(); zeigeDanachWahl()`);
+  await schritt("Danach wählen + wechseln", `document.querySelectorAll("[data-danach]")[1].click(); spiel.aktiv.start -= 3600000; verarbeite(tick()); if (!spiel.aktiv || spiel.danach) throw new Error("Danach hat nicht gewechselt")`);
+  alleFensterZu();
+  await schritt("Bank-Suche", `zeigeSeite("seiteBank"); const s = document.getElementById("bankSuche"); s.value = "a"; s.dispatchEvent(new Event("input")); s.value = ""; s.dispatchEvent(new Event("input"))`);
+  await schritt("EP-Wochenende", `const alt = epWochenendeAktiv; epWochenendeAktiv = () => true; zeigeLauftext(); if (trankFaktorXp() < 1.5) throw new Error("kein Bonus"); epWochenendeAktiv = alt; zeigeLauftext()`);
   await schritt("Sets speichern + wechseln", `ruesteAus("schwert3"); speichereSet(0); spiel.bank.bogen3 = 1; ruesteAus("bogen3"); speichereSet(1); legeSetAn(0); abenteuerTab = "ausruestung"; zeigeSeite("seiteAbenteuer")`);
   await schritt("Set-Schnellwahl", `legeSetAn(1); abenteuerTab = "kampf"; zeigeSeite("seiteAbenteuer")`);
   await schritt("Übungs-Topf füllen + stecken", `spiel.topf = spiel.topf || {}; spiel.topf.holz = TOPF.max * 0.6; steckeInTaetigkeit("holz-0", "holz"); zeigeUebung("holz")`);

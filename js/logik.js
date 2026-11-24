@@ -174,6 +174,7 @@ function fuehreAus(t) {
 function starte(t) {
   if (hindernis(t)) return false;
   spiel.aktiv = { id: t.id, start: Date.now() };
+  spiel.danach = null;   // "Danach weitermachen mit …" gehört zur laufenden Tätigkeit
   return true;
 }
 function stoppe() { spiel.aktiv = null; }
@@ -204,7 +205,7 @@ function tick(jetzt = Date.now(), maxDurchgaenge = Infinity) {
     const ms = dauer(t) * 1000;
     if (jetzt - spiel.aktiv.start < ms) break;
     const grund = hindernis(t);
-    if (grund) { ergebnis.gestoppt = grund; stoppe(); break; }
+    if (grund) { if (wechsleZuDanach(spiel.aktiv.start, grund, ergebnis)) continue; ergebnis.gestoppt = grund; stoppe(); break; }
     const vorher = { ...spiel.bank };
     const e = fuehreAus(t);
     for (const id of new Set([...Object.keys(vorher), ...Object.keys(spiel.bank)])) {
@@ -219,10 +220,22 @@ function tick(jetzt = Date.now(), maxDurchgaenge = Infinity) {
     spiel.aktiv.start += ms;
     // Kann es weitergehen? Sonst gleich anhalten (z.B. Fisch alle)
     const weiter = hindernis(t);
-    if (weiter) { ergebnis.gestoppt = weiter; stoppe(); }
+    if (weiter && !wechsleZuDanach(spiel.aktiv.start, weiter, ergebnis)) { ergebnis.gestoppt = weiter; stoppe(); }
   }
   if (ergebnis.gestoppt) spiel.letzterStopp = { grund: ergebnis.gestoppt, zeit: jetzt };
   return ergebnis;
+}
+
+// "Danach weitermachen mit …": Geht es nicht weiter (z. B. Material alle), nahtlos zur gewählten zweiten Tätigkeit wechseln.
+// start = Zeitpunkt, ab dem die neue Tätigkeit läuft (so zählt auch die Offline-Zeit weiter). Nur einmal, dann ist die Wahl verbraucht.
+function wechsleZuDanach(start, grund, ergebnis) {
+  const t = spiel.danach && taetigkeitNachId(spiel.danach);
+  spiel.danach = null;
+  if (!t || hindernis(t) || t.id === spiel.aktiv?.id) return false;
+  spiel.aktiv = { id: t.id, start };
+  ergebnis.gewechselt = { von: grund, zu: t };
+  spiel.letzterStopp = { grund: `${grund} – darum hat ${figurName()} mit ${t.name} weitergemacht.`, zeit: Date.now() };
+  return true;
 }
 
 // Beim Öffnen: die Zeit, in der das Spiel zu war, nachholen (höchstens offlineMaxStunden)

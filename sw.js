@@ -90,6 +90,8 @@ const DATEIEN = [
   "js/freunde-anzeige.js",
   "js/karte-anzeige.js",
   "js/finale.js",
+  "js/danach.js",
+  "js/ep-wochenende.js",
   "js/heute.js",
   "js/rueckkehr.js",
   "js/daten-wiki.js",

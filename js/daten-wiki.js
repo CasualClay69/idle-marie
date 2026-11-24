@@ -131,6 +131,12 @@ const WIKI_REGELN = [
     <p>Das letzte Gebiet ist der <b>Regenbogen-Gipfel</b> (empfohlen ab Kampfstufe 99). Der Graue Nebel hat ihm alle Farben gestohlen. Besiege den Nebelkönig – dann öffnet sich der <b>Regenbogenpfad</b>.</p>
     <p>Am Ende des Regenbogenpfads wartet der Große Nebeldrache. Wer ihn schafft, bringt die Farben zurück und hat das große Abenteuer beendet: Es gibt ein Finale mit 👑 Regenbogen-Krone und 🌈 Heldinnen-Rahmen.</p>
     <p>Danach geht es weiter: Übungs-Töpfe, Haustiere, Museum, Insel – bis 100 %!</p>` },
+  { id: "epwochenende", icon: "🎉", titel: "EP-Wochenende", text: () => `
+    <p>Jedes <b>erste Wochenende im Monat</b> (Samstag und Sonntag) ist EP-Wochenende: Bei allem gibt es <b>+${Math.round(EP_WOCHENENDE.bonus * 100)} % Erfahrung</b> – beim Sammeln, Herstellen, Kämpfen, im Garten und im Dorf.</p>
+    <p>Ab Mittwoch davor steht es im Lauftext über dem Logo. Am besten lässt du am Wochenende deine schwierigsten Fertigkeiten laufen!</p>` },
+  { id: "danach", icon: "🔀", titel: "Danach weitermachen mit …", text: () => `
+    <p>Braucht eine Tätigkeit Material (zum Beispiel 🍳 Kochen), steht in der Leiste oben ein kleiner Knopf <b>„Danach: …“</b>. Dort wählst du, womit deine Figur weitermachen soll, wenn das Material ausgeht – zum Beispiel Holzsammeln oder Angeln.</p>
+    <p>So steht sie nachts nicht herum. Die Wahl gilt einmal und nur für die Tätigkeit, die gerade läuft.</p>` },
   { id: "gluecksrad", icon: "🎁", titel: "Tägliches Glücksrad", text: () => `
     <p>Jeden Tag darfst du einmal am Glücksrad drehen – die Karte dafür ist oben auf der 🌟 Fertigkeiten-Seite. Jeder ${GLUECKSRAD.serieBonus}. Tag in Folge bringt ein <b>doppeltes</b> Geschenk.</p>
     <p>Mögliche Geschenke: ${GLUECKSRAD.felder.map(f => `${f.icon} ${f.name}`).join(", ")}. Die Geschenke wachsen mit deiner Gesamtstufe mit.</p>` },

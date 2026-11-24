@@ -66,9 +66,13 @@ function sortiereBank() {
 }
 
 let bankTab = "alle";
-function idsImReiter(tab = bankTab) {
-  const ids = Object.keys(spiel.bank).filter(id => spiel.bank[id] > 0 && GEGENSTAENDE[id]);
-  return tab === "alle" ? ids : ids.filter(id => bankArt(id).art.id === tab);
+const bankSucheText = () => ($("bankSuche")?.value || "").trim().toLowerCase();
+// Sachen im Reiter – mit Suche (Name enthält den Suchtext)
+function idsImReiter(tab = bankTab, suche = bankSucheText()) {
+  let ids = Object.keys(spiel.bank).filter(id => spiel.bank[id] > 0 && GEGENSTAENDE[id]);
+  if (tab !== "alle") ids = ids.filter(id => bankArt(id).art.id === tab);
+  if (suche) ids = ids.filter(id => GEGENSTAENDE[id].name.replaceAll("­", "").toLowerCase().includes(suche));
+  return ids;
 }
 
 // ----- Anzeige -----
@@ -77,7 +81,7 @@ function zeichneBank() {
   // Reiter
   const reiter = [{ id: "alle", name: "Alle", icon: "🎒" }, ...BANK_ARTEN];
   $("bankReiter").innerHTML = reiter.map(r => {
-    const n = idsImReiter(r.id).length;
+    const n = idsImReiter(r.id, "").length;
     return `<button type="button" data-tab="${r.id}" class="${bankTab === r.id ? "aktiv" : ""}${n ? "" : " leerReiter"}"><span>${r.icon}</span>${r.name}${r.id !== "alle" && n ? `<i>${n}</i>` : ""}</button>`;
   }).join("");
   for (const b of $("bankReiter").querySelectorAll("button")) b.addEventListener("click", () => { ton.klick(); bankTab = b.dataset.tab; zeichneBank(); });
@@ -85,8 +89,9 @@ function zeichneBank() {
   const ids = idsImReiter();
   const wert = ids.reduce((s, id) => s + anzahl(id) * GEGENSTAENDE[id].wert, 0);
   const ohneEinen = ids.reduce((s, id) => s + (anzahl(id) - 1) * GEGENSTAENDE[id].wert, 0);
-  $("bankWert").innerHTML = ids.length
-    ? `${bankTab === "alle" ? "Alles zusammen" : "Alles hier"} ist ${muenzeHtml("muenze klein")} <b>${zahl(wert)}</b> Münzen wert. Tippe etwas an, um es zu verkaufen.`
+  const suche = bankSucheText();
+  $("bankWert").innerHTML = suche && !ids.length ? `Nichts gefunden für „${textSicher(suche)}“.` : ids.length
+    ? `${suche ? `Alles mit „${textSicher(suche)}“` : bankTab === "alle" ? "Alles zusammen" : "Alles hier"} ist ${muenzeHtml("muenze klein")} <b>${zahl(wert)}</b> Münzen wert. Tippe etwas an, um es zu verkaufen.`
     : (bankTab === "alle" ? "Deine Bank ist noch leer. Sammle etwas!" : "Hier ist noch nichts.");
   $("bankAllesVerkaufen").disabled = !ids.length;
   $("bankAllesAusser1").disabled = ohneEinen <= 0;
@@ -101,7 +106,7 @@ function zeichneBank() {
     feld.addEventListener("click", () => { ton.klick(); zeigeGegenstand(id); });
     raster.append(feld);
   }
-  if (bankTab === "alle") for (let i = ids.length; i < bankFaecher(); i++) raster.append(el("div", "bankFeld leer"));
+  if (bankTab === "alle" && !suche) for (let i = ids.length; i < bankFaecher(); i++) raster.append(el("div", "bankFeld leer"));
 }
 
 // Viele Sachen auf einmal verkaufen (mit Sicherheitsfrage)
@@ -110,7 +115,8 @@ function verkaufeVieles(ausserEinem) {
   const liste = ids.map(id => [id, anzahl(id) - (ausserEinem ? 1 : 0)]).filter(([, n]) => n > 0);
   const summe = liste.reduce((s, [id, n]) => s + n * GEGENSTAENDE[id].wert, 0);
   if (!liste.length) return;
-  const ort = bankTab === "alle" ? "in deiner ganzen Bank" : `bei „${BANK_ARTEN.find(a => a.id === bankTab).name}“`;
+  const ort = (bankTab === "alle" ? "in deiner ganzen Bank" : `bei „${BANK_ARTEN.find(a => a.id === bankTab).name}“`)
+    + (bankSucheText() ? ` (nur, was zur Suche „${textSicher(bankSucheText())}“ passt)` : "");
   frage(`💰 ${ausserEinem ? "Alles außer 1 verkaufen?" : "Alles verkaufen?"}`,
     `Willst du ${ausserEinem ? "von jeder Sorte alles außer einem Stück" : "wirklich alles"} ${ort} verkaufen?<br>Du bekommst ${muenzeHtml("muenze klein")} <b>${zahl(summe)}</b> Münzen.`,
     "Ja, verkaufen", () => {
@@ -133,6 +139,7 @@ function frage(titel, text, jaText, beiJa) {
 }
 
 function richteBankEin() {
+  $("bankSuche").addEventListener("input", () => zeichneBank());
   $("bankSortieren").addEventListener("click", () => { ton.klick(); sortiereBank(); speichern(); melde("🔀 Die Bank ist sortiert – nach Art und Seltenheit."); zeichneBank(); });
   $("bankAllesVerkaufen").addEventListener("click", () => { ton.klick(); verkaufeVieles(false); });
   $("bankAllesAusser1").addEventListener("click", () => { ton.klick(); verkaufeVieles(true); });

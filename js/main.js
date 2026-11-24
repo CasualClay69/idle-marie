@@ -19,7 +19,8 @@ function tippeTaetigkeit(t) {
 
 // Ergebnisse eines Ticks anzeigen (Meldungen, Stufen, Neuzeichnen)
 function verarbeite(ergebnis) {
-  if (!ergebnis.durchgaenge && !ergebnis.gestoppt) return;
+  if (!ergebnis.durchgaenge && !ergebnis.gestoppt && !ergebnis.gewechselt) return;
+  if (ergebnis.gewechselt) { ton.stufe(); melde(`🔀 ${ergebnis.gewechselt.von} – weiter mit ${ergebnis.gewechselt.zu.name}!`, "gross"); }
   for (const e of ergebnis.ereignisse) {
     if (e.haustier) zeigeHaustierFund(e.haustier);
     if (e.seasonStufen) { zeigeSeasonStufen(e.seasonStufen); continue; }
@@ -137,7 +138,7 @@ function richteKnoepfeEin() {
   $("wahlZu").addEventListener("click", () => { ton.klick(); $("wahlOverlay").hidden = true; });
   $("wahlOverlay").addEventListener("click", e => { if (e.target.id === "wahlOverlay") $("wahlOverlay").hidden = true; });
   $("aktivLeiste").addEventListener("click", e => {
-    if (e.target.closest("#aktivStopp") || !spiel.aktiv) return;
+    if (e.target.closest("#aktivStopp") || e.target.closest("#danachKnopf") || !spiel.aktiv) return;
     if (spiel.aktiv.kampf) { abenteuerTab = "kampf"; zeigeSeite("seiteAbenteuer"); return; }
     offeneFertigkeit = taetigkeitNachId(spiel.aktiv.id).fertigkeit;
     zeigeSeite("seiteFertigkeit");
@@ -260,6 +261,8 @@ function starteSpiel() {
   richteKarteEin();
   richteFinaleEin();
   richteTierMarkenEin();
+  richteDanachEin();
+  richteEpWochenendeEin();
   richteHeuteEin();
   richteWikiEin();
   holeOfflineNach();

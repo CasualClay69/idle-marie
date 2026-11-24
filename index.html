@@ -84,6 +84,8 @@
   <script src="js/freunde-anzeige.js" defer></script>
   <script src="js/karte-anzeige.js" defer></script>
   <script src="js/finale.js" defer></script>
+  <script src="js/danach.js" defer></script>
+  <script src="js/ep-wochenende.js" defer></script>
   <script src="js/heute.js" defer></script>
   <script src="js/rueckkehr.js" defer></script>
   <script src="js/daten-wiki.js" defer></script>
@@ -125,6 +127,7 @@
       <div class="aktivText">
         <div id="aktivTitel" class="aktivTitel"></div>
         <div class="balken"><div id="aktivBalken"></div></div>
+        <button id="danachKnopf" class="danachKnopf" type="button" hidden></button>
       </div>
       <button id="aktivStopp" class="stoppKnopf" type="button" aria-label="Anhalten">⏹</button>
     </section>
@@ -165,6 +168,7 @@
       <section id="seiteBank" class="seite" hidden>
         <h2 class="seitenTitel">🏦 Bank <small id="bankFaecher"></small></h2>
         <div id="bankReiter" class="ichReiter bankReiter"></div>
+        <input id="bankSuche" class="wikiSuche bankSuche" type="search" placeholder="In der Bank suchen …" autocomplete="off">
         <div class="bankKnoepfe">
           <button type="button" class="knopf leise" id="bankSortieren">🔀 Sortieren</button>
           <button type="button" class="knopf leise" id="bankAllesAusser1">💰 Alles außer 1</button>

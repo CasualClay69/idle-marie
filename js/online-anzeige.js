@@ -110,10 +110,14 @@ async function pruefeNachricht() {
 }
 
 // ----- Lauftext über dem Logo -----
-let lauftextJetzt = "";
+let lauftextJetzt = "", lauftextOnline = "";
 async function pruefeLauftext() {
-  let text = "";
-  try { text = (await rufeOnlineAuf("hole_lauftext"))?.text || ""; } catch (e) { return; }
+  try { lauftextOnline = (await rufeOnlineAuf("hole_lauftext"))?.text || ""; } catch (e) { /* offline: den letzten behalten */ }
+  zeigeLauftext();
+}
+// Lauftext = Nachricht vom Admin + Ankündigung des EP-Wochenendes (das geht auch ohne Internet)
+function zeigeLauftext() {
+  const text = [epWochenendeText(), lauftextOnline].filter(Boolean).join("     •     ");
   if (text === lauftextJetzt) return;
   lauftextJetzt = text;
   const leiste = $("lauftext");

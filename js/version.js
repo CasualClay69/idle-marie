@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.29.5";
-const APP_NEU = "Haustiere, die gestreichelt werden möchten, sind jetzt im Tiere-Fenster markiert.";
+const APP_VERSION = "1.30";
+const APP_NEU = "Rote Hinweis-Punkte, Danach weitermachen mit, Bank-Suche und EP-Wochenenden (jedes erste Wochenende im Monat +50 % Erfahrung)!";

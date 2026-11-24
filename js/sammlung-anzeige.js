@@ -44,6 +44,20 @@ function aktualisiereStreichelMarken() {
 }
 function richteTierMarkenEin() {
   jedeSekunde(() => { if (aktuelleSeite === "seiteIch" && ichTab === "tiere") aktualisiereStreichelMarken(); }, 3);
+  jedeSekunde(aktualisiereNavPunkte, 2);
+}
+
+// ----- Rote Hinweis-Punkte an der unteren Leiste: hier wartet etwas -----
+function navPunktGruende() {
+  const tierWartet = (spiel.haustiere || []).some(darfGestreicheltWerden);
+  const beetReif = gartenStand().beete.some(b => b && beetFortschritt(b) >= 1);
+  const seasonAbholen = abholbereiteAufgaben().length > 0;
+  const jagdNeu = jagdFrei() && !spiel.jagd?.auftrag;
+  return { seiteFertigkeiten: beetReif || seasonAbholen, seiteAbenteuer: jagdNeu, seiteIch: tierWartet };
+}
+function aktualisiereNavPunkte() {
+  const gruende = navPunktGruende();
+  for (const b of document.querySelectorAll("#untenNav button")) b.classList.toggle("navPunkt", !!gruende[b.dataset.seite]);
 }
 
 // Kleine Herzen, die aus einem Element aufsteigen

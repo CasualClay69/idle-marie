@@ -110,7 +110,7 @@ function verbraucheTrank(t) {
   }
 }
 function trankFaktorXp() {   // Tränke und Haustiere zusammen
-  return 1 + feuerBonus() + haustierBonus("xp") + baumhausBonus("xp") + schmuckBonus("xp") + trankWirkung(w => w.art === "xp").reduce((s, t) => s + t.wirkung.wert, 0);
+  return 1 + epWochenendeBonus() + feuerBonus() + haustierBonus("xp") + baumhausBonus("xp") + schmuckBonus("xp") + trankWirkung(w => w.art === "xp").reduce((s, t) => s + t.wirkung.wert, 0);
 }
 // Bonus für eine Tätigkeit (ohne zu verbrauchen)
 function trankDoppelt(t) {
