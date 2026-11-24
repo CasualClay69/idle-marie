@@ -340,13 +340,24 @@ function zeichneWiki() {
   }
   const tab = WIKI_TABS.find(t => t.id === wikiTab) || WIKI_TABS[0];
   ziel.innerHTML = tab.html();
+  // Auf- und zugeklappte Kapitel so lassen, wie man sie selbst gestellt hat
+  ziel.querySelectorAll("details").forEach((d, i) => { const k = `${tab.id}:${i}`; if (WIKI_AUFZU.has(k)) d.open = WIKI_AUFZU.get(k); });
   ziel.querySelector("#guideZeig")?.addEventListener("click", kompass);
   ziel.querySelector("#guideFortschritt")?.addEventListener("click", () => { ton.klick(); zeigeFortschritt(); });
   for (const b of ziel.querySelectorAll(".wikiChips button")) b.addEventListener("click", () => { ton.klick(); wikiArt = b.dataset.art; zeichneWiki(); });
 }
 
+// Merkt sich, welche Kapitel man auf- oder zugeklappt hat (sonst klappt jedes Neuzeichnen sie zurück)
+const WIKI_AUFZU = new Map();
 function richteWikiSeiteEin() {
   let uhr = 0;
+  // nur echte Klicks auf eine Kapitel-Überschrift merken (gleich danach klappt sie um)
+  $("wikiInhalt").addEventListener("click", e => {
+    const d = e.target.closest("summary")?.parentElement;
+    if (!(d instanceof HTMLDetailsElement) || $("wikiSuche").value.trim().length >= 2) return;
+    const i = [...$("wikiInhalt").querySelectorAll("details")].indexOf(d);
+    if (i >= 0) WIKI_AUFZU.set(`${wikiTab}:${i}`, !d.open);
+  });
   $("wikiSuche").addEventListener("input", () => { clearTimeout(uhr); uhr = setTimeout(zeichneWiki, 250); });
   $("wikiZurueck").addEventListener("click", () => { ton.klick(); zeigeSeite(wikiZurueck); });
 }

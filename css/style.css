@@ -182,6 +182,8 @@ button:disabled { cursor: default; }
   font-weight: 800; color: var(--akzent-dunkel); margin: 2px 0 10px;
 }
 .fertigkeitKopf {
+  /* bleibt beim Runterscrollen oben stehen */
+  position: sticky; top: 0; z-index: 6;
   display: flex; gap: 12px; align-items: center; margin-bottom: 12px; padding: 12px;
   background: var(--karte); border-radius: 22px; box-shadow: var(--schatten);
   border: 2px solid color-mix(in srgb, var(--farbe) 40%, #fff);

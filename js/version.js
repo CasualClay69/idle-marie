@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.29";
-const APP_NEU = "Das große Finale: Der Regenbogen-Gipfel wartet – bring die Farben zurück!";
+const APP_VERSION = "1.29.1";
+const APP_NEU = "Kampf-Balken laufen wieder, Fertigkeits-Stufe bleibt oben stehen, Guide-Kapitel bleiben offen.";

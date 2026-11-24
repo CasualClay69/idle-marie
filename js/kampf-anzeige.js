@@ -4,6 +4,8 @@
 // =====================================================
 
 function prozent(x) { return `${Math.round(x * 100)} %`; }
+// Für CSS-Breiten (ohne Leerzeichen – "50 %" wäre ungültig)
+const balkenBreite = x => `${(Math.max(0, Math.min(1, x)) * 100).toFixed(1)}%`;
 
 // Unter-Reiter der Abenteuer-Seite (wird gemerkt)
 const ABENTEUER_REITER = [["kampf", "⚔️", "Kampf"], ["ausruestung", "🎒", "Ausrüstung"], ["gebiete", "🗺️", "Gebiete"], ["pfade", "🧭", "Pfade"], ["jagd", "📋", "Aufträge"]];
@@ -153,15 +155,15 @@ function zeichneKampfLive() {
   const a = spiel.aktiv?.kampf ? spiel.aktiv : null;
   if (!a || !$("monsterHp")) return;
   const m = MONSTER[a.monster], jetzt = Date.now();
-  $("spielerHp").style.width = prozent(spiel.hp / maxHp());
+  $("spielerHp").style.width = balkenBreite(spiel.hp / maxHp());
   $("spielerHpText").textContent = `${spiel.hp} / ${maxHp()}`;
   const mhp = a.pauseBis ? 0 : a.mhp;
-  $("monsterHp").style.width = prozent(mhp / m.hp);
+  $("monsterHp").style.width = balkenBreite(mhp / m.hp);
   $("monsterHpText").textContent = `${mhp} / ${m.hp}`;
   $("monsterBild").dataset.schlaeft = a.pauseBis ? "1" : "";
   const bild = a.pauseBis ? monsterSvg(m.aussehen, true) : monsterSvg(m.aussehen);
   if ($("monsterBild").dataset.svg !== String(!!a.pauseBis)) { $("monsterBild").innerHTML = bild; $("monsterBild").dataset.svg = String(!!a.pauseBis); }
-  const takt = (naechster, tempo) => a.pauseBis ? "0%" : prozent(Math.max(0, Math.min(1, 1 - (naechster - jetzt) / (tempo * 1000))));
+  const takt = (naechster, tempo) => a.pauseBis ? "0%" : balkenBreite(Math.max(0, Math.min(1, 1 - (naechster - jetzt) / (tempo * 1000))));
   $("spielerTakt").style.width = takt(a.spielerNaechster, spielerWerte().tempo);
   $("monsterTakt").style.width = takt(a.monsterNaechster, m.tempo);
   const log = (spiel.kampfLog || []).join("|");
