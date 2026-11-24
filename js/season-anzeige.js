@@ -80,7 +80,8 @@ function zeichneSeason() {
         <small>${zahl(z.wert)} / ${zahl(a.ziel)} · ⭐ ${a.punkte} Punkte</small></span>
       ${a.abgeholt ? `<span class="aHaken">✓</span>` : z.fertig ? `<button type="button" class="knopf kaufen" data-aufgabe="${a.id}">Abholen</button>` : `<span class="aHin">🧭</span>`}</div>`;
   };
-  const tag = s.aufgaben.filter(a => a.art === "tag").sort((x, y) => (x.abgeholt - y.abgeholt) || y.tag.localeCompare(x.tag));
+  // Erledigte (abgeholte) Tagesaufgaben verschwinden – nur noch offene und abholbereite zeigen
+  const tag = s.aufgaben.filter(a => a.art === "tag" && !a.abgeholt).sort((x, y) => y.tag.localeCompare(x.tag));
   const woche = s.aufgaben.filter(a => a.art === "woche");
 
   const m = MONSTER.season;
@@ -98,7 +99,7 @@ function zeichneSeason() {
   }).join("");
 
   $("seasonInhalt").innerHTML = `${kopf}
-    <div class="karte"><h3>☀️ Tagesaufgaben <small>jeden Tag 3 neue</small></h3>${tag.map(aufgabeHtml).join("")}
+    <div class="karte"><h3>☀️ Tagesaufgaben <small>jeden Tag 3 neue</small></h3>${tag.length ? tag.map(aufgabeHtml).join("") : `<p class="hinweis">🎉 Alle Tagesaufgaben geschafft! Morgen gibt es 3 neue.</p>`}
       <p class="hinweis">Verpasst? Nicht schlimm – Tagesaufgaben bleiben eine Woche lang offen.</p></div>
     <div class="karte"><h3>📅 Wochenaufgaben <small>neu jeden Montag</small></h3>${woche.map(aufgabeHtml).join("")}</div>
     ${monster}
