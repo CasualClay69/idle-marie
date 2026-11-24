@@ -68,6 +68,10 @@ function zeigeTruhe(t) {
 let letzteGartenPruefung = 0;
 let letzterSeasonStand = "";
 function schleife() {
+  try { schleifenSchritt(); } catch (e) { console.error("Fehler in der Spielschleife:", e); }
+  requestAnimationFrame(schleife);   // immer weiter – auch wenn beim Zeichnen etwas schiefgeht
+}
+function schleifenSchritt() {
   // Sicherheitsnetz: War die App länger weg, ohne dass das Zurückkommen gemeldet wurde?
   if (!document.hidden && spiel.schnappschuss && Date.now() - spiel.schnappschuss.zeit > 60000) {
     holeOfflineNach();
@@ -97,7 +101,6 @@ function schleife() {
     }
   }
   zeichneAktivBalken();
-  requestAnimationFrame(schleife);
 }
 
 // ----- Knöpfe -----

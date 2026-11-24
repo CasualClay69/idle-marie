@@ -5,13 +5,16 @@
 
 function haustierHerkunft(h) {
   const wo = { holz: "beim Holzsammeln", angeln: "beim Angeln", bergbau: "im Bergbau", garten: "beim Ernten im Garten",
-    kochen: "beim Kochen", schmieden: "beim Schmieden", schnitzen: "beim Schnitzen", traenke: "beim Tränke-Brauen", bauen: "beim Bretter-Sägen", naehen: "beim Nähen" };
+    kochen: "beim Kochen", schmieden: "beim Schmieden", schnitzen: "beim Schnitzen", traenke: "beim Tränke-Brauen", bauen: "beim Bretter-Sägen", naehen: "beim Nähen",
+    schmuck: "beim Goldschmieden", sterne: "beim Sternegucken", feuer: "am Lagerfeuer", turnen: "auf dem Abenteuer-Spielplatz", graben: "beim Ausgraben" };
   if (h.start) return "kommt als Belohnung für einen Auftrag";
   if (h.truhe) return "versteckt sich in den Schatztruhen der Abenteuer-Pfade";
   if (h.season) return `Belohnung der Season im ${MONATSNAMEN[h.season - 1]}`;
-  if (h.fertigkeit) return `taucht ${wo[h.fertigkeit]} auf`;
+  if (h.jagd) return "kommt manchmal am Ende eines Monster-Auftrags zu dir";
+  if (h.fertigkeit) return `taucht ${wo[h.fertigkeit] || `bei ${(fertigkeit(h.fertigkeit)?.name || "der Arbeit").replaceAll("­", "")}`} auf`;
   const m = MONSTER[h.chef];
-  return `wohnt bei ${m.name.replaceAll("­", "")} (${GEBIETE.find(g => g.id === m.gebiet).name})`;
+  if (!m) return "ist irgendwo da draußen versteckt";
+  return `wohnt bei ${m.name.replaceAll("­", "")} (${GEBIETE.find(g => g.id === m.gebiet)?.name || "einem Gebiet"})`;
 }
 
 function zeichneHaustiere() {

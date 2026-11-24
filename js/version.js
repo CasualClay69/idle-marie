@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.20.1";
-const APP_NEU = "Die Monster-Aufträge gibt es jetzt nach dem vierten Abenteuer-Pfad – mit eigener Einführung.";
+const APP_VERSION = "1.20.2";
+const APP_NEU = "Fehler behoben: Die Haustiere werden wieder angezeigt, und deine Tätigkeit läuft dabei weiter.";
