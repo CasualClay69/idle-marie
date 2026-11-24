@@ -21,7 +21,7 @@ function jaegerinSvg() {
 
 function jagdHtml() {
   if (!jagdFrei()) {
-    return `<div class="karte jagdZu">${jaegerinSvg()}<p>Die Wichtel-Jägerin ${JAGD_JAEGERIN} kommt, sobald der <b>Pusteblumen-Riese</b> auf der Blumenwiese einmal eingeschlafen ist.</p></div>`;
+    return `<div class="karte jagdZu">${jaegerinSvg()}<p>Die Wichtel-Jägerin ${JAGD_JAEGERIN} kommt, sobald du <b>vier Abenteuer-Pfade</b> geschafft hast.</p></div>`;
   }
   const j = jagd(), a = j.auftrag, L = stufe("jagd");
   let auftrag;
@@ -90,7 +90,7 @@ function verdrahteJagd(seite) {
 // ===================== EINFÜHRUNG =====================
 const JAGD_EINFUEHRUNG = [
   { titel: "📋 Die Wichtel-Jägerin", bild: () => jaegerinSvg(),
-    text: () => `Der Pusteblumen-Riese schläft – das hat die Wichtel-Jägerin <b>${JAGD_JAEGERIN}</b> gesehen! Sie hat ab jetzt <b>Monster-Aufträge</b> für dich. Du findest sie im ⚔️ Abenteuer unter „📋 Aufträge“.` },
+    text: () => `Vier Abenteuer-Pfade geschafft – das hat sich bis zur Wichtel-Jägerin <b>${JAGD_JAEGERIN}</b> herumgesprochen! Sie hat ab jetzt <b>Monster-Aufträge</b> für dich. Du findest sie im ⚔️ Abenteuer unter „📋 Aufträge“.` },
   { titel: "⚔️ Ein Auftrag", bild: () => `<div class="seBilder">${monsterSvg(MONSTER.wuschelwolf.aussehen)}</div>`,
     text: () => `Ein Auftrag heißt zum Beispiel: <b>„Lass 30× Wuschelwolf einschlafen“</b>. Such dir aus, ob er leicht, mittel oder schwer sein soll. Mit „⚔️ Zum Monster“ geht es sofort los.` },
   { titel: "🏅 Jagd-Münzen", bild: () => `<div class="seBilder dGrossBilder"><span>🏅</span><span>🏹</span><span>🔮</span></div>`,

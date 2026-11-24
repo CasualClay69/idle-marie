@@ -1,7 +1,7 @@
 "use strict";
 // =====================================================
 //  MONSTER-AUFTRÄGE (wie "Slayer" in Melvor Idle)
-//  Frei, sobald der erste Chef (Pusteblumen-Riese) eingeschlafen ist.
+//  Frei nach dem 4. geschafften Abenteuer-Pfad (wer schon Jagd-Erfahrung hat, behält den Zugang).
 //  Die Wichtel-Jägerin Pia gibt Aufträge: "Lass 30× Wuschelwolf einschlafen".
 //  • Jedes Auftrags-Monster bringt 🏅 Jagd-Münzen und Jagd-Erfahrung (= seine Herzen).
 //  • Am Ende gibt es einen Bonus (+25 %) und mit Glück das Haustier Stups.
@@ -47,7 +47,7 @@ HAUSTIERE.push({ id: "stups", name: "Stups", tier: "Igel", emoji: "🦔", jagd: 
 }
 
 // ===================== LOGIK =====================
-const jagdFrei = () => (spiel.besiegt?.pusteriese || 0) > 0 || (spiel.xp?.jagd || 0) > 0;
+const jagdFrei = () => PFADE.filter(p => (spiel.pfade?.[p.id] || 0) > 0).length >= 4 || (spiel.xp?.jagd || 0) > 0;
 function jagd() { return spiel.jagd || (spiel.jagd = { muenzen: 0, auftrag: null, laden: {} }); }
 const jagdLaden = id => jagd().laden[id] || 0;
 const jagdWert = id => jagdLaden(id) * (JAGD_LADEN.find(x => x.id === id).wert || 0) / 100;

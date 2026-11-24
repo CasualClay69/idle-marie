@@ -125,7 +125,7 @@ function gartenZiel(s) {
 // Monster-Aufträge: erst einen holen, dann zum Monster
 function jagdZiel() {
   const a = jagdFrei() && jagd().auftrag;
-  if (!jagdFrei()) return { seite: "seiteAbenteuer", abenteuerTab: "gebiete", ziel: '.monsterKarte[data-monster="pusteriese"]', hinweis: "Bring zuerst den Pusteblumen-Riesen zum Einschlafen." };
+  if (!jagdFrei()) return { seite: "seiteAbenteuer", abenteuerTab: "pfade", hinweis: "Die Monster-Aufträge gibt es nach deinem vierten Abenteuer-Pfad." };
   if (!a) return { seite: "seiteAbenteuer", abenteuerTab: "jagd", ziel: ".jagdHolen:not([disabled])", hinweis: `Hol dir bei ${JAGD_JAEGERIN} einen Monster-Auftrag.` };
   if (spiel.aktiv?.monster !== a.monster) return { seite: "seiteAbenteuer", abenteuerTab: "jagd", ziel: "#jagdZumMonster", hinweis: `Kämpfe gegen ${MONSTER[a.monster].name.replaceAll("\u00ad", "")} – das ist dein Auftrag.` };
   return { seite: "seiteAbenteuer", abenteuerTab: "kampf", hinweis: "Du kämpfst schon gegen dein Auftrags-Monster. Weiter so!" };

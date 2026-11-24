@@ -102,7 +102,7 @@ const WIKI_REGELN = [
     <p><b>Großes Lagerfeuer:</b> Mit ${FEUER.holz} Holz brennt es ${FEUER.minuten} Minuten lang (auch wenn das Spiel zu ist). Solange gibt es mehr Erfahrung bei allem: +${Math.round(FEUER.bonusBasis * 100)} % mit Ästchen bis +${Math.round(feuerBonusFuer(7) * 100)} % mit Regenbogenholz.</p>
     <p><b>Asche ist Dünger:</b> Im Garten düngst du wachsende Beete (je nach Pflanze 1–8 Asche). Sie sind sofort ${Math.round(FEUER.duengerSchneller * 100)} % weiter und bringen ${Math.round(FEUER.duengerMehr * 100)} % mehr Ernte.</p>` },
   { id: "jagd", icon: "📋", titel: "Monster-Aufträge", text: () => `
-    <p>Sobald der <b>Pusteblumen-Riese</b> eingeschlafen ist, hat die Wichtel-Jägerin ${JAGD_JAEGERIN} Aufträge für dich (⚔️ Abenteuer → 📋 Aufträge). Zum Beispiel: „Lass 30× Wuschelwolf einschlafen“.</p>
+    <p>Sobald du <b>vier Abenteuer-Pfade</b> geschafft hast, hat die Wichtel-Jägerin ${JAGD_JAEGERIN} Aufträge für dich (⚔️ Abenteuer → 📋 Aufträge). Zum Beispiel: „Lass 30× Wuschelwolf einschlafen“.</p>
     <p>Es gibt <b>leichte</b>, <b>mittlere</b> (ab Jagd-Stufe ${JAGD.arten[1].stufe}) und <b>schwere</b> Aufträge (ab Jagd-Stufe ${JAGD.arten[2].stufe}). Für jedes Monster aus dem Auftrag gibt es 🏅 Jagd-Münzen und Jagd-Erfahrung, am Ende +${Math.round(JAGD.bonusAmEnde * 100)} % Bonus. Mit Glück (1 von ${Math.round(1 / JAGD.haustierChance)}) kommt der Igel Stups zu dir.</p>
     <p>Im <b>Jagd-Laden</b>: ${JAGD_LADEN.map(x => `${x.icon} ${x.name}`).join(", ")}. Einen Auftrag tauschen kostet ${JAGD.tauschenKostet} Jagd-Münzen (gratis, wenn du weniger hast).</p>` },
   { id: "turnen", icon: "🤸", titel: "Abenteuer-Spielplatz", text: () => `
@@ -164,13 +164,13 @@ const GUIDE_EINSCHUEBE = [
   { nach: "Schaffe den Spukgang", schritt: { id: "feuer:3", icon: "🌱", titel: "Dünge 5 Beete mit Asche",
     text: "Im 🌱 Garten gibt es den Knopf „Mit Asche düngen“. Gedüngte Beete wachsen schneller und bringen mehr Ernte.",
     ziel: 5, wert: () => spiel.statistik.geduengt || 0, hilfe: { fertigkeit: "garten", ziel: "#duengen" } } },
-  { nach: "Pusteblumen-Riese: 1× einschlafen lassen", schritt: { id: "jagd:1", icon: "📋", titel: "Hol dir einen Monster-Auftrag",
-    text: "Die Wichtel-Jägerin Pia hat jetzt Aufträge für dich – im ⚔️ Abenteuer unter „📋 Aufträge“.",
+  { nach: "Schaffe den Glutpfad", schritt: { id: "jagd:1", icon: "📋", titel: "Hol dir einen Monster-Auftrag",
+    text: "Nach deinem vierten Pfad hat die Wichtel-Jägerin Pia Aufträge für dich – im ⚔️ Abenteuer unter „📋 Aufträge“.",
     ziel: 1, wert: () => (spiel.jagd?.auftrag || spiel.statistik.jagdAuftraege ? 1 : 0), hilfe: { jagd: true } } },
-  { nach: "Pusteblumen-Riese: 1× einschlafen lassen", schritt: { id: "jagd:2", icon: "📋", titel: "Schaffe 3 Monster-Aufträge",
+  { nach: "Schaffe den Glutpfad", schritt: { id: "jagd:2", icon: "📋", titel: "Schaffe 3 Monster-Aufträge",
     text: "Für jedes Monster aus deinem Auftrag gibt es Jagd-Münzen – und am Ende einen Bonus.",
     ziel: 3, wert: () => spiel.statistik.jagdAuftraege || 0, hilfe: { jagd: true } } },
-  { nach: "Pusteblumen-Riese: 1× einschlafen lassen", schritt: { id: "jagd:3", icon: "🏅", titel: "Kauf etwas im Jagd-Laden",
+  { nach: "Schaffe den Glutpfad", schritt: { id: "jagd:3", icon: "🏅", titel: "Kauf etwas im Jagd-Laden",
     text: "Der Jäger-Köcher spart Pfeile, das Perlen-Täschchen Zauberperlen – oder gönn dir den Jägerhut!",
     ziel: 1, wert: () => (spiel.jagd ? jagdLadenSumme() : 0), hilfe: { seite: "seiteAbenteuer", abenteuerTab: "jagd", ziel: ".jagdKaufen:not([disabled])" } } },
   { nach: "Schaffe den Frostpfad", schritt: { id: "turnen:1", icon: "🛝", titel: "Bau dein erstes Hindernis",
