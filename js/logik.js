@@ -124,6 +124,7 @@ function hindernis(t) {
   if (t.fertigkeit === "sterne" && !sterneFrei()) return "Schaffe zuerst einen Abenteuer-Pfad";
   if (t.fertigkeit === "feuer" && !feuerFrei()) return "Schaffe zuerst drei Abenteuer-Pfade";
   if (t.parcours && !turnenFrei()) return "Schaffe zuerst fünf Abenteuer-Pfade";
+  if (t.grabung && !grabenFrei()) return "Schaffe zuerst alle sechs Abenteuer-Pfade";
   if (t.parcours && !gebauteStationen().length) return "Bau zuerst ein Hindernis auf dem Spielplatz";
   if (stufe(t.fertigkeit) < t.stufe) return `Erst ab Stufe ${t.stufe}`;
   for (const [id, n] of Object.entries(t.braucht || {})) {
@@ -145,6 +146,7 @@ function fuehreAus(t) {
   for (const [id, n] of Object.entries(t.gibt)) { gibInBank(id, n * mal); zaehle(id, n * mal); }
   if (t.kleidung) { gibTeil(t.kleidung); ereignisse.kleidung = t.kleidung; }
   if (t.parcours) spiel.muenzen += rundenMuenzen() * mal;
+  if (t.grabung) ereignisse.fund = grabeFund(t);
   if (t.fertigkeit === "sterne" && Math.random() < STERNE.goldChance && passtInBank("goldsplitter5")) {
     gibInBank("goldsplitter5", 1); zaehle("goldsplitter5", 1); ereignisse.goldsplitter = true;
   }

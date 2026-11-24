@@ -18,6 +18,7 @@ const WIKI_TABS = [
   { id: "sterne",       name: "Sterne",       icon: "🔭", html: () => wikiSterne() },
   { id: "dorf",         name: "Dorf",         icon: "🏘️", html: () => wikiDorf() },
   { id: "turnen",       name: "Spielplatz",   icon: "🤸", html: () => wikiTurnen() },
+  { id: "museum",       name: "Museum",       icon: "🏛️", html: () => wikiMuseum() },
   { id: "aussehen",     name: "Aussehen",     icon: "👗", html: () => wikiAussehen() },
   { id: "erfolge",      name: "Erfolge",      icon: "🏆", html: () => wikiErfolge() },
   { id: "season",       name: "Season",       icon: "🎟️", html: () => wikiSeason() },
@@ -61,6 +62,11 @@ function wikiIndex() {
   for (const g of DORF_GEBAEUDE.filter(x => x.macht)) for (let i = 0; i < 8; i++) dazu(her, `${g.macht}${i}`, `🏘️ Wichteldorf: ${g.name} (ab Dorf-Stufe ${STUFEN[i]})`);
   dazu(her, "goldsplitter5", `🔭 Sternenkunde: ${(STERNE.goldChance * 100).toLocaleString("de-DE")} % Glück bei jeder Beobachtung`);
   dazu(nutz, "asche0", "🌱 Dünger im Garten");
+  for (const f of FUNDE) {
+    const o = GRABUNGEN.find(x => x.id === f.ort), g = FUND_GROESSEN.find(x => x.id === f.groesse);
+    dazu(her, f.id, `🦴 Ausgraben: ${o.name} (${g.name}, ${(g.chance / 2 * 100).toLocaleString("de-DE")} %)`);
+    dazu(nutz, f.id, "🏛️ Ins Museum spenden");
+  }
   for (let i = 0; i < 8; i++) dazu(nutz, `holz${i}`, `🔥 Großes Lagerfeuer (${FEUER.holz}×)`);
   dazu(nutz, "sternsplitter2", "🔭 Sterne der Sternbilder leuchten lassen");
   dazu(nutz, "goldsplitter5", "🌟 Goldene Sterne der Sternbilder");
@@ -371,5 +377,18 @@ function wikiTurnen() {
   html += PARCOURS.map((s, i) => wEintrag(`p-${i}`, `${s.icon} ${i + 1}. ${s.name} <small>ab Turnen-Stufe ${s.stufe} · ${Object.entries(s.kosten).map(([id, n]) => `${wSym(id)} ${n}`).join(" ")} ${muenzeHtml("muenze klein")} ${zahl(s.muenzen)}</small>`,
     s.optionen.map((o, nr) => wZeile(nr + 1, o.name + (spiel.parcours?.stationen?.[i] === nr ? " ✅" : ""), bonusText(o.bonus), spiel.parcours?.stationen?.[i] === nr)).join(""))).join("");
   html += wEintrag("p-podest", `${PODEST.icon} ${PODEST.name} <small>ab Turnen-Stufe ${PODEST.stufe}</small>`, `<p>${PODEST.bonus.map(bonusText).join(" und ")}. Kostet ${Object.entries(PODEST.kosten).map(([id, n]) => `${wSym(id)} ${n}`).join(" ")} ${muenzeHtml("muenze klein")} ${zahl(PODEST.muenzen)}.</p>`);
+  return html;
+}
+
+// ===================== MUSEUM =====================
+function wikiMuseum() {
+  let html = wEintrag("r-graben2", "🦴 So funktionieren Ausgraben und Museum", WIKI_REGELN.find(r => r.id === "graben").text());
+  html += GRABUNGEN.map(o => wEintrag(`m-${o.id}`, `${o.icon} ${o.name} <small>ab Ausgraben-Stufe ${o.stufe} · ${spiel.museum ? FUNDE.filter(f => f.ort === o.id && imMuseum(f.id)).length : 0} / 8 im Museum</small>`,
+    `<p class="wikiMeta">Volle Vitrine: ${o.vitrine.text}</p>` + FUNDE.filter(f => f.ort === o.id).map(f => {
+      const g = FUND_GROESSEN.find(x => x.id === f.groesse), drin = imMuseum(f.id);
+      return wZeile(wSym(f.id), `${f.name}${drin ? " ✅" : ""}`, `${g.name} · ${SELTENHEITEN[seltenheit(f.id)].name} · ${muenzeHtml("muenze klein")} ${zahl(GEGENSTAENDE[f.id].wert)}`, drin);
+    }).join(""))).join("");
+  html += wEintrag("m-werkzeuge", "🧰 Grabe-Werkzeuge", GRABE_WERKZEUGE.map(w => wZeile(w.icon, w.name,
+    `+${Math.round(WERKZEUG_GRAB.plusProStufe * 100)} % ${FUND_GROESSEN.find(g => g.id === w.groesse).name}e Funde je Stufe · ${WERKZEUG_GRAB.stufen} Stufen ab Ausgraben ${WERKZEUG_GRAB.ab.join(" / ")} · du hast Stufe ${grabWerkzeug(w.id)}`, grabWerkzeug(w.id) > 0)).join(""));
   return html;
 }

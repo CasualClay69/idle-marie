@@ -109,6 +109,10 @@ const WIKI_REGELN = [
     <p>Der Abenteuer-Spielplatz öffnet sich, sobald du <b>fünf Abenteuer-Pfade</b> geschafft hast. Neue Fertigkeit: Turnen.</p>
     <p>Der Parcours hat ${PARCOURS.length} Stationen (ab Turnen-Stufe ${STUFEN.join(", ")}). An jeder baust du <b>eins von drei Hindernissen</b> – jedes gibt einen Dauer-Bonus. Umbauen geht jederzeit, kostet aber neu.</p>
     <p><b>Parcours laufen</b> ist eine Tätigkeit: Eine Runde dauert länger, je mehr Hindernisse stehen, und bringt dafür mehr Erfahrung und Münzen. Stehen alle Stationen, gibt es das <b>Siegerpodest</b>: ${PODEST.bonus.map(bonusText).join(" und ")}.</p>` },
+  { id: "graben", icon: "🦴", titel: "Ausgraben und Museum", text: () => `
+    <p>Ausgraben gibt es, sobald du <b>alle sechs Abenteuer-Pfade</b> geschafft hast. Es gibt ${GRABUNGEN.length} Ausgrabungsorte (ab Ausgraben-Stufe ${GRABUNGEN.map(o => o.stufe).join(", ")}).</p>
+    <p>Jede Grabung bringt Krimskrams und Erfahrung – und mit Glück ein Fundstück: ${FUND_GROESSEN.map(g => `${g.name} (${(g.chance * 100).toLocaleString("de-DE")} %)`).join(", ")}. Die Grabe-Werkzeuge (${GRABE_WERKZEUGE.map(w => `${w.icon} ${w.name}`).join(", ")}) machen je eine Größe ${Math.round(WERKZEUG_GRAB.plusProStufe * 100)} % pro Stufe häufiger.</p>
+    <p>Im <b>Museum</b> spendest du jedes Fundstück einmal. Eine volle Vitrine (alle 8 Funde eines Ortes) gibt einen Bonus für immer: ${GRABUNGEN.map(o => `${o.icon} ${o.vitrine.text}`).join(", ")}.</p>` },
   { id: "gluecksrad", icon: "🎁", titel: "Tägliches Glücksrad", text: () => `
     <p>Jeden Tag darfst du einmal am Glücksrad drehen – die Karte dafür ist oben auf der 🌟 Fertigkeiten-Seite. Jeder ${GLUECKSRAD.serieBonus}. Tag in Folge bringt ein <b>doppeltes</b> Geschenk.</p>
     <p>Mögliche Geschenke: ${GLUECKSRAD.felder.map(f => `${f.icon} ${f.name}`).join(", ")}. Die Geschenke wachsen mit deiner Gesamtstufe mit.</p>` },
@@ -175,6 +179,15 @@ const GUIDE_EINSCHUEBE = [
   { nach: "Schaffe den Frostpfad", schritt: { id: "turnen:2", icon: "🤸", titel: "Lauf 20 Runden Parcours",
     text: "Tippe auf „Parcours laufen“ – jede Runde bringt Erfahrung und Münzen.",
     ziel: 20, wert: () => spiel.statistik.aktionenNach?.turnen || 0, hilfe: { fertigkeit: "turnen", ziel: ".parcoursLauf" } } },
+  { nach: "Schaffe den Sternenpfad", schritt: { id: "graben:1", icon: "🦴", titel: "Finde dein erstes Fundstück",
+    text: "Nach deinem sechsten Pfad gibt es die Fertigkeit 🦴 Ausgraben. Grab auf der Spielzeug-Wiese, bis du ein Fundstück findest.",
+    ziel: 1, wert: () => spiel.statistik.funde || 0, hilfe: { fertigkeit: "graben" } } },
+  { nach: "Schaffe den Sternenpfad", schritt: { id: "graben:2", icon: "🏛️", titel: "Spende 3 Fundstücke ans Museum",
+    text: "Unter den Ausgrabungsorten steht dein Museum. Tippe ein Fundstück mit ➕ an, um es zu spenden.",
+    ziel: 3, wert: () => (spiel.museum ? museumAnzahl() : 0), hilfe: { fertigkeit: "graben", ziel: ".spenden, #alleSpenden" } } },
+  { nach: "Schaffe den Sternenpfad", schritt: { id: "graben:3", icon: "🧺", titel: "Verbessere ein Grabe-Werkzeug",
+    text: "Mit einem besseren Sieb findest du öfter kleine Fundstücke.",
+    ziel: 1, wert: () => grabWerkzeugSumme(), hilfe: { fertigkeit: "graben", ziel: ".grabWerkzeug:not([disabled])" } } },
   { nach: "Schaffe den Pusteblumen-Pfad", schritt: { id: "sterne:1", icon: "🔭", titel: "Beobachte die Sterne",
     text: "Nach deinem ersten Pfad öffnet sich die 🔭 Sternenkunde. Beobachte das Eichhörnchen-Sternbild und sammle 30 Sternsplitter.",
     ziel: 30, wert: () => spiel.zaehler?.sternsplitter2 || 0, hilfe: { fertigkeit: "sterne" } } },
@@ -219,6 +232,10 @@ function guideVervollstaendigen() {
     text: "Bau an allen 8 Stationen ein Hindernis und dann das Siegerpodest.",
     ziel: PARCOURS.length + 1, wert: () => (spiel.parcours ? gebauteStationen().length + (spiel.parcours.podest ? 1 : 0) : 0), hilfe: { fertigkeit: "turnen", ziel: ".stationBauen:not([disabled])" } });
 
+  schritt({ id: "graben:werkzeug", kapitel: K1, icon: "⛏️", titel: "Alle Grabe-Werkzeuge",
+    text: "Verbessere Sieb, Kelle, Pinsel und Schaufel ganz.",
+    ziel: grabWerkzeugMax(), wert: () => grabWerkzeugSumme(), hilfe: { fertigkeit: "graben", ziel: ".grabWerkzeug:not([disabled])" } });
+
   // --- Alles sammeln ---
   const K2 = "Alles sammeln";
   const tiere = () => HAUSTIERE.filter(h => !h.season);
@@ -251,6 +268,9 @@ function guideVervollstaendigen() {
   // --- Zum Schluss ---
   const K4 = "Das große Finale";
   const erfolge = () => ERFOLGE.filter(e => !e.id.startsWith("season"));
+  schritt({ id: "museum:alle", kapitel: K4, icon: "🏛️", titel: "Das ganze Museum",
+    text: "Spende jedes Fundstück ans Museum. Die riesigen Funde sind ganz selten – die Schaufel hilft!",
+    ziel: FUNDE.length, wert: () => (spiel.museum ? museumAnzahl() : 0), hilfe: { fertigkeit: "graben", ziel: ".spenden, #alleSpenden" } });
   schritt({ id: "e:alle", kapitel: K4, icon: "🏆", titel: "Alle Erfolge (ohne Season)",
     text: "Schau unter 👤 Ich → 🏆 Erfolge, welche dir noch fehlen.",
     ziel: erfolge().length, wert: () => erfolge().filter(erfolgErreicht).length, hilfe: { seite: "seiteIch", ichTab: "erfolge" } });

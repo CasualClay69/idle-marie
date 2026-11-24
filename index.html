@@ -35,6 +35,7 @@
   <script src="js/daten-feuer.js" defer></script>
   <script src="js/daten-jagd.js" defer></script>
   <script src="js/daten-turnen.js" defer></script>
+  <script src="js/daten-graben.js" defer></script>
   <script src="js/symbole.js" defer></script>
   <script src="js/ikonen.js" defer></script>
   <script src="js/ikonen-natur.js" defer></script>
@@ -71,6 +72,7 @@
   <script src="js/feuer-anzeige.js" defer></script>
   <script src="js/jagd-anzeige.js" defer></script>
   <script src="js/turnen-anzeige.js" defer></script>
+  <script src="js/graben-anzeige.js" defer></script>
   <script src="js/rueckkehr.js" defer></script>
   <script src="js/daten-wiki.js" defer></script>
   <script src="js/wiki.js" defer></script>
@@ -133,6 +135,7 @@
         <div id="feuerBereich" hidden></div>
         <div id="taetigkeitenRaster" class="taetigkeitenRaster"></div>
         <div id="sternBereich" hidden></div>
+        <div id="grabBereich" hidden></div>
       </section>
 
       <section id="seiteSeason" class="seite" hidden>
@@ -411,6 +414,14 @@
       <button type="button" class="zuX" id="turnenIntroX" aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6L18 18M18 6L6 18" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg></button>
       <div id="turnenIntroInhalt"></div>
       <div class="seKnoepfe"><button id="turnenIntroZurueck" class="knopf leise" type="button">‹ Zurück</button><button id="turnenIntroWeiter" class="knopf" type="button">Weiter ›</button></div>
+    </div>
+  </div>
+
+  <div id="grabenIntroOverlay" class="overlay" hidden>
+    <div class="fenster sternIntro">
+      <button type="button" class="zuX" id="grabenIntroX" aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6L18 18M18 6L6 18" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg></button>
+      <div id="grabenIntroInhalt"></div>
+      <div class="seKnoepfe"><button id="grabenIntroZurueck" class="knopf leise" type="button">‹ Zurück</button><button id="grabenIntroWeiter" class="knopf" type="button">Weiter ›</button></div>
     </div>
   </div>
 

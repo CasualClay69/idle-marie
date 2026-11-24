@@ -84,7 +84,7 @@ const goldText = (sb, stufeN) => sb.gold.text.replace("{w}", sb.gold.wert * stuf
 // Bonus der normalen Sterne. schneller/doppelt/xp gelten nur für die Fertigkeiten des Sternbilds,
 // Kampf-Kräfte (treff/kraft/schutz/herzen) immer.
 function sternBonus(art, fid = null) {
-  if (!spiel.sterne) return parcoursBonus(art, fid);   // + Abenteuer-Spielplatz
+  if (!spiel.sterne) return (parcoursBonus(art, fid) + museumBonus(art, fid));   // + Abenteuer-Spielplatz
   let summe = 0;
   for (const sb of STERNBILDER) {
     const st = spiel.sterne[sb.id];
@@ -95,13 +95,13 @@ function sternBonus(art, fid = null) {
       summe += st.k[i] * STERNE.proStufe;
     });
   }
-  return summe + parcoursBonus(art, fid);
+  return summe + (parcoursBonus(art, fid) + museumBonus(art, fid));
 }
 // Bonus der goldenen Sterne – in derselben Einheit wie baumhausBonus (bank/offline: Anzahl, sonst Anteil)
 function sternGold(art) {
-  if (!spiel.sterne) return parcoursAllgemein(art);   // + Abenteuer-Spielplatz
+  if (!spiel.sterne) return (parcoursAllgemein(art) + museumAllgemein(art));   // + Abenteuer-Spielplatz
   const summe = STERNBILDER.reduce((s, sb) => s + (sb.gold.art === art ? (spiel.sterne[sb.id]?.g || 0) * sb.gold.wert : 0), 0);
-  return (["bank", "offline"].includes(art) ? summe : summe / 100) + parcoursAllgemein(art);
+  return (["bank", "offline"].includes(art) ? summe : summe / 100) + (parcoursAllgemein(art) + museumAllgemein(art));
 }
 
 // Was kostet die nächste Stufe? nr = 0,1,2 (normal) oder "g" (golden). null = schon voll
