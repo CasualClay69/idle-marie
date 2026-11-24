@@ -16,7 +16,8 @@ function dorfBildHtml() {
   const frei = Math.max(0, dorfPlaetze() - kacheln.length);
   const zeigeFrei = Math.min(frei, Math.max(0, 24 - kacheln.length));
   for (let i = 0; i < zeigeFrei; i++) kacheln.push(`<span class="dKachel frei"></span>`);
-  return `<div class="dorfBild"><div class="dorfHimmel"><span class="dSonne">☀️</span><span class="dWolke">☁️</span></div>
+  const fest = festtag() ? `<div class="dWimpel">${"🎉🎈🎀".repeat(3)}</div>` : "";
+  return `<div class="dorfBild${festtag() ? " fest" : ""}"><div class="dorfHimmel"><span class="dSonne">☀️</span>${fest}<span class="dWolke">☁️</span></div>
     <div class="dorfWiese">${kacheln.join("")}</div>
     <small>${dorfGesamt()} Gebäude · ${frei} Bauplätze frei${frei > zeigeFrei ? ` (+${frei - zeigeFrei} weitere)` : ""}</small></div>`;
 }
@@ -62,6 +63,7 @@ function zeichneDorf(ziel) {
 
   ziel.innerHTML = `<div class="dorfSeite">
     ${dorfBildHtml()}
+    ${dorfFestHtml()}
     <div class="karte"><div class="dWerte">${werte}</div>
       <p class="dUhr">⏳ Nächster Dorf-Tag in <b id="dorfUhr">${dorfUhrText()}</b> · schon ${zahl(d.tage)} Dorf-Tage</p>
       ${warnungen.map(w => `<p class="dreieckHinweis schlecht">${w}</p>`).join("")}</div>
@@ -72,6 +74,7 @@ function zeichneDorf(ziel) {
     <button type="button" class="knopf leise" id="dorfEinfuehrung">❔ Einführung nochmal ansehen</button>
     <p class="hinweis">🏘️ Alle ${DORF.tickMinuten} Minuten ist ein Dorf-Tag – auch wenn das Spiel zu ist. Mit höherer Dorf-Stufe gibt es mehr Bauplätze und bessere Sachen.</p></div>`;
 
+  verdrahteDorfFest(ziel);
   ziel.querySelector("#dorfAbholen").addEventListener("click", () => {
     const r = dorfAbholen();
     if (r.geholt) { ton.muenze(); melde("🧺 Alles aus dem Dorflager abgeholt!"); }

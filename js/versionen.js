@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.25", datum: "2026-11-24", neu: ["🎪 Dorffeste: Jeden Monat feiert das Wichteldorf ein Fest passend zur Season. Die Wichtel wünschen sich drei Sachen – spende sie und feier mit!", "🎉 Festtag: 24 Stunden doppelt so fleißige Wichtel und +20 Glück, dazu Münzen und 100 Season-Punkte."] },
   { v: "1.24", datum: "2026-11-24", neu: ["🐾 Neue Fertigkeit Tierfreundschaft (nach dem ersten Chef): Back aus Fisch Leckerli für deinen Begleiter.", "🥣 Füll unter Ich → Tiere den Futternapf: Dann ist dein Begleiter aktiv – sein Bonus wirkt viel stärker, und im Kampf stupst er die Monster mit an!", "🦝 Neues Haustier Waschbär Naschi, neue Erfolge, Guide-Schritte, Wiki und Einführung.", "Season-Pass: Das Schild „von …“ bei alten Tagesaufgaben steht jetzt immer ordentlich in einer eigenen Zeile."] },
   { v: "1.23.1", datum: "2026-11-24", neu: ["🐟 Der Fisch ist jetzt richtig herum gemalt – das Gesicht ist vorne, der Schwanz hinten."] },
   { v: "1.23", datum: "2026-11-24", neu: ["🌙 Neues Gebiet: das Traumschloss (ab Kampfstufe 95) mit Kissenmonster, Traumfalter, Schlafmützen-Geist und der Chefin Traumkönigin.", "🧰 Der 7. Pfad: der Traumpfad – am Ende wartet der Mitternachtsdrache!", "🐼 Neues Haustier Panda Schlafi, neue Beute (Traumsand, Mondperle), Traum-Pokal, Traumpfad-Rahmen und neue Erfolge."] },

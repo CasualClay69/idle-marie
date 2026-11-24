@@ -37,6 +37,8 @@ function heuteListe() {
   // Futternapf leer
   if (freundeFrei() && begleiterTier() && !napfLeckerli()) dazu("napf", "🦴", `${begleiterTier().name} hat Hunger – füll den Futternapf`, geh({ seite: "seiteIch", ichTab: "tiere", ziel: "#napfWaehlen" }));
   // Freigeschaltete Systeme
+  if (dorfFrei() && spiel.dorf && !festtag() && !dorfFest().gefeiert)
+    dazu("fest", "🎪", festBereit() ? "Das Dorffest kann beginnen – feier mit!" : `Die Wichtel bereiten das ${aktuellesThema().titel}-Fest vor`, geh({ fertigkeit: "dorf", ziel: festBereit() ? "#festFeiern" : ".festSpenden:not([disabled])" }));
   if (dorfFrei() && spiel.dorf && !dorfLagerLeer()) dazu("dorf", "🏘️", "Im Dorflager liegen Sachen für dich", geh({ fertigkeit: "dorf", ziel: "#dorfAbholen" }));
   if (feuerFrei() && !feuerBrennt()) dazu("feuer", "🔥", "Zünde ein großes Lagerfeuer an (mehr Erfahrung!)", geh({ fertigkeit: "feuer", ziel: ".feuerHolz:not([disabled])" }));
   if (jagdFrei() && !spiel.jagd?.auftrag) dazu("jagd", "📋", `${JAGD_JAEGERIN} hat einen neuen Monster-Auftrag`, geh({ seite: "seiteAbenteuer", abenteuerTab: "jagd", ziel: ".jagdHolen:not([disabled])" }));

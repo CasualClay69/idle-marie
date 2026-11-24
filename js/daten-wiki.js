@@ -96,6 +96,7 @@ const WIKI_REGELN = [
     <p>Das Wichteldorf öffnet sich, sobald du <b>zwei Abenteuer-Pfade</b> geschafft hast. Es läuft nebenher – wie der Garten.</p>
     <p>Alle ${DORF.tickMinuten} Minuten ist ein <b>Dorf-Tag</b> (auch wenn das Spiel zu ist, bis zu einer Woche): Die Wichtel essen Korn, arbeiten in den Gebäuden und legen Holz, Erz, Fisch, Kräuter und Münzen ins Dorflager. Von dort holst du alles in die Bank.</p>
     <p>In jedem Wichtelhaus wohnen ${DORF.bewohnerProHaus} Wichtel. Arbeits-Gebäude brauchen Wichtel – fehlen welche, wird langsamer gearbeitet. Reicht das Korn nicht, sinkt die <b>Gesundheit</b>. Der Spielplatz macht <b>glücklich</b>. Gesundheit und Glück bestimmen den Fleiß.</p>
+    <p><b>Dorffeste:</b> Jeden Monat feiert das Dorf ein Fest zum Season-Thema. Spende die 3 gewünschten Sachen, dann gibt es ${DORFFEST.stunden} Stunden Festtag (doppelter Fleiß, +${DORFFEST.glueck} Glück), Münzen und ${DORFFEST.seasonPunkte} Season-Punkte.</p>
     <p>Mit jedem Dorf-Tag steigt die Dorf-Stufe: mehr Bauplätze (${4} + Stufe) und bessere Sorten. Von jedem Gebäude kannst du ${DORF.maxJeGebaeude} Stück bauen – jedes weitere kostet mehr.</p>` },
   { id: "lagerfeuer", icon: "🔥", titel: "Lagerfeuer", text: () => `
     <p>Das Lagerfeuer gibt es, sobald du <b>drei Abenteuer-Pfade</b> geschafft hast. Du verbrennst Holz und bekommst dafür Erfahrung und <b>Asche</b>.</p>
@@ -156,6 +157,9 @@ const GUIDE_EINSCHUEBE = [
   { nach: "Schaffe den Flüsterpfad", schritt: { id: "dorf:2", icon: "📦", titel: "Hol Sachen aus dem Dorflager",
     text: "Alle 10 Minuten legen die Wichtel Sachen ins Dorflager. Tippe auf „Alles abholen“.",
     ziel: 1, wert: () => spiel.statistik.dorfAbgeholt || 0, hilfe: { fertigkeit: "dorf", ziel: "#dorfAbholen" } } },
+  { nach: "Schaffe den Flüsterpfad", schritt: { id: "dorf:fest", icon: "🎪", titel: "Feier ein Dorffest",
+    text: "Jeden Monat wünschen sich die Wichtel drei Sachen für ihr Fest. Spende sie auf der Dorf-Seite und feier mit!",
+    ziel: 1, wert: () => spiel.statistik.dorffeste || 0, hilfe: { fertigkeit: "dorf", ziel: ".festSpenden:not([disabled]), #festFeiern" } } },
   { nach: "Schaffe den Flüsterpfad", schritt: { id: "dorf:3", icon: "🧚", titel: "24 Wichtel im Dorf",
     text: "Bau ein zweites Wichtelhaus – mehr Wichtel können mehr arbeiten. Vergiss den Bauernhof nicht!",
     ziel: 24, wert: () => (spiel.dorf ? dorfBewohnerPlatz() : 0), hilfe: { fertigkeit: "dorf", ziel: '.dGebaeude[data-gebaeude="haus"]' } } },

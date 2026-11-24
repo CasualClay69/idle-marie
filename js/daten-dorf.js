@@ -51,12 +51,12 @@ const dorfTier = () => Math.max(0, STUFEN.filter(s => s <= stufe("dorf")).length
 const dorfBewohnerPlatz = () => dorfAnzahl("haus") * DORF.bewohnerProHaus;
 const dorfBewohner = () => Math.max(1, Math.round(dorfBewohnerPlatz() * (0.5 + dorf().gesundheit / 200)));
 const dorfArbeiterBedarf = () => DORF_GEBAEUDE.reduce((s, g) => s + g.arbeiter * dorfAnzahl(g.id), 0);
-const dorfGlueck = () => Math.min(100, DORF_GEBAEUDE.reduce((s, g) => s + (g.glueck || 0) * dorfAnzahl(g.id), 10));
+const dorfGlueck = () => Math.min(100, DORF_GEBAEUDE.reduce((s, g) => s + (g.glueck || 0) * dorfAnzahl(g.id), 10)) + (typeof festtag === "function" && festtag() ? DORFFEST.glueck : 0);   // + Dorffest
 // Wie fleißig: genug Arbeiter? × Gesundheit × (1 + Glück)
 function dorfFleiss() {
   const bedarf = dorfArbeiterBedarf();
   const besetzt = bedarf ? Math.min(1, dorfBewohner() / bedarf) : 1;
-  return { besetzt, faktor: besetzt * (dorf().gesundheit / 100) * (1 + dorfGlueck() / 100) };
+  return { besetzt, faktor: besetzt * (dorf().gesundheit / 100) * (1 + dorfGlueck() / 100) * (typeof festtag === "function" && festtag() ? DORFFEST.fleiss : 1) };
 }
 // Was ein Gebäude pro Dorf-Tag macht (für Anzeige und Wiki)
 function dorfErtragId(g) { return g.macht ? `${g.macht}${dorfTier()}` : null; }

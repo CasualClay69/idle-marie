@@ -1303,3 +1303,20 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .napfText b { font-size: 0.92rem; }
 .napfText small { font-size: 0.74rem; color: var(--text-sanft); line-height: 1.35; }
 .napfText .an { color: #2f8a4a; font-weight: 800; }
+
+/* ----- Dorffest ----- */
+.festKarte { background: linear-gradient(140deg, var(--s1, #fff1e0), #fff 70%); border-color: var(--s2, #ffd2a8); }
+.festKarte.an { display: flex; gap: 10px; align-items: center; animation: pochen 2.4s ease-in-out infinite; }
+.festKarte:not(.an) > .festIcon { float: left; }
+.festKopf { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; }
+.festKopf > div, .festKarte.an > div { display: grid; gap: 2px; }
+.festKarte small { font-size: 0.74rem; color: var(--text-sanft); line-height: 1.35; }
+.festIcon { font-size: 2rem; flex: none; }
+.festWunsch { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-top: 1px dashed var(--rand); }
+.festWunsch.fertig { opacity: 0.7; }
+.fwText { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.fwText b { font-size: 0.82rem; }
+.festBelohnung { display: block; margin-top: 6px; }
+#festFeiern { display: block; margin: 8px auto 0; }
+.dWimpel { flex: 1; text-align: center; font-size: 1rem; letter-spacing: 2px; }
+.dorfBild.fest { background: linear-gradient(180deg, #ffe1ee 0 34%, #a8e08f 34%); }

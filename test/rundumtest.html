@@ -132,6 +132,8 @@ async function spieleDurch() {
   await schritt("Offline 5 Stunden Holz", `starte(taetigkeitNachId("holz-3")); spiel.aktiv.start -= 5*3600000; spiel.letzteZeit = Date.now() - 5*3600000; spiel.schnappschuss && (spiel.schnappschuss.zeit -= 5*3600000); holeOfflineNach(); pruefeRueckkehr();`, 300);
   alleFensterZu();
   await schritt("Dorf-Tage nachholen + abholen", `spiel.dorf.letzterTick -= 8*3600000; pruefeDorf(); dorfAbholen(); offeneFertigkeit = "dorf"; zeigeSeite("seiteFertigkeit")`);
+  await schritt("Dorffest spenden + feiern", `for (const w of festWuensche()) spiel.bank[w.id] = (spiel.bank[w.id] || 0) + w.menge; for (let i = 0; i < 3; i++) festSpende(i); offeneFertigkeit = "dorf"; zeigeSeite("seiteFertigkeit")`);
+  await schritt("Festtag", `festFeiern(); zeigeSeite("seiteFertigkeiten"); offeneFertigkeit = "dorf"; zeigeSeite("seiteFertigkeit")`);
   await schritt("Garten ernten", `for (const b of gartenStand().beete) if (b) b.start -= 99*3600000; gartenStand().beete.forEach((b, nr) => { if (b) ernte(nr); }); offeneFertigkeit = "garten"; zeigeSeite("seiteFertigkeit")`);
   for (let i = 0; i < 6; i++) { alleFensterZu(); await schritt(`Heute-Zeile ${i + 1}`, () => { ev(`zeigeSeite("seiteFertigkeiten")`); d.querySelectorAll(".heuteZeile:not(.erledigt)")[i]?.click(); }); }
   alleFensterZu();
