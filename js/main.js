@@ -226,6 +226,7 @@ function richteVersionenEin() {
   $("version").textContent = `v${APP_VERSION}`;
   $("version").addEventListener("click", () => { ton.klick(); zeigeVersionen(); });
   $("versionenZu").addEventListener("click", () => { ton.klick(); $("versionenOverlay").hidden = true; });
+  $("versionenX").addEventListener("click", () => { ton.klick(); $("versionenOverlay").hidden = true; });
   $("updateJetzt").addEventListener("click", aktualisiereApp);
   $("updateSpaeter").addEventListener("click", () => { updateSpaeter = true; $("updateOverlay").hidden = true; });
   setTimeout(pruefeAufUpdate, 4000);

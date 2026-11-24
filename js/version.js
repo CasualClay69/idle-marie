@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.29.3";
-const APP_NEU = "Willkommen zurück zeigt jetzt pro Fertigkeit die neuen Stufen und alle Gegenstände, die du dabei bekommen hast.";
+const APP_VERSION = "1.29.4";
+const APP_NEU = "Willkommen zurück zeigt pro Fertigkeit die neuen Stufen und Gegenstände. Versions-Fenster mit rotem Schließen-Knopf.";
