@@ -26,7 +26,10 @@
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 *, *::before, *::after { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; margin: 0; }
+html, body { height: 100%; margin: 0; overflow: hidden; overscroll-behavior: none; }
+/* Die Seite selbst steht fest – nur der Inhalt (#inhalt) scrollt. Sonst lässt sich auf dem Handy die ganze Seite samt Leiste verschieben. */
+body { position: fixed; inset: 0; width: 100%; }
+#untenNav, .schnellKnoepfe { touch-action: none; }
 body {
   font-family: var(--schrift);
   color: var(--text);
