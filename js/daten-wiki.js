@@ -113,6 +113,10 @@ const WIKI_REGELN = [
     <p>Ausgraben gibt es, sobald du <b>sechs Abenteuer-Pfade</b> geschafft hast. Es gibt ${GRABUNGEN.length} Ausgrabungsorte (ab Ausgraben-Stufe ${GRABUNGEN.map(o => o.stufe).join(", ")}).</p>
     <p>Jede Grabung bringt Krimskrams und Erfahrung – und mit Glück ein Fundstück: ${FUND_GROESSEN.map(g => `${g.name} (${(g.chance * 100).toLocaleString("de-DE")} %)`).join(", ")}. Die Grabe-Werkzeuge (${GRABE_WERKZEUGE.map(w => `${w.icon} ${w.name}`).join(", ")}) machen je eine Größe ${Math.round(WERKZEUG_GRAB.plusProStufe * 100)} % pro Stufe häufiger.</p>
     <p>Im <b>Museum</b> spendest du jedes Fundstück einmal. Eine volle Vitrine (alle 8 Funde eines Ortes) gibt einen Bonus für immer: ${GRABUNGEN.map(o => `${o.icon} ${o.vitrine.text}`).join(", ")}.</p>` },
+  { id: "freunde", icon: "🐾", titel: "Tier-Freunde und Futternapf", text: () => `
+    <p>Sobald der <b>Pusteblumen-Riese</b> eingeschlafen ist, beginnt die <b>Tierfreundschaft</b>. Du backst Leckerli aus Fisch (${LECKERLI.length} Sorten, ab Stufe ${STUFEN.join(", ")}).</p>
+    <p>Leg Leckerli in den <b>Futternapf</b> (👤 Ich → 🐾 Tiere). Dann ist dein Begleiter <b>aktiv</b>: Sein Bonus wirkt ${Math.round(FREUNDE.bonusBasis * 100)}–${Math.round((FREUNDE.bonusBasis + FREUNDE.bonusProSorte * 7) * 100)} % stärker, und im Kampf stupst er die Monster mit an. Alle ${FREUNDE.aktionenProLeckerli} Aktionen frisst er ein Leckerli – dafür gibt es Tierfreundschafts-Erfahrung.</p>
+    <p>Bessere Leckerli = mehr Hilfe. Je höher die Pflege-Stufe deines Begleiters, desto fester stupst er.</p>` },
   { id: "gluecksrad", icon: "🎁", titel: "Tägliches Glücksrad", text: () => `
     <p>Jeden Tag darfst du einmal am Glücksrad drehen – die Karte dafür ist oben auf der 🌟 Fertigkeiten-Seite. Jeder ${GLUECKSRAD.serieBonus}. Tag in Folge bringt ein <b>doppeltes</b> Geschenk.</p>
     <p>Mögliche Geschenke: ${GLUECKSRAD.felder.map(f => `${f.icon} ${f.name}`).join(", ")}. Die Geschenke wachsen mit deiner Gesamtstufe mit.</p>` },
@@ -164,6 +168,12 @@ const GUIDE_EINSCHUEBE = [
   { nach: "Schaffe den Spukgang", schritt: { id: "feuer:3", icon: "🌱", titel: "Dünge 5 Beete mit Asche",
     text: "Im 🌱 Garten gibt es den Knopf „Mit Asche düngen“. Gedüngte Beete wachsen schneller und bringen mehr Ernte.",
     ziel: 5, wert: () => spiel.statistik.geduengt || 0, hilfe: { fertigkeit: "garten", ziel: "#duengen" } } },
+  { nach: "Pusteblumen-Riese: 1× einschlafen lassen", schritt: { id: "freunde:1", icon: "🦴", titel: "Back 20 Leckerli",
+    text: "Bei 🐾 Tierfreundschaft backst du aus Stichlingen Leckerli für deinen Begleiter.",
+    ziel: 20, wert: () => gemacht("leckerli0"), hilfe: { fertigkeit: "freunde", ziel: '.taetigkeit[data-id="freunde-0"]' } } },
+  { nach: "Pusteblumen-Riese: 1× einschlafen lassen", schritt: { id: "freunde:2", icon: "🐾", titel: "Füll den Futternapf",
+    text: "Unter 👤 Ich → 🐾 Tiere steht der Futternapf. Mit Leckerli hilft dein Begleiter richtig mit!",
+    ziel: 1, wert: () => spiel.statistik.leckerli || 0, hilfe: { seite: "seiteIch", ichTab: "tiere", ziel: "#napfWaehlen" } } },
   { nach: "Schaffe den Glutpfad", schritt: { id: "jagd:1", icon: "📋", titel: "Hol dir einen Monster-Auftrag",
     text: "Nach deinem vierten Pfad hat die Wichtel-Jägerin Pia Aufträge für dich – im ⚔️ Abenteuer unter „📋 Aufträge“.",
     ziel: 1, wert: () => (spiel.jagd?.auftrag || spiel.statistik.jagdAuftraege ? 1 : 0), hilfe: { jagd: true } } },

@@ -124,6 +124,7 @@ function hindernis(t) {
   if (t.fertigkeit === "sterne" && !sterneFrei()) return "Schaffe zuerst einen Abenteuer-Pfad";
   if (t.fertigkeit === "feuer" && !feuerFrei()) return "Schaffe zuerst drei Abenteuer-Pfade";
   if (t.parcours && !turnenFrei()) return "Schaffe zuerst fünf Abenteuer-Pfade";
+  if (t.fertigkeit === "freunde" && !freundeFrei()) return "Bring zuerst den Pusteblumen-Riesen zum Einschlafen";
   if (t.grabung && !grabenFrei()) return "Schaffe zuerst sechs Abenteuer-Pfade";
   if (t.parcours && !gebauteStationen().length) return "Bau zuerst ein Hindernis auf dem Spielplatz";
   if (stufe(t.fertigkeit) < t.stufe) return `Erst ab Stufe ${t.stufe}`;
@@ -147,6 +148,7 @@ function fuehreAus(t) {
   if (t.kleidung) { gibTeil(t.kleidung); ereignisse.kleidung = t.kleidung; }
   if (t.parcours) spiel.muenzen += rundenMuenzen() * mal;
   if (t.grabung) ereignisse.fund = grabeFund(t);
+  if (t.fertigkeit !== "freunde") begleiterFrisst(null);
   if (t.fertigkeit === "sterne" && Math.random() < STERNE.goldChance && passtInBank("goldsplitter5")) {
     gibInBank("goldsplitter5", 1); zaehle("goldsplitter5", 1); ereignisse.goldsplitter = true;
   }

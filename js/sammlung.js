@@ -11,7 +11,7 @@ const hatHaustier = id => (spiel.haustiere || []).includes(id);
 // Summe der Boni aller Haustiere, die man hat
 function haustierBonus(art, fertigkeitId = null) {
   return HAUSTIERE.filter(h => hatHaustier(h.id) && h.bonus.art === art && (!fertigkeitId || !h.fertigkeit || h.fertigkeit === fertigkeitId))
-    .reduce((s, h) => s + h.bonus.wert * tierBonusFaktor(h.id), 0);
+    .reduce((s, h) => s + h.bonus.wert * tierBonusFaktor(h.id) * (1 + begleiterVerstaerkung(h.id)), 0);   // aktiver Begleiter: stärker
 }
 
 function gibHaustier(h) {

@@ -52,5 +52,9 @@ ikon("🪲", B.k(16, 26, 6, "#fff6b0", `opacity=".7"`) + B.e(16, 22, 6, 7, "#ffe
 ikon("🐼", B.k(8, 8, 4.4, "#3b3346") + B.k(24, 8, 4.4, "#3b3346") + B.k(16, 18, 11, "#fff") + B.e(11, 17, 3.6, 4.4, "#3b3346", `transform="rotate(-20 11 17)"`) + B.e(21, 17, 3.6, 4.4, "#3b3346", `transform="rotate(20 21 17)"`)
   + B.l("M9.5 17.5Q11 19 12.5 17.5M19.5 17.5Q21 19 22.5 17.5", "#fff", 1.2) + B.e(16, 22, 2, 1.4, "#3b3346") + B.backen(9, 23, 22));
 
+// Waschbär
+ikon("🦝", B.p("M6 12L7 3L13 8Z", "#9aa3b5") + B.p("M26 12L25 3L19 8Z", "#9aa3b5") + B.k(16, 17, 11, "#b8bfcc") + B.p("M6 15Q16 9 26 15Q24 21 19 19Q16 17 13 19Q8 21 6 15Z", "#3b3346")
+  + B.augen(11.5, 20.5, 16, 1.4) + B.e(16, 23, 4.5, 3.4, "#fff") + B.e(16, 21.5, 1.8, 1.3, "#3b3346") + B.mund(16, 24));
+
 // Alle Zeichnungen sind geladen -> ab jetzt wird jedes Emoji als Zeichnung angezeigt (auch schon im Ladebildschirm)
 starteIkonen();

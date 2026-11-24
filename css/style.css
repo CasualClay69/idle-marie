@@ -575,7 +575,7 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
 .aText b { font-size: 0.85rem; }
 .aText small { font-size: 0.7rem; color: var(--text-sanft); font-weight: 700; }
 .aText .balken { --farbe: var(--gold); }
-.altMarke { font-size: 0.65rem; font-weight: 700; color: #fff; background: var(--lila); border-radius: 999px; padding: 0 6px; }
+.altMarke { display: table; margin-top: 2px; font-size: 0.65rem; font-weight: 700; color: #fff; background: var(--lila); border-radius: 999px; padding: 0 6px; white-space: nowrap; }
 .aHaken { font-size: 1.2rem; color: #2f9e57; font-weight: 900; }
 .aufgabe .knopf.kaufen { padding: 7px 12px; font-size: 0.85rem; }
 .seasonMonster { display: flex; gap: 12px; align-items: center; }
@@ -1293,3 +1293,13 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .hText { flex: 1; min-width: 0; }
 .hPfeil { font-size: 1.3rem; color: var(--akzent); }
 .heuteMehr { text-align: center; color: var(--text-sanft); font-size: 0.72rem; }
+
+/* ----- Tier-Freunde: Futternapf ----- */
+.napfKarte { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; padding: 10px 12px; border-radius: 16px; background: linear-gradient(140deg, #fff1e0, #fff); border: 2px solid #ffd2a8; }
+.napfKarte.aktiv { background: linear-gradient(140deg, #e3f7e6, #fff); border-color: #4fc27a; }
+.napfTier { font-size: 2.4rem; flex: none; position: relative; }
+.napfKarte.aktiv .napfTier { animation: huepfen 1.6s ease-in-out infinite; }
+.napfText { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.napfText b { font-size: 0.92rem; }
+.napfText small { font-size: 0.74rem; color: var(--text-sanft); line-height: 1.35; }
+.napfText .an { color: #2f8a4a; font-weight: 800; }

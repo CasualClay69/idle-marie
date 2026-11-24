@@ -37,6 +37,7 @@
   <script src="js/daten-turnen.js" defer></script>
   <script src="js/daten-graben.js" defer></script>
   <script src="js/daten-gebiet7.js" defer></script>
+  <script src="js/daten-freunde.js" defer></script>
   <script src="js/symbole.js" defer></script>
   <script src="js/ikonen.js" defer></script>
   <script src="js/ikonen-natur.js" defer></script>
@@ -74,6 +75,7 @@
   <script src="js/jagd-anzeige.js" defer></script>
   <script src="js/turnen-anzeige.js" defer></script>
   <script src="js/graben-anzeige.js" defer></script>
+  <script src="js/freunde-anzeige.js" defer></script>
   <script src="js/heute.js" defer></script>
   <script src="js/rueckkehr.js" defer></script>
   <script src="js/daten-wiki.js" defer></script>
@@ -196,6 +198,7 @@
         </div>
         <div class="karte ichTeil" data-teil="tiere">
           <h3>🐾 Haustiere <small id="haustierZahl"></small></h3>
+          <div id="futternapf"></div>
           <div id="haustierListe" class="haustierListe"></div>
           <p class="hinweis">Tippe ein Haustier an, um es zu streicheln, zu füttern oder zum Begleiter zu machen. Je höher seine Stufe, desto mehr hilft es dir.</p>
         </div>
@@ -425,6 +428,14 @@
       <button type="button" class="zuX" id="grabenIntroX" aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6L18 18M18 6L6 18" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg></button>
       <div id="grabenIntroInhalt"></div>
       <div class="seKnoepfe"><button id="grabenIntroZurueck" class="knopf leise" type="button">‹ Zurück</button><button id="grabenIntroWeiter" class="knopf" type="button">Weiter ›</button></div>
+    </div>
+  </div>
+
+  <div id="freundeIntroOverlay" class="overlay" hidden>
+    <div class="fenster sternIntro">
+      <button type="button" class="zuX" id="freundeIntroX" aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6L18 18M18 6L6 18" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg></button>
+      <div id="freundeIntroInhalt"></div>
+      <div class="seKnoepfe"><button id="freundeIntroZurueck" class="knopf leise" type="button">‹ Zurück</button><button id="freundeIntroWeiter" class="knopf" type="button">Weiter ›</button></div>
     </div>
   </div>
 

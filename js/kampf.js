@@ -162,6 +162,14 @@ function kampfTick(jetzt, ergebnis) {
         gibKampfXp(schaden, ergebnis);
         logge(`💥 ${figurNameKurz()} trifft: ${schaden}`);
       } else logge(`💨 ${m.name} weicht aus`);
+      // Der aktive Begleiter stupst mit an (Tier-Freunde)
+      const stups = stupsAnteil();
+      if (stups && a.mhp > 0) {
+        const n = Math.min(a.mhp, Math.max(1, Math.round(w.maxSchlag * stups)));
+        a.mhp -= n;
+        logge(`🐾 ${begleiterTier().name} stupst mit: ${n}`);
+      }
+      begleiterFrisst(ergebnis);
       if (a.mhp <= 0) {
         besiegt(m, ergebnis);
         if (a.pfad) pfadWeiter(a, ergebnis);

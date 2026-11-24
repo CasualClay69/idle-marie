@@ -79,6 +79,7 @@ function wikiIndex() {
     if (g.heilt) dazu(nutz, id, "🍽️ Essen im Abenteuer und für Haustiere");
     if (g.platz) dazu(nutz, id, "⚔️ Anlegen im Abenteuer");
     if (g.trank) dazu(nutz, id, "🧪 Trinken in der Bank");
+    if (g.leckerli !== undefined) dazu(nutz, id, "🐾 Futternapf für deinen Begleiter");
     if (g.munition) dazu(nutz, id, g.munition === "pfeile" ? "🏹 Pfeile für den Bogen" : "🪄 Zauberperlen für den Zauberstab");
   }
   return (wikiIndex.fertig = { her, nutz });

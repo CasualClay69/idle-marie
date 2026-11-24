@@ -85,7 +85,7 @@ async function besucheAlles(titel) {
   ];
   for (const f of ev("FERTIGKEITEN")) fenster.push([`Übung ${f.id}`, `zeigeUebung("${f.id}")`]);
   for (const p of [...ev("PLAETZE").map(p => p.id), "essen", "pfeile", "perlen"]) fenster.push([`Platz ${p}`, `zeigePlatzWahl("${p}")`]);
-  for (const intro of ["Stern", "Dorf", "Feuer", "Jagd", "Turnen", "Graben"]) {
+  for (const intro of ["Stern", "Dorf", "Feuer", "Jagd", "Turnen", "Graben", "Freunde"]) {
     fenster.push([`Einführung ${intro}`, `zeige${intro}Einfuehrung()`]);
     for (let i = 1; i < 4; i++) fenster.push([`Einführung ${intro} Seite ${i + 1}`, () => d.getElementById(`${intro.toLowerCase()}IntroWeiter`).click()]);
   }
@@ -100,7 +100,8 @@ const ALLES = `
   spiel.pfade = {}; for (const p of PFADE) spiel.pfade[p.id] = 3;
   spiel.besiegt = {}; for (const id in MONSTER) if (id !== "season") spiel.besiegt[id] = 5;
   spiel.haustiere = HAUSTIERE.filter((h, i) => i % 2 === 0).map(h => h.id);
-  spiel.sternIntro = spiel.dorfIntro = spiel.feuerIntro = spiel.jagdIntro = spiel.turnenIntro = spiel.grabenIntro = true;
+  spiel.sternIntro = spiel.dorfIntro = spiel.feuerIntro = spiel.jagdIntro = spiel.turnenIntro = spiel.grabenIntro = spiel.freundeIntro = true;
+  spiel.begleiter = spiel.haustiere[0]; spiel.bank.leckerli2 = 500; spiel.napf = "leckerli2";
   spiel.einfuehrung = "fertig"; spiel.quest = 60;
   spiel.bankFaecherGekauft = 400;
   const ids = Object.keys(GEGENSTAENDE); ids.forEach((id, i) => { if (i % 2 === 0) spiel.bank[id] = 50; });
@@ -144,6 +145,9 @@ async function spieleDurch() {
     { alleFensterZu(); await schritt(`Gegenstand ${id}`, `spiel.bank["${id}"] = 3; zeigeGegenstand("${id}")`); }
   for (const h of ev("HAUSTIERE").slice(0, 40).filter((_, i) => i % 3 === 0))
     { alleFensterZu(); await schritt(`Tierfenster ${h.id}`, `if (!hatHaustier("${h.id}")) spiel.haustiere.push("${h.id}"); zeigeTierFenster("${h.id}")`); }
+  alleFensterZu();
+  await schritt("Begleiter hilft im Kampf", `spiel.begleiter = spiel.haustiere[0]; spiel.bank.leckerli2 = 500; spiel.napf = "leckerli2"; starteKampf("frechdachs"); verarbeite(tick(Date.now() + 300000)); ichTab = "tiere"; zeigeSeite("seiteIch")`);
+  await schritt("Futternapf wählen", `zeigeNapfWahl()`);
   alleFensterZu();
   await schritt("Erfolge + Guide prüfen", `pruefeErfolge(); pruefeGuide(); zeichneKompass(); spielFortschritt()`);
 }

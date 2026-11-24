@@ -34,6 +34,8 @@ function heuteListe() {
   // Haustiere streicheln
   const streicheln = (spiel.haustiere || []).filter(id => tierStufe(id) < PFLEGE.maxStufe && streichelnIn(id) === 0).length;
   if (streicheln) dazu("tiere", "💖", `${streicheln} Haustier${streicheln === 1 ? " möchte" : "e möchten"} gestreichelt werden`, geh({ seite: "seiteIch", ichTab: "tiere", ziel: ".haustierKarte:not(.fehlt)" }));
+  // Futternapf leer
+  if (freundeFrei() && begleiterTier() && !napfLeckerli()) dazu("napf", "🦴", `${begleiterTier().name} hat Hunger – füll den Futternapf`, geh({ seite: "seiteIch", ichTab: "tiere", ziel: "#napfWaehlen" }));
   // Freigeschaltete Systeme
   if (dorfFrei() && spiel.dorf && !dorfLagerLeer()) dazu("dorf", "🏘️", "Im Dorflager liegen Sachen für dich", geh({ fertigkeit: "dorf", ziel: "#dorfAbholen" }));
   if (feuerFrei() && !feuerBrennt()) dazu("feuer", "🔥", "Zünde ein großes Lagerfeuer an (mehr Erfahrung!)", geh({ fertigkeit: "feuer", ziel: ".feuerHolz:not([disabled])" }));

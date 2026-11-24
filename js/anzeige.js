@@ -115,14 +115,14 @@ function zeichneFertigkeiten() {
     }
     const xp = spiel.xp[f.id] || 0;
     const aktiv = spiel.aktiv && (spiel.aktiv.kampf ? f.id === aktiverStil() : taetigkeitNachId(spiel.aktiv.id).fertigkeit === f.id);
-    const zu = (f.id === "sterne" && !sterneFrei()) || (f.id === "dorf" && !dorfFrei()) || (f.id === "feuer" && !feuerFrei()) || (f.id === "turnen" && !turnenFrei()) || (f.id === "graben" && !grabenFrei()) || (f.id === "jagd" && !jagdFrei());
+    const zu = (f.id === "sterne" && !sterneFrei()) || (f.id === "dorf" && !dorfFrei()) || (f.id === "feuer" && !feuerFrei()) || (f.id === "turnen" && !turnenFrei()) || (f.id === "graben" && !grabenFrei()) || (f.id === "jagd" && !jagdFrei()) || (f.id === "freunde" && !freundeFrei());
     const karte = el("button", "fertigkeitKarte" + (aktiv ? " laeuft" : "") + (zu ? " zu" : ""));
     karte.type = "button";
     karte.style.setProperty("--farbe", f.farbe);
     karte.dataset.id = f.id;
     karte.innerHTML = `<span class="fIcon">${f.icon}</span>
       <span class="fName">${f.name}</span>
-      <span class="fStufe">${zu ? `🔒 nach dem ${{ dorf: 2, feuer: 3, jagd: 4, turnen: 5, graben: 6 }[f.id] || 1}. Pfad` : `Stufe <b>${stufeAusXp(xp)}</b> / ${SPIEL.maxStufe}`}</span>
+      <span class="fStufe">${zu ? (f.id === "freunde" ? "🔒 nach dem 1. Chef" : `🔒 nach dem ${{ dorf: 2, feuer: 3, jagd: 4, turnen: 5, graben: 6 }[f.id] || 1}. Pfad`) : `Stufe <b>${stufeAusXp(xp)}</b> / ${SPIEL.maxStufe}`}</span>
       <span class="balken"><div style="width:${(fortschrittInStufe(xp) * 100).toFixed(1)}%"></div></span>
       ${aktiv ? `<span class="laeuftMarke">▶</span>` : ""}
       ${f.id === "garten" && reifeBeete() ? `<span class="laeuftMarke reifMarke">${reifeBeete()}</span>` : ""}
@@ -130,7 +130,7 @@ function zeichneFertigkeiten() {
     karte.addEventListener("click", () => {
       ton.klick();
       if (f.art === "kampf") { if (f.id === "jagd") abenteuerTab = "jagd"; zeigeSeite("seiteAbenteuer"); return; }
-      if (zu) { melde(f.id === "jagd" ? "📋 Die Monster-Aufträge gibt es, wenn du vier Abenteuer-Pfade geschafft hast." : f.id === "graben" ? "🦴 Ausgraben gibt es, wenn du sechs Abenteuer-Pfade geschafft hast." : f.id === "turnen" ? "🤸 Der Abenteuer-Spielplatz öffnet sich, wenn du fünf Abenteuer-Pfade geschafft hast." : f.id === "feuer" ? "🔥 Das Lagerfeuer gibt es, wenn du drei Abenteuer-Pfade geschafft hast." : f.id === "dorf" ? "🏘️ Das Wichteldorf öffnet sich, wenn du zwei Abenteuer-Pfade geschafft hast." : "🔭 Die Sternenkunde öffnet sich, wenn du deinen ersten Abenteuer-Pfad geschafft hast."); return; }
+      if (zu) { melde(f.id === "freunde" ? "🐾 Die Tierfreundschaft beginnt, wenn der Pusteblumen-Riese eingeschlafen ist." : f.id === "jagd" ? "📋 Die Monster-Aufträge gibt es, wenn du vier Abenteuer-Pfade geschafft hast." : f.id === "graben" ? "🦴 Ausgraben gibt es, wenn du sechs Abenteuer-Pfade geschafft hast." : f.id === "turnen" ? "🤸 Der Abenteuer-Spielplatz öffnet sich, wenn du fünf Abenteuer-Pfade geschafft hast." : f.id === "feuer" ? "🔥 Das Lagerfeuer gibt es, wenn du drei Abenteuer-Pfade geschafft hast." : f.id === "dorf" ? "🏘️ Das Wichteldorf öffnet sich, wenn du zwei Abenteuer-Pfade geschafft hast." : "🔭 Die Sternenkunde öffnet sich, wenn du deinen ersten Abenteuer-Pfad geschafft hast."); return; }
       offeneFertigkeit = f.id; zeigeSeite("seiteFertigkeit");
     });
     raster.append(karte);
@@ -323,7 +323,7 @@ function zeichneIch() {
   for (const k of document.querySelectorAll("#seiteIch .ichTeil")) k.hidden = k.dataset.teil !== ichTab;
   if (ichTab === "figur") zeichneKleiderschrank();
   if (ichTab === "liste") { zeichneBestenliste(); ladeListe(); }
-  if (ichTab === "tiere") zeichneHaustiere();
+  if (ichTab === "tiere") { zeichneHaustiere(); zeichneFutternapf(); }
   if (ichTab === "erfolge") zeichneErfolge();
   zeichneFigurAuswahl($("figurAuswahlIch"), id => {
     ton.klick(); spiel.figur = id; speichern(); zeichneKopf(); zeichneAktivLeiste(); zeichneIch();
