@@ -1408,3 +1408,12 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .rkSachen { margin: 6px 0 0; }
 .rkSachen li { background: #fff7fb; padding: 4px 8px; }
 .rkGesamt { display: block; color: var(--akzent-dunkel); font-size: 0.82rem; margin: 2px 0 0 2px; }
+
+/* ----- Tiere, die gestreichelt werden möchten ----- */
+.haustierKarte.streichelbar { border-color: #ffc94d; box-shadow: 0 0 0 2px #ffe7a0, 0 0 16px rgba(255, 190, 60, 0.55); animation: streichelLeuchten 1.8s ease-in-out infinite; }
+.haustierKarte.streichelbar::before {
+  content: "Streicheln!"; position: absolute; top: -9px; left: -4px; z-index: 1; padding: 1px 8px; border-radius: 999px;
+  background: linear-gradient(90deg, #ffd54f, #ff9fd0); color: #7a2a5a; font-size: 0.65rem; font-weight: 900; border: 1.5px solid #fff;
+}
+@keyframes streichelLeuchten { 50% { box-shadow: 0 0 0 3px #ffe7a0, 0 0 24px rgba(255, 170, 40, 0.75); } }
+@media (prefers-reduced-motion: reduce) { .haustierKarte.streichelbar { animation: none; } }

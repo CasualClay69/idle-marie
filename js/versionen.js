@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.29.5", datum: "2026-11-24", neu: ["💖 Unter Ich → Tiere leuchten jetzt alle Haustiere, die gestreichelt werden möchten, und haben ein Schild „Streicheln!“."] },
   { v: "1.29.4", datum: "2026-11-24", neu: ["Das Fenster „Was ist neu?“ hat jetzt auch den roten Schließen-Knopf oben rechts."] },
   { v: "1.29.3", datum: "2026-11-24", neu: ["🌙 Willkommen zurück zeigt jetzt für jede Fertigkeit: von welcher Stufe auf welche Stufe du gekommen bist, wie viele EP – und darunter alle Gegenstände, die du dabei bekommen hast. Beute aus dem Abenteuer steht extra."] },
   { v: "1.29.2", datum: "2026-11-24", neu: ["Im Season-Pass verschwinden erledigte Tagesaufgaben – es stehen nur noch die offenen (und die zum Abholen) da."] },

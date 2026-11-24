@@ -33,7 +33,17 @@ function zeichneHaustiere() {
   ziel.innerHTML = HAUSTIERE.filter(h => !h.season).map(karte).join("")
     + `<h4 class="rasterTitel">🎟️ Season-Haustiere</h4>` + HAUSTIERE.filter(h => h.season).map(karte).join("");
   for (const b of ziel.querySelectorAll(".haustierKarte:not(.fehlt)")) b.addEventListener("click", () => { ton.klick(); zeigeTierFenster(b.dataset.id); });
+  aktualisiereStreichelMarken();
 
+}
+
+// Tiere, die man gerade streicheln darf, leuchten und bekommen ein Schild "Streicheln!"
+const darfGestreicheltWerden = id => hatHaustier(id) && tierStufe(id) < PFLEGE.maxStufe && streichelnIn(id) === 0;
+function aktualisiereStreichelMarken() {
+  for (const k of document.querySelectorAll("#haustierListe .haustierKarte:not(.fehlt)")) k.classList.toggle("streichelbar", darfGestreicheltWerden(k.dataset.id));
+}
+function richteTierMarkenEin() {
+  jedeSekunde(() => { if (aktuelleSeite === "seiteIch" && ichTab === "tiere") aktualisiereStreichelMarken(); }, 3);
 }
 
 // Kleine Herzen, die aus einem Element aufsteigen

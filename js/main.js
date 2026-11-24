@@ -259,6 +259,7 @@ function starteSpiel() {
   richteFreundeEin();
   richteKarteEin();
   richteFinaleEin();
+  richteTierMarkenEin();
   richteHeuteEin();
   richteWikiEin();
   holeOfflineNach();
