@@ -110,7 +110,7 @@ const WIKI_REGELN = [
     <p>Der Parcours hat ${PARCOURS.length} Stationen (ab Turnen-Stufe ${STUFEN.join(", ")}). An jeder baust du <b>eins von drei Hindernissen</b> – jedes gibt einen Dauer-Bonus. Umbauen geht jederzeit, kostet aber neu.</p>
     <p><b>Parcours laufen</b> ist eine Tätigkeit: Eine Runde dauert länger, je mehr Hindernisse stehen, und bringt dafür mehr Erfahrung und Münzen. Stehen alle Stationen, gibt es das <b>Siegerpodest</b>: ${PODEST.bonus.map(bonusText).join(" und ")}.</p>` },
   { id: "graben", icon: "🦴", titel: "Ausgraben und Museum", text: () => `
-    <p>Ausgraben gibt es, sobald du <b>alle sechs Abenteuer-Pfade</b> geschafft hast. Es gibt ${GRABUNGEN.length} Ausgrabungsorte (ab Ausgraben-Stufe ${GRABUNGEN.map(o => o.stufe).join(", ")}).</p>
+    <p>Ausgraben gibt es, sobald du <b>sechs Abenteuer-Pfade</b> geschafft hast. Es gibt ${GRABUNGEN.length} Ausgrabungsorte (ab Ausgraben-Stufe ${GRABUNGEN.map(o => o.stufe).join(", ")}).</p>
     <p>Jede Grabung bringt Krimskrams und Erfahrung – und mit Glück ein Fundstück: ${FUND_GROESSEN.map(g => `${g.name} (${(g.chance * 100).toLocaleString("de-DE")} %)`).join(", ")}. Die Grabe-Werkzeuge (${GRABE_WERKZEUGE.map(w => `${w.icon} ${w.name}`).join(", ")}) machen je eine Größe ${Math.round(WERKZEUG_GRAB.plusProStufe * 100)} % pro Stufe häufiger.</p>
     <p>Im <b>Museum</b> spendest du jedes Fundstück einmal. Eine volle Vitrine (alle 8 Funde eines Ortes) gibt einen Bonus für immer: ${GRABUNGEN.map(o => `${o.icon} ${o.vitrine.text}`).join(", ")}.</p>` },
   { id: "gluecksrad", icon: "🎁", titel: "Tägliches Glücksrad", text: () => `
@@ -188,6 +188,15 @@ const GUIDE_EINSCHUEBE = [
   { nach: "Schaffe den Sternenpfad", schritt: { id: "graben:3", icon: "🧺", titel: "Verbessere ein Grabe-Werkzeug",
     text: "Mit einem besseren Sieb findest du öfter kleine Fundstücke.",
     ziel: 1, wert: () => grabWerkzeugSumme(), hilfe: { fertigkeit: "graben", ziel: ".grabWerkzeug:not([disabled])" } } },
+  { nach: "Schaffe den Sternenpfad", schritt: { id: "traum:1", icon: "🌙", titel: "Kissenmonster: 30× einschlafen lassen",
+    text: "Hinter dem Wolkenreich liegt das 🌙 Traumschloss – das schwerste Gebiet. Tipp: Der Zauberstab ist stark gegen die Kissenmonster!",
+    ziel: 30, wert: () => spiel.besiegt?.kissenmonster || 0, hilfe: { seite: "seiteAbenteuer", abenteuerTab: "gebiete", ziel: '.monsterKarte[data-monster="kissenmonster"]' } } },
+  { nach: "Schaffe den Sternenpfad", schritt: { id: "traum:2", icon: "👑", titel: "Traumkönigin einschlafen lassen",
+    text: "Die Chefin des Traumschlosses. Nimm viel gutes Essen mit – und mit Glück wohnt danach Panda Schlafi bei dir!",
+    ziel: 1, wert: () => spiel.besiegt?.traumkoenigin || 0, hilfe: { seite: "seiteAbenteuer", abenteuerTab: "gebiete", ziel: '.monsterKarte[data-monster="traumkoenigin"]' } } },
+  { nach: "Schaffe den Sternenpfad", schritt: { id: "traum:3", icon: "🧰", titel: "Schaffe den Traumpfad",
+    text: "Der allerschwerste Pfad: Am Ende wartet der Mitternachtsdrache!",
+    ziel: 1, wert: () => spiel.pfade?.["p-traum"] || 0, hilfe: { seite: "seiteAbenteuer", abenteuerTab: "pfade", ziel: '.pfadKarte[data-pfad="p-traum"]' } } },
   { nach: "Schaffe den Pusteblumen-Pfad", schritt: { id: "sterne:1", icon: "🔭", titel: "Beobachte die Sterne",
     text: "Nach deinem ersten Pfad öffnet sich die 🔭 Sternenkunde. Beobachte das Eichhörnchen-Sternbild und sammle 30 Sternsplitter.",
     ziel: 30, wert: () => spiel.zaehler?.sternsplitter2 || 0, hilfe: { fertigkeit: "sterne" } } },

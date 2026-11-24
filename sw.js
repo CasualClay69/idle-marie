@@ -42,6 +42,7 @@ const DATEIEN = [
   "js/daten-jagd.js",
   "js/daten-turnen.js",
   "js/daten-graben.js",
+  "js/daten-gebiet7.js",
   "js/symbole.js",
   "js/ikonen.js",
   "js/ikonen-natur.js",

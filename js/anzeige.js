@@ -130,7 +130,7 @@ function zeichneFertigkeiten() {
     karte.addEventListener("click", () => {
       ton.klick();
       if (f.art === "kampf") { if (f.id === "jagd") abenteuerTab = "jagd"; zeigeSeite("seiteAbenteuer"); return; }
-      if (zu) { melde(f.id === "jagd" ? "📋 Die Monster-Aufträge gibt es, wenn du vier Abenteuer-Pfade geschafft hast." : f.id === "graben" ? "🦴 Ausgraben gibt es, wenn du alle sechs Abenteuer-Pfade geschafft hast." : f.id === "turnen" ? "🤸 Der Abenteuer-Spielplatz öffnet sich, wenn du fünf Abenteuer-Pfade geschafft hast." : f.id === "feuer" ? "🔥 Das Lagerfeuer gibt es, wenn du drei Abenteuer-Pfade geschafft hast." : f.id === "dorf" ? "🏘️ Das Wichteldorf öffnet sich, wenn du zwei Abenteuer-Pfade geschafft hast." : "🔭 Die Sternenkunde öffnet sich, wenn du deinen ersten Abenteuer-Pfad geschafft hast."); return; }
+      if (zu) { melde(f.id === "jagd" ? "📋 Die Monster-Aufträge gibt es, wenn du vier Abenteuer-Pfade geschafft hast." : f.id === "graben" ? "🦴 Ausgraben gibt es, wenn du sechs Abenteuer-Pfade geschafft hast." : f.id === "turnen" ? "🤸 Der Abenteuer-Spielplatz öffnet sich, wenn du fünf Abenteuer-Pfade geschafft hast." : f.id === "feuer" ? "🔥 Das Lagerfeuer gibt es, wenn du drei Abenteuer-Pfade geschafft hast." : f.id === "dorf" ? "🏘️ Das Wichteldorf öffnet sich, wenn du zwei Abenteuer-Pfade geschafft hast." : "🔭 Die Sternenkunde öffnet sich, wenn du deinen ersten Abenteuer-Pfad geschafft hast."); return; }
       offeneFertigkeit = f.id; zeigeSeite("seiteFertigkeit");
     });
     raster.append(karte);

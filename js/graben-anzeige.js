@@ -79,7 +79,7 @@ function zeichneGrabBereich(ziel) {
 // ===================== EINFÜHRUNG =====================
 const GRABEN_EINFUEHRUNG = [
   { titel: "🦴 Ausgraben", bild: () => `<div class="seBilder dGrossBilder"><span>🦕</span><span>🦴</span><span>🏺</span></div>`,
-    text: () => `Alle sechs Abenteuer-Pfade geschafft – du bist eine echte Abenteurerin! Auf deinen Reisen hast du überall alte Spuren gesehen. Jetzt wird gegraben: die neue Fertigkeit <b>Ausgraben</b>.` },
+    text: () => `Sechs Abenteuer-Pfade geschafft – du bist eine echte Abenteurerin! Auf deinen Reisen hast du überall alte Spuren gesehen. Jetzt wird gegraben: die neue Fertigkeit <b>Ausgraben</b>.` },
   { titel: "⛏️ Ausgrabungsorte", bild: () => `<div class="seBilder dGrossBilder">${GRABUNGEN.slice(0, 4).map(o => `<span>${o.icon}</span>`).join("")}</div>`,
     text: () => `Es gibt ${GRABUNGEN.length} Ausgrabungsorte – einen in jedem Gebiet. Tippe einen an, und ${figurName()} gräbt ganz von allein. Jede Grabung bringt Krimskrams und Erfahrung – und mit Glück ein <b>Fundstück</b>: klein, mittel, groß oder sogar riesig!` },
   { titel: "🧰 Grabe-Werkzeuge", bild: () => `<div class="seBilder dGrossBilder">${GRABE_WERKZEUGE.map(w => `<span>${w.icon}</span>`).join("")}</div>`,

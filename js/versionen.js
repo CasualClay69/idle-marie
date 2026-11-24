@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.23", datum: "2026-11-24", neu: ["🌙 Neues Gebiet: das Traumschloss (ab Kampfstufe 95) mit Kissenmonster, Traumfalter, Schlafmützen-Geist und der Chefin Traumkönigin.", "🧰 Der 7. Pfad: der Traumpfad – am Ende wartet der Mitternachtsdrache!", "🐼 Neues Haustier Panda Schlafi, neue Beute (Traumsand, Mondperle), Traum-Pokal, Traumpfad-Rahmen und neue Erfolge."] },
   { v: "1.22", datum: "2026-11-24", neu: ["📅 Neu: „Heute für dich“ oben auf der Fertigkeiten-Seite. Dort steht, was gerade ansteht – Glücksrad, reife Beete, Season-Aufgaben, Haustiere, Dorflager und mehr. Einfach antippen, dann geht es direkt hin!"] },
   { v: "1.21", datum: "2026-11-24", neu: ["⚖️ Balancing: Magie und Fernkampf brauchen jetzt gleich lang bis 99. Der Kompass empfiehlt beim Üben von Fernkampf und Magie passende Monster statt viel zu starker.", "🔺 Kampf-Dreieck: Sternenfuchs kämpft jetzt mit Nahkampf, Mondeule mit Fernkampf – so hat jede Waffe auch im Wolkenreich ein gutes Ziel.", "📋 Jagd steigt etwas langsamer, 🔭 Sternenkunde etwas schneller.", "🔋 Das Spiel schont den Akku: Hintergrund-Aufgaben laufen nur noch, wenn das Spiel offen ist."] },
   { v: "1.20.2", datum: "2026-11-24", neu: ["Behoben: Unter Ich → Tiere werden wieder alle Haustiere angezeigt – und deine Tätigkeit hört dabei nicht mehr auf.", "Bei allen neuen Haustieren steht jetzt, wo du sie findest."] },

@@ -48,5 +48,9 @@ ikon("🪵", B.r(3, 11, 24, 12, 6, "#c98a5a") + B.e(26, 17, 4, 6, "#f2c896") + B
 // Glühwürmchen
 ikon("🪲", B.k(16, 26, 6, "#fff6b0", `opacity=".7"`) + B.e(16, 22, 6, 7, "#ffe066") + B.e(10, 13, 5, 3.5, "#e8f6ff", `fill-opacity=".9" transform="rotate(-25 10 13)"`) + B.e(22, 13, 5, 3.5, "#e8f6ff", `fill-opacity=".9" transform="rotate(25 22 13)"`) + B.k(16, 12, 5, "#5b4a6e") + B.augen(14, 18, 12, 1) + B.l("M14 8L12 4M18 8L20 4", "#5b4a6e", 1.2));
 
+// Panda (schläfrig)
+ikon("🐼", B.k(8, 8, 4.4, "#3b3346") + B.k(24, 8, 4.4, "#3b3346") + B.k(16, 18, 11, "#fff") + B.e(11, 17, 3.6, 4.4, "#3b3346", `transform="rotate(-20 11 17)"`) + B.e(21, 17, 3.6, 4.4, "#3b3346", `transform="rotate(20 21 17)"`)
+  + B.l("M9.5 17.5Q11 19 12.5 17.5M19.5 17.5Q21 19 22.5 17.5", "#fff", 1.2) + B.e(16, 22, 2, 1.4, "#3b3346") + B.backen(9, 23, 22));
+
 // Alle Zeichnungen sind geladen -> ab jetzt wird jedes Emoji als Zeichnung angezeigt (auch schon im Ladebildschirm)
 starteIkonen();

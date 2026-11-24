@@ -124,7 +124,7 @@ function hindernis(t) {
   if (t.fertigkeit === "sterne" && !sterneFrei()) return "Schaffe zuerst einen Abenteuer-Pfad";
   if (t.fertigkeit === "feuer" && !feuerFrei()) return "Schaffe zuerst drei Abenteuer-Pfade";
   if (t.parcours && !turnenFrei()) return "Schaffe zuerst fünf Abenteuer-Pfade";
-  if (t.grabung && !grabenFrei()) return "Schaffe zuerst alle sechs Abenteuer-Pfade";
+  if (t.grabung && !grabenFrei()) return "Schaffe zuerst sechs Abenteuer-Pfade";
   if (t.parcours && !gebauteStationen().length) return "Bau zuerst ein Hindernis auf dem Spielplatz";
   if (stufe(t.fertigkeit) < t.stufe) return `Erst ab Stufe ${t.stufe}`;
   for (const [id, n] of Object.entries(t.braucht || {})) {
