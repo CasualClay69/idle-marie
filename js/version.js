@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.28";
-const APP_NEU = "Neu: Der Adventskalender! Ab dem 1. Dezember jeden Tag ein Türchen.";
+const APP_VERSION = "1.29";
+const APP_NEU = "Das große Finale: Der Regenbogen-Gipfel wartet – bring die Farben zurück!";

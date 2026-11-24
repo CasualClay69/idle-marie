@@ -282,6 +282,7 @@ function teilQuelle(t) {
   if (t.jagd) return "🏅 Jagd-Laden bei der Jägerin";
   if (t.karte) return "🌈 Auf der Regenbogen-Insel (Entdecker-Karte)";
   if (t.advent) return "🎄 Adventskalender im Dezember";
+  if (t.finale) return "🌈 Finale: Regenbogenpfad schaffen";
   if (t.questNr) return `📜 Belohnung für Auftrag ${t.questNr}`;
   if (t.quest) return `📜 Belohnung: ${t.quest}`;
   if (t.preis) return `${muenzeHtml("muenze klein")} ${zahl(t.preis)} Münzen im Kleiderschrank`;

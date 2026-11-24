@@ -159,6 +159,8 @@ async function spieleDurch() {
   await schritt("Insel erkunden", `karte(); spiel.karte.ziel = null; const t = taetigkeitNachId("karte-0"); for (let i = 0; i < 400; i++) fuehreAus(t); offeneFertigkeit = "karte"; zeigeSeite("seiteFertigkeit")`, 150);
   await schritt("Inselfeld wählen", () => { d.querySelector(".kFeld.waehlbar")?.dispatchEvent(new w.MouseEvent("click", { bubbles: true })); });
   await schritt("Ganze Insel offen", `for (const id in INSEL) { spiel.karte.offen[id] = true; entdecke(INSEL[id]); } zeigeSeite("seiteFertigkeiten"); offeneFertigkeit = "karte"; zeigeSeite("seiteFertigkeit")`, 150);
+  await schritt("Finale", `spiel.pfade["p-gipfel"] = 1; spiel.finale = null; pruefeFinale(); if (document.getElementById("finaleOverlay").hidden) zeigeFinale()`, 150);
+  alleFensterZu();
   await schritt("Sets speichern + wechseln", `ruesteAus("schwert3"); speichereSet(0); spiel.bank.bogen3 = 1; ruesteAus("bogen3"); speichereSet(1); legeSetAn(0); abenteuerTab = "ausruestung"; zeigeSeite("seiteAbenteuer")`);
   await schritt("Set-Schnellwahl", `legeSetAn(1); abenteuerTab = "kampf"; zeigeSeite("seiteAbenteuer")`);
   await schritt("Übungs-Topf füllen + stecken", `spiel.topf = spiel.topf || {}; spiel.topf.holz = TOPF.max * 0.6; steckeInTaetigkeit("holz-0", "holz"); zeigeUebung("holz")`);

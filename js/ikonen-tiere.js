@@ -61,5 +61,8 @@ ikon("🦩", B.l("M15 20L15 29M15 24L19 29", "#ff7eb6", 1.6) + B.e(17, 17, 7, 5,
 // Eisbär
 ikon("🐻", B.k(8, 9, 4, "#f2f6fb") + B.k(24, 9, 4, "#f2f6fb") + B.k(16, 18, 11, "#fff") + B.e(16, 22, 5, 3.8, "#eef3fa") + B.augen(11.5, 20.5, 16, 1.3) + B.e(16, 20.5, 2, 1.4, "#3b2240") + B.mund(16, 23) + B.backen(9, 23, 20));
 
+// Regenbogen-Taube
+ikon("🕊", B.p("M4 18Q10 10 18 14L28 6Q27 16 20 19Q16 24 8 22Z", "#fff") + B.l("M12 17Q16 14 20 16", "#ff9fc8", 1.4) + B.l("M14 20Q18 18 22 18", "#7ad7f0", 1.4) + B.p("M4 18L1 17L3 20Z", "#ffb347") + B.fk(7, 16.5, 0.9, "#3b2240"));
+
 // Alle Zeichnungen sind geladen -> ab jetzt wird jedes Emoji als Zeichnung angezeigt (auch schon im Ladebildschirm)
 starteIkonen();

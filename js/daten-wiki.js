@@ -127,6 +127,10 @@ const WIKI_REGELN = [
   { id: "advent", icon: "🎄", titel: "Adventskalender", text: () => `
     <p>Vom 1. bis 24. Dezember darfst du jeden Tag ein Türchen öffnen – die Karte dafür steht im Dezember oben auf der 🌟 Fertigkeiten-Seite. Verpasste Türchen kannst du bis Silvester nachholen.</p>
     <p>Hinter den Türchen: Münzen, Leckerli, Essen, Samen, Tränke, Edelsteine, Season-Punkte, ein 🦌 Rentier-Geweih, ein 🎄 Adventskranz-Rahmen – und hinter Türchen 24 Eisbär Flocke. Jedes Jahr gibt es den Kalender neu.</p>` },
+  { id: "finale", icon: "🌈", titel: "Das große Finale", text: () => `
+    <p>Das letzte Gebiet ist der <b>Regenbogen-Gipfel</b> (empfohlen ab Kampfstufe 99). Der Graue Nebel hat ihm alle Farben gestohlen. Besiege den Nebelkönig – dann öffnet sich der <b>Regenbogenpfad</b>.</p>
+    <p>Am Ende des Regenbogenpfads wartet der Große Nebeldrache. Wer ihn schafft, bringt die Farben zurück und hat das große Abenteuer beendet: Es gibt ein Finale mit 👑 Regenbogen-Krone und 🌈 Heldinnen-Rahmen.</p>
+    <p>Danach geht es weiter: Übungs-Töpfe, Haustiere, Museum, Insel – bis 100 %!</p>` },
   { id: "gluecksrad", icon: "🎁", titel: "Tägliches Glücksrad", text: () => `
     <p>Jeden Tag darfst du einmal am Glücksrad drehen – die Karte dafür ist oben auf der 🌟 Fertigkeiten-Seite. Jeder ${GLUECKSRAD.serieBonus}. Tag in Folge bringt ein <b>doppeltes</b> Geschenk.</p>
     <p>Mögliche Geschenke: ${GLUECKSRAD.felder.map(f => `${f.icon} ${f.name}`).join(", ")}. Die Geschenke wachsen mit deiner Gesamtstufe mit.</p>` },
@@ -232,6 +236,15 @@ const GUIDE_EINSCHUEBE = [
   { nach: "Schaffe den Sternenpfad", schritt: { id: "karte:2", icon: "✨", titel: "Finde eine Zauberquelle",
     text: "Irgendwo auf der Insel sprudeln Zauberquellen – jede gibt dir für immer mehr Erfahrung.",
     ziel: 1, wert: () => kartenAnzahl("quelle"), hilfe: { fertigkeit: "karte", ziel: ".kartenLauf" } } },
+  { nach: "Schaffe den Sternenpfad", schritt: { id: "gipfel:1", icon: "🌈", titel: "Grauer Steinwächter: 30× einschlafen lassen",
+    text: "Ganz oben, über den Wolken, liegt der Regenbogen-Gipfel. Der Graue Nebel hat ihm alle Farben gestohlen – hol sie zurück!",
+    ziel: 30, wert: () => spiel.besiegt?.steinwaechter || 0, hilfe: { seite: "seiteAbenteuer", abenteuerTab: "gebiete", ziel: '.monsterKarte[data-monster="steinwaechter"]' } } },
+  { nach: "Schaffe den Sternenpfad", schritt: { id: "gipfel:2", icon: "👑", titel: "Nebelkönig einschlafen lassen",
+    text: "Der Nebelkönig herrscht über den grauen Gipfel. Nimm dein bestes Essen und deine stärksten Tränke mit!",
+    ziel: 1, wert: () => spiel.besiegt?.nebelkoenig || 0, hilfe: { seite: "seiteAbenteuer", abenteuerTab: "gebiete", ziel: '.monsterKarte[data-monster="nebelkoenig"]' } } },
+  { nach: "Schaffe den Sternenpfad", schritt: { id: "gipfel:3", icon: "🌈", titel: "Das große Finale: der Regenbogenpfad",
+    text: "Der allerletzte Pfad. Am Ende wartet der Große Nebeldrache – schaffst du ihn, kehren die Farben zurück!",
+    ziel: 1, wert: () => spiel.pfade?.["p-gipfel"] || 0, hilfe: { seite: "seiteAbenteuer", abenteuerTab: "pfade", ziel: '.pfadKarte[data-pfad="p-gipfel"]' } } },
   { nach: "Schaffe den Pusteblumen-Pfad", schritt: { id: "sterne:1", icon: "🔭", titel: "Beobachte die Sterne",
     text: "Nach deinem ersten Pfad öffnet sich die 🔭 Sternenkunde. Beobachte das Eichhörnchen-Sternbild und sammle 30 Sternsplitter.",
     ziel: 30, wert: () => spiel.zaehler?.sternsplitter2 || 0, hilfe: { fertigkeit: "sterne" } } },

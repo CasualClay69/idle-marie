@@ -1380,3 +1380,17 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .tuerchen.heute { border-color: #ffd54f; }
 .tuerchen.offen { background: #fff; border: 3px dashed #e8c39e; opacity: 1; }
 .tuerchen.offen .tGeschenk { font-size: 1.6rem; }
+
+/* ----- Finale ----- */
+.finaleFenster { background: linear-gradient(160deg, #fff, #fff4fb); }
+.finaleBild { display: block; width: 100%; height: auto; border-radius: 18px; margin-bottom: 6px; }
+.fBogen { stroke-dasharray: 300; stroke-dashoffset: 300; animation: bogenMalen 1.4s ease-out forwards; }
+@keyframes bogenMalen { to { stroke-dashoffset: 0; } }
+.fStern { animation: funkeln 1.6s ease-in-out infinite alternate; transform-origin: center; }
+@keyframes funkeln { from { opacity: 0.4; } to { opacity: 1; } }
+.finaleFenster p { line-height: 1.5; }
+.finaleGeschenke { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 8px 0; }
+.finaleGeschenke span { padding: 4px 10px; border-radius: 999px; background: #fff3c4; font-weight: 800; font-size: 0.8rem; }
+.abspann { display: grid; gap: 2px; margin: 12px 0; padding: 12px; border-radius: 16px; background: linear-gradient(120deg, #ffe1ee, #e8f4ff); text-align: center; }
+.abspann b { font-size: 1.15rem; color: var(--akzent-dunkel); }
+.abspann small { color: var(--text-sanft); font-weight: 700; }

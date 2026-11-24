@@ -257,6 +257,7 @@ function starteSpiel() {
   richteGrabenEin();
   richteFreundeEin();
   richteKarteEin();
+  richteFinaleEin();
   richteHeuteEin();
   richteWikiEin();
   holeOfflineNach();
