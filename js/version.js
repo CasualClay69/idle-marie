@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.23";
-const APP_NEU = "Neu: Das Traumschloss – das 7. Gebiet mit dem allerschwersten Pfad!";
+const APP_VERSION = "1.23.1";
+const APP_NEU = "Der Fisch ist jetzt richtig herum gemalt.";
