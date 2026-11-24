@@ -119,5 +119,5 @@ function richteTurnenEin() {
   });
   $("turnenIntroZurueck").addEventListener("click", () => { ton.klick(); turnenSeiteNr = Math.max(0, turnenSeiteNr - 1); zeichneTurnenEinfuehrung(); });
   $("turnenIntroX").addEventListener("click", () => { ton.klick(); $("turnenIntroOverlay").hidden = true; });
-  setInterval(pruefeTurnenEinfuehrung, 1500);
+  jedeSekunde(pruefeTurnenEinfuehrung, 2);
 }

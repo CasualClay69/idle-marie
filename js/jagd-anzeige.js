@@ -126,5 +126,5 @@ function richteJagdEin() {
   });
   $("jagdIntroZurueck").addEventListener("click", () => { ton.klick(); jagdSeiteNr = Math.max(0, jagdSeiteNr - 1); zeichneJagdEinfuehrung(); });
   $("jagdIntroX").addEventListener("click", () => { ton.klick(); $("jagdIntroOverlay").hidden = true; });
-  setInterval(pruefeJagdEinfuehrung, 1500);
+  jedeSekunde(pruefeJagdEinfuehrung, 2);
 }

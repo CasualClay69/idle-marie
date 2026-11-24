@@ -20,6 +20,7 @@ const JAGD = {
   bonusAmEnde: 0.25,
   tauschenKostet: 10,
   haustierChance: 1 / 40,     // pro geschafftem Auftrag
+  xpJeHerz: 0.25,             // Jagd-Erfahrung = Herzen des Monsters × 0,25 (Balancing: 99 etwa am Ende der Kampf-Fertigkeiten)
 };
 const JAGD_JAEGERIN = "Pia";
 
@@ -88,7 +89,7 @@ function jagdNachSieg(m, ergebnis) {
   const muenzen = jagdMuenzenFuer(m, art);
   spiel.jagd.muenzen += muenzen;
   const vorher = stufe("jagd");
-  spiel.xp.jagd = (spiel.xp.jagd || 0) + Math.round(m.hp * trankFaktorXp());
+  spiel.xp.jagd = (spiel.xp.jagd || 0) + Math.round(m.hp * JAGD.xpJeHerz * trankFaktorXp());
   if (stufe("jagd") > vorher) ergebnis.ereignisse.push({ kampfStufe: "jagd", neueStufe: stufe("jagd") });
   if (a.stand >= a.ziel) {
     const bonus = Math.round(muenzen * a.ziel * JAGD.bonusAmEnde);

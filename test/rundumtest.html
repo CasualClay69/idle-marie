@@ -1,0 +1,171 @@
+<!doctype html>
+<!-- =====================================================
+  RUNDUM-TEST für Hannah Idle
+  Öffnet das Spiel zweimal (neuer Spielstand / alles freigeschaltet), klickt sich durch jede Seite,
+  jeden Reiter, jedes Fenster, jeden Wiki-Reiter und spielt Tätigkeiten, Kämpfe und Offline-Zeit durch.
+  Meldet: JavaScript-Fehler, console.error, "undefined"/"NaN" im sichtbaren Text, fehlende Zeichnungen.
+  Starten: test/rundumtest.sh (Edge headless) – oder diese Datei im Browser öffnen.
+  Das Ergebnis steht in <pre id="ergebnis">, der Titel wird "FERTIG OK" oder "FERTIG FEHLER".
+===================================================== -->
+<html lang="de"><head><meta charset="utf-8"><title>Rundum-Test läuft …</title>
+<style>body{margin:0;background:#222;color:#eee;font:13px monospace}iframe{width:390px;height:800px;border:0;background:#fff}pre{white-space:pre-wrap;padding:8px}</style></head>
+<body><pre id="ergebnis">läuft …</pre><div id="buehne"></div>
+<script>
+"use strict";
+const schlaf = ms => new Promise(r => setTimeout(r, ms));
+const fehler = [], schritte = [];
+let w, d, aktuellerSchritt = "Start";
+
+function lade() {
+  return new Promise(ok => {
+    $("buehne").innerHTML = "";
+    const fr = document.createElement("iframe");
+    fr.src = "../index.html";
+    fr.onload = () => {
+      w = fr.contentWindow; d = fr.contentDocument;
+      w.addEventListener("error", e => fehler.push(`[${aktuellerSchritt}] Fehler: ${e.message} (${(e.filename || "").split("/").pop()}:${e.lineno})`));
+      w.addEventListener("unhandledrejection", e => fehler.push(`[${aktuellerSchritt}] Promise: ${e.reason}`));
+      const alt = w.console.error.bind(w.console);
+      w.console.error = (...a) => { fehler.push(`[${aktuellerSchritt}] console.error: ${a.map(x => x?.stack || x).join(" ").slice(0, 300)}`); alt(...a); };
+      setTimeout(ok, 2800);   // Splash abwarten
+    };
+    $("buehne").append(fr);
+  });
+}
+function $(id) { return document.getElementById(id); }
+const ev = code => w.eval(code);
+const alleFensterZu = () => d.querySelectorAll(".overlay").forEach(o => (o.hidden = true));
+
+// Sichtbaren Text auf "undefined" / "NaN" prüfen
+function pruefeText() {
+  const bad = [];
+  const lauf = d.createTreeWalker(d.body, NodeFilter.SHOW_TEXT);
+  while (lauf.nextNode()) {
+    const n = lauf.currentNode, el = n.parentElement;
+    if (!el || /SCRIPT|STYLE/.test(el.nodeName) || el.closest("[hidden]")) continue;
+    if (/\bundefined\b|\bNaN\b|\[object Object\]/.test(n.nodeValue)) bad.push(n.nodeValue.trim().slice(0, 80));
+  }
+  // auch Attribute wie style="width:NaN%"
+  for (const e of d.querySelectorAll("[style*='NaN'],[style*='undefined']")) bad.push(`style: ${e.getAttribute("style").slice(0, 60)}`);
+  if (bad.length) fehler.push(`[${aktuellerSchritt}] Text: ${[...new Set(bad)].slice(0, 3).join(" | ")}`);
+}
+async function schritt(name, code, warte = 60) {
+  aktuellerSchritt = name;
+  try { if (typeof code === "function") code(); else ev(code); }
+  catch (e) { fehler.push(`[${name}] Absturz: ${e.message}\n      ${(e.stack || "").split("\n").slice(1, 3).join("\n      ")}`); }
+  await schlaf(warte);
+  pruefeText();
+  schritte.push(name);
+  $("ergebnis").textContent = `läuft … ${schritte.length} Schritte – ${name}\n\n${fehler.join("\n")}`;
+}
+
+// ---------- Alles, was man ansehen kann ----------
+async function besucheAlles(titel) {
+  await schritt(`${titel}: Fertigkeiten`, `zeigeSeite("seiteFertigkeiten")`);
+  for (const f of ev("FERTIGKEITEN").filter(f => f.art !== "kampf"))
+    await schritt(`${titel}: Fertigkeit ${f.id}`, `offeneFertigkeit="${f.id}";zeigeSeite("seiteFertigkeit")`);
+  await schritt(`${titel}: Season`, `zeigeSeite("seiteSeason")`);
+  for (const t of ev("ABENTEUER_REITER").map(r => r[0]))
+    await schritt(`${titel}: Abenteuer ${t}`, `abenteuerTab="${t}";zeigeSeite("seiteAbenteuer")`);
+  for (const t of ["alle", ...ev("BANK_ARTEN").map(a => a.id)])
+    await schritt(`${titel}: Bank ${t}`, `bankTab="${t}";zeigeSeite("seiteBank")`);
+  await schritt(`${titel}: Laden`, `zeigeSeite("seiteLaden")`);
+  for (const b of d.querySelectorAll("#ichReiter button"))
+    await schritt(`${titel}: Ich ${b.dataset.teil}`, `ichTab="${b.dataset.teil}";zeigeSeite("seiteIch")`);
+  for (const t of ev("WIKI_TABS").map(x => x.id))
+    await schritt(`${titel}: Wiki ${t}`, `wikiTab="${t}";document.getElementById("wikiSuche").value="";zeigeSeite("seiteWiki")`);
+  for (const a of ev("BANK_ARTEN").map(a => a.id))
+    await schritt(`${titel}: Wiki Gegenstände ${a}`, `wikiTab="gegenstaende";wikiArt="${a}";zeichneWiki()`);
+  for (const s of ["drache", "minze", "xy"])
+    await schritt(`${titel}: Wiki-Suche ${s}`, `document.getElementById("wikiSuche").value="${s}";zeichneWiki()`, 120);
+  // Fenster
+  const fenster = [
+    ["Übung", `zeigeUebung("alle")`], ["Fortschritt", `zeigeFortschritt()`], ["Glücksrad", `zeigeGluecksrad()`],
+    ["Auftrag", `zeigeQuestFenster()`], ["Versionen", `zeigeVersionen()`], ["Kompass", `kompass()`],
+  ];
+  for (const f of ev("FERTIGKEITEN")) fenster.push([`Übung ${f.id}`, `zeigeUebung("${f.id}")`]);
+  for (const p of [...ev("PLAETZE").map(p => p.id), "essen", "pfeile", "perlen"]) fenster.push([`Platz ${p}`, `zeigePlatzWahl("${p}")`]);
+  for (const intro of ["Stern", "Dorf", "Feuer", "Jagd", "Turnen", "Graben"]) {
+    fenster.push([`Einführung ${intro}`, `zeige${intro}Einfuehrung()`]);
+    for (let i = 1; i < 4; i++) fenster.push([`Einführung ${intro} Seite ${i + 1}`, () => d.getElementById(`${intro.toLowerCase()}IntroWeiter`).click()]);
+  }
+  for (const [name, code] of fenster) { alleFensterZu(); await schritt(`${titel}: Fenster ${name}`, code); }
+  alleFensterZu();
+}
+
+// ---------- Ein Spielstand, in dem alles freigeschaltet ist ----------
+const ALLES = `
+  spiel.figur = "hannah"; spiel.muenzen = 5e7;
+  for (const f of FERTIGKEITEN) spiel.xp[f.id] = XP_TABELLE[f.id === "graben" ? 80 : 70];
+  spiel.pfade = {}; for (const p of PFADE) spiel.pfade[p.id] = 3;
+  spiel.besiegt = {}; for (const id in MONSTER) if (id !== "season") spiel.besiegt[id] = 5;
+  spiel.haustiere = HAUSTIERE.filter((h, i) => i % 2 === 0).map(h => h.id);
+  spiel.sternIntro = spiel.dorfIntro = spiel.feuerIntro = spiel.jagdIntro = spiel.turnenIntro = spiel.grabenIntro = true;
+  spiel.einfuehrung = "fertig"; spiel.quest = 60;
+  spiel.bankFaecherGekauft = 400;
+  const ids = Object.keys(GEGENSTAENDE); ids.forEach((id, i) => { if (i % 2 === 0) spiel.bank[id] = 50; });
+  spiel.bank.pfeil3 = 500; spiel.bank.perle3 = 500; spiel.bank.bogen3 = 1; spiel.bank.stab3 = 1; spiel.bank.asche0 = 200;
+  for (let i = 0; i < 8; i++) { spiel.bank["holz" + i] = 300; spiel.bank["brett" + i] = 500; spiel.bank["barren" + i] = 500; spiel.bank["stein" + i] = 20; }
+  spiel.ausruestung = {}; ruesteAus("schwert3"); spiel.essen = "essen3";
+  spiel.garderobe = alleTeile().filter((t, i) => i % 3 === 0).map(t => t.id);
+  spiel.sterne = { hoernchen: { k: [3, 2, 1], g: 1 } };
+  dorf(); dorfBaue(DORF_GEBAEUDE[2]); dorfBaue(DORF_GEBAEUDE[3]);
+  jagd().muenzen = 400; neuerAuftrag("mittel");
+  parcours(); baueStation(0, 1); baueStation(1, 0);
+  zuendeAn(2);
+  spiel.museum = {}; spende(FUNDE[0].id); spiel.bank[FUNDE[1].id] = 2;
+  spiel.gluecksrad = { tag: null, serie: 6, besteSerie: 6, gedreht: 6 };
+  gartenStand(); pflanzeEin(0, "kraut0"); pflanzeEin(1, "gemuese0"); duengeAlle();
+  speichern();
+`;
+
+// ---------- Spielen: Tätigkeiten, Kampf, Offline, Kaufen ----------
+async function spieleDurch() {
+  await schritt("Spielen: jede Tätigkeit 3×", `for (const t of TAETIGKEITEN) { if (!hindernis(t)) for (let i = 0; i < 3; i++) fuehreAus(t); }`, 200);
+  for (const art of ["schwert3", "bogen3", "stab3"]) {
+    await schritt(`Kampf mit ${art}`, `spiel.bank["${art}"] = 1; ruesteAus("${art}"); spiel.munition = { pfeile: "pfeil3", perlen: "perle3" };
+      starteKampf("wuschelwolf"); verarbeite(tick(Date.now() + 120000)); abenteuerTab = "kampf"; zeigeSeite("seiteAbenteuer");`, 150);
+  }
+  await schritt("Pfad laufen", `starteKampf(null, "p-wiese"); verarbeite(tick(Date.now() + 600000)); zeigeSeite("seiteAbenteuer")`, 150);
+  await schritt("Jagd-Auftrag kämpfen", `if (!jagd().auftrag) neuerAuftrag("leicht"); starteKampf(jagd().auftrag.monster); verarbeite(tick(Date.now() + 900000)); abenteuerTab = "jagd"; zeigeSeite("seiteAbenteuer")`, 150);
+  await schritt("Offline 5 Stunden Holz", `starte(taetigkeitNachId("holz-3")); spiel.aktiv.start -= 5*3600000; spiel.letzteZeit = Date.now() - 5*3600000; spiel.schnappschuss && (spiel.schnappschuss.zeit -= 5*3600000); holeOfflineNach(); pruefeRueckkehr();`, 300);
+  alleFensterZu();
+  await schritt("Dorf-Tage nachholen + abholen", `spiel.dorf.letzterTick -= 8*3600000; pruefeDorf(); dorfAbholen(); offeneFertigkeit = "dorf"; zeigeSeite("seiteFertigkeit")`);
+  await schritt("Garten ernten", `for (const b of gartenStand().beete) if (b) b.start -= 99*3600000; gartenStand().beete.forEach((b, nr) => { if (b) ernte(nr); }); offeneFertigkeit = "garten"; zeigeSeite("seiteFertigkeit")`);
+  await schritt("Glücksrad drehen", `dreheRad(); zeigeSeite("seiteFertigkeiten")`);
+  await schritt("Stern kaufen", `kaufeStern(STERNBILDER[0], 0); offeneFertigkeit = "sterne"; zeigeSeite("seiteFertigkeit")`);
+  await schritt("Jagd-Laden", `jagdKaufe(JAGD_LADEN[0]); abenteuerTab = "jagd"; zeigeSeite("seiteAbenteuer")`);
+  await schritt("Parcours", `baueStation(2, 2); offeneFertigkeit = "turnen"; zeigeSeite("seiteFertigkeit")`);
+  await schritt("Museum spenden", `for (const f of FUNDE) { spiel.bank[f.id] = 1; } for (const f of FUNDE.slice(0, 8)) spende(f.id); offeneFertigkeit = "graben"; zeigeSeite("seiteFertigkeit")`);
+  await schritt("Bank sortieren + verkaufen", `sortiereBank(); verkaufe(Object.keys(spiel.bank)[3], 1); bankTab = "alle"; zeigeSeite("seiteBank")`);
+  for (const id of ["essen3", "trank2", "ring2", "bogen1", "pfeil1", "perle1", "sternsplitter2", "asche0", ev("FUNDE[5].id"), "samen-kraut0"])
+    { alleFensterZu(); await schritt(`Gegenstand ${id}`, `spiel.bank["${id}"] = 3; zeigeGegenstand("${id}")`); }
+  for (const h of ev("HAUSTIERE").slice(0, 40).filter((_, i) => i % 3 === 0))
+    { alleFensterZu(); await schritt(`Tierfenster ${h.id}`, `if (!hatHaustier("${h.id}")) spiel.haustiere.push("${h.id}"); zeigeTierFenster("${h.id}")`); }
+  alleFensterZu();
+  await schritt("Erfolge + Guide prüfen", `pruefeErfolge(); pruefeGuide(); zeichneKompass(); spielFortschritt()`);
+}
+
+(async () => {
+  try { localStorage.clear(); } catch (e) { /* egal */ }
+  // 1) Neuer Spielstand
+  await lade();
+  aktuellerSchritt = "Neu: Start";
+  ev(`document.getElementById("einfuehrung").hidden = true; spiel.figur = spiel.figur || "marie"`);
+  alleFensterZu();
+  await besucheAlles("Neu");
+  // 2) Alles freigeschaltet
+  try { localStorage.clear(); } catch (e) { /* egal */ }
+  await lade();
+  aktuellerSchritt = "Alles: Aufbau";
+  try { ev(ALLES); } catch (e) { fehler.push(`[Alles: Aufbau] ${e.message}`); }
+  alleFensterZu(); ev(`document.getElementById("einfuehrung").hidden = true`);
+  await besucheAlles("Alles");
+  await spieleDurch();
+  const warn = [...ev("ikonSvg").gemeldet];
+  if (warn.length) fehler.push(`Fehlende Zeichnungen: ${warn.join(" ")}`);
+  const ok = !fehler.length;
+  $("ergebnis").textContent = `${ok ? "✅ ALLES OK" : `❌ ${fehler.length} PROBLEM(E)`} – ${schritte.length} Schritte geprüft\n\n${fehler.join("\n")}`;
+  document.title = ok ? "FERTIG OK" : "FERTIG FEHLER";
+})();
+</script></body></html>

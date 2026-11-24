@@ -107,5 +107,5 @@ function richteSterneEin() {
   });
   $("sternIntroZurueck").addEventListener("click", () => { ton.klick(); sternSeite = Math.max(0, sternSeite - 1); zeichneSternEinfuehrung(); });
   $("sternIntroX").addEventListener("click", () => { ton.klick(); $("sternIntroOverlay").hidden = true; });
-  setInterval(pruefeSternEinfuehrung, 1500);
+  jedeSekunde(pruefeSternEinfuehrung, 2);
 }

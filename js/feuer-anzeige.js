@@ -97,7 +97,7 @@ function richteFeuerEin() {
   });
   $("feuerIntroZurueck").addEventListener("click", () => { ton.klick(); feuerSeiteNr = Math.max(0, feuerSeiteNr - 1); zeichneFeuerEinfuehrung(); });
   $("feuerIntroX").addEventListener("click", () => { ton.klick(); $("feuerIntroOverlay").hidden = true; });
-  setInterval(() => {
+  jedeSekunde(() => {
     pruefeFeuerEinfuehrung();
     // Restzeit und Leiste aktuell halten; wenn das Feuer ausgeht, Bescheid geben
     const text = feuerBrennt() ? feuerRestText() : "aus";
@@ -108,5 +108,5 @@ function richteFeuerEin() {
       if ($("feuerRest")) $("feuerRest").textContent = text;
       if (text === "aus" && aktuelleSeite === "seiteFertigkeit" && offeneFertigkeit === "feuer") zeichneFertigkeit();
     }
-  }, 1000);
+  });
 }

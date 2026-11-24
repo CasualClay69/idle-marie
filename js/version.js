@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.20.2";
-const APP_NEU = "Fehler behoben: Die Haustiere werden wieder angezeigt, und deine Tätigkeit läuft dabei weiter.";
+const APP_VERSION = "1.21";
+const APP_NEU = "Qualitäts-Update: besser ausbalanciert, schont den Akku – und Magie macht jetzt genauso viel Spaß wie Pfeil und Bogen.";

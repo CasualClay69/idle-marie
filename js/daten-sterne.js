@@ -59,7 +59,7 @@ STERNBILDER.forEach((sb, i) => {
   sb.stufe = STUFEN[i];
   sb.kraefte = (sb.kraefte || ["schneller", "doppelt", "xp"]).map(art => ({ art }));
   sb.punkte = sternbildPunkte(i);
-  const xp = Math.round(XP[i] * (STUFEN[i] >= 45 ? 0.7 : 1) * 1.1);
+  const xp = Math.round(XP[i] * (STUFEN[i] >= 45 ? 0.7 : 1) * 1.35);
   taetigkeit({ id: `sterne-${i}`, fertigkeit: "sterne", name: sb.name, stufe: sb.stufe, xp, zeit: ZEIT[i] + 1,
     gibt: { sternsplitter2: 1 }, sternbild: sb.id });
 });

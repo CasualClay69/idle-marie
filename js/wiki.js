@@ -75,8 +75,12 @@ function besteTaetigkeit(fid) {
   return [...liste].sort((a, b) => b.xp / b.zeit - a.xp / a.zeit)[0];
 }
 // Das stärkste normale Monster, das zur Kampfstufe passt
+// Das stärkste normale Monster, das zur Angriffs-Stufe der aktuellen Waffe passt
+// (Fernkampf/Magie: deren eigene Stufe – sonst würden einem frischen Zauberer viel zu starke Monster empfohlen)
 function besterGegner() {
-  const L = kampfStufe();
+  const art = kampfArt();
+  const angriff = art === "nah" ? kampfStufe() : Math.floor((2 * stufe(KAMPFARTEN[art].fertigkeit) + stufe("schutz") + stufe("herzen")) / 4);
+  const L = Math.min(kampfStufe(), angriff);
   const passend = GEBIETE.flatMap(g => g.monster).filter(m => !m.chef && m.stufe <= L);
   // stärkste passende zuerst, bei fast gleicher Stufe lieber eins, gegen das die Waffe stark ist
   const wert = m => m.stufe + dreieck(m) * 20;
@@ -203,11 +207,11 @@ function richteWikiEin() {
   $("wegBlase").addEventListener("click", () => { wikiTab = "guide"; $("wikiSuche").value = ""; oeffneWiki(); });
   richteWikiSeiteEin();
   zeichneKompass();
-  setInterval(() => {
+  jedeSekunde(() => {
     const neu = pruefeGuide().filter(s => !s.quest);   // für Aufträge gibt es schon eine eigene Meldung
     if (neu.length === 1) melde(`✅ Guide abgehakt: ${neu[0].titel}`);
     else if (neu.length > 1) melde(`✅ ${neu.length} Guide-Schritte abgehakt!`);
     zeichneKompass();
     if (neu.length) { if (aktuelleSeite === "seiteWiki" && wikiTab === "guide") zeichneWiki(); }
-  }, 2000);
+  }, 3);
 }

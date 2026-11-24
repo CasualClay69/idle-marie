@@ -131,10 +131,10 @@ function richteDorfEin() {
   $("dorfIntroZurueck").addEventListener("click", () => { ton.klick(); dorfSeiteNr = Math.max(0, dorfSeiteNr - 1); zeichneDorfEinfuehrung(); });
   $("dorfIntroX").addEventListener("click", () => { ton.klick(); $("dorfIntroOverlay").hidden = true; });
   pruefeDorf();
-  setInterval(() => {
+  jedeSekunde(() => {
     pruefeDorfEinfuehrung();
     if (pruefeDorf() && aktuelleSeite === "seiteFertigkeit" && offeneFertigkeit === "dorf") zeichneFertigkeit();
     const uhr = $("dorfUhr");
     if (uhr && spiel.dorf) uhr.textContent = dorfUhrText();
-  }, 1000);
+  });
 }

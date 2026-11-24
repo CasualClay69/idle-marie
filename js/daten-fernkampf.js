@@ -58,7 +58,7 @@ const MONSTER_KAMPFART = {
   ruestungsgeist: "nah", steinkobold: "fern", fledermausbande: "fern", burggespenst: "magie", gespensterkoenigin: "magie",
   flammenwichtel: "magie", lavakroete: "nah", glutechse: "fern", feuerdrache: "magie", lavagolem: "nah",
   schneegeist: "magie", frostyeti: "nah", eisigel: "fern", frostkoenig: "magie", eisdrache: "fern",
-  donnerwolke: "magie", sternenfuchs: "fern", mondeule: "magie", regenbogendrache: "nah", sternenwal: "magie",
+  donnerwolke: "magie", sternenfuchs: "nah", mondeule: "fern", regenbogendrache: "nah", sternenwal: "magie",
 };
 for (const m of Object.values(MONSTER)) m.kampfart = MONSTER_KAMPFART[m.id] || "nah";
 const monsterArt = m => m?.kampfart || "nah";

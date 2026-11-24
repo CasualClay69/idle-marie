@@ -114,5 +114,5 @@ function richteGrabenEin() {
   });
   $("grabenIntroZurueck").addEventListener("click", () => { ton.klick(); grabenSeiteNr = Math.max(0, grabenSeiteNr - 1); zeichneGrabenEinfuehrung(); });
   $("grabenIntroX").addEventListener("click", () => { ton.klick(); $("grabenIntroOverlay").hidden = true; });
-  setInterval(pruefeGrabenEinfuehrung, 1500);
+  jedeSekunde(pruefeGrabenEinfuehrung, 2);
 }

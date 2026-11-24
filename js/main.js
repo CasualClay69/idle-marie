@@ -64,6 +64,21 @@ function zeigeTruhe(t) {
   if (t.haustier) zeigeHaustierFund(t.haustier);
 }
 
+// ----- Sekunden-Aufgaben -----
+// Statt vieler eigener Zeitgeber: alles, was regelmäßig geprüft werden muss, hängt sich hier an.
+// Läuft im Sekundentakt der Spielschleife – also nur, solange das Spiel sichtbar ist (schont den Akku).
+// Was die Zeit braucht (Dorf, Garten, Lagerfeuer …), rechnet beim Zurückkommen selbst nach.
+const sekundenAufgaben = [];
+let sekundenZaehler = 0;
+function jedeSekunde(fn, alleSekunden = 1) { sekundenAufgaben.push({ fn, alle: alleSekunden }); }
+function sekundenTakt() {
+  sekundenZaehler++;
+  for (const a of sekundenAufgaben) {
+    if (sekundenZaehler % a.alle) continue;
+    try { a.fn(); } catch (e) { console.error("Fehler in einer Sekunden-Aufgabe:", e); }
+  }
+}
+
 // ----- Spielschleife -----
 let letzteGartenPruefung = 0;
 let letzterSeasonStand = "";
@@ -81,6 +96,7 @@ function schleifenSchritt() {
   verarbeite(tick());
   if (Date.now() - letzteGartenPruefung > 1000) {
     letzteGartenPruefung = Date.now();
+    sekundenTakt();
     pruefeQuest();
     if (!document.hidden) merkeSchnappschuss();
     if (pruefeSeasonWechsel()) { speichern(); melde(`🎟️ Neue Season-Aufgaben sind da!`); }
