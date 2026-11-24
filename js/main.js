@@ -253,6 +253,7 @@ function starteSpiel() {
   richteJagdEin();
   richteTurnenEin();
   richteGrabenEin();
+  richteHeuteEin();
   richteWikiEin();
   holeOfflineNach();
   ruheAus();

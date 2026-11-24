@@ -79,6 +79,7 @@ const DATEIEN = [
   "js/jagd-anzeige.js",
   "js/turnen-anzeige.js",
   "js/graben-anzeige.js",
+  "js/heute.js",
   "js/rueckkehr.js",
   "js/daten-wiki.js",
   "js/wiki.js",

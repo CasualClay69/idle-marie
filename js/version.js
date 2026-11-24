@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.21";
-const APP_NEU = "Qualitäts-Update: besser ausbalanciert, schont den Akku – und Magie macht jetzt genauso viel Spaß wie Pfeil und Bogen.";
+const APP_VERSION = "1.22";
+const APP_NEU = "Neu: „Heute für dich“ – auf einen Blick, was gerade ansteht.";

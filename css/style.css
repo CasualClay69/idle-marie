@@ -1277,3 +1277,19 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .vFach .mini { width: 100%; height: 100%; }
 .vBonus { font-size: 0.72rem; color: var(--text-sanft); font-weight: 700; }
 .vBonus.an { color: #2f8a4a; }
+
+/* ----- Heute für dich ----- */
+.heuteKarte { margin: 2px 0 8px; border-radius: 20px; background: rgba(255, 255, 255, 0.85); border: 2px solid #fff; box-shadow: var(--schatten); overflow: hidden; }
+.heuteKopf { width: 100%; display: flex; align-items: baseline; gap: 8px; padding: 10px 14px; border: 0; background: linear-gradient(120deg, #e8f4ff, #ffe9f3); text-align: left; }
+.heuteKopf b { font-size: 1rem; }
+.heuteKopf small { font-size: 0.75rem; color: var(--text-sanft); font-weight: 800; }
+.heutePfeil { margin-left: auto; font-size: 0.75rem; color: var(--text-sanft); }
+.heuteListe { display: grid; gap: 4px; padding: 6px 8px 8px; }
+.heuteZeile { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 14px; border: 2px solid #ffe1ee; background: #fff; text-align: left; font-weight: 800; font-size: 0.9rem; color: var(--text); }
+.heuteZeile:active { background: #fff3c4; }
+.heuteZeile.erledigt { border-color: transparent; background: #f3fbf4; color: var(--text-sanft); font-weight: 700; font-size: 0.8rem; padding: 5px 10px; }
+.hIcon { font-size: 1.35rem; flex: none; width: 28px; text-align: center; }
+.heuteZeile.erledigt .hIcon { font-size: 1rem; }
+.hText { flex: 1; min-width: 0; }
+.hPfeil { font-size: 1.3rem; color: var(--akzent); }
+.heuteMehr { text-align: center; color: var(--text-sanft); font-size: 0.72rem; }

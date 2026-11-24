@@ -103,6 +103,7 @@ function zeichneFertigkeiten() {
   zeichneSeasonBanner();
   zeichneGluecksKarte();
   zeichneFortschrittKnopf();
+  heuteText = ""; zeichneHeute();
   $("gesamtStufe").textContent = `Gesamtstufe ${gesamtStufe()}`;
   const raster = $("fertigkeitenRaster");
   raster.textContent = "";

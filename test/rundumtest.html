@@ -132,6 +132,8 @@ async function spieleDurch() {
   alleFensterZu();
   await schritt("Dorf-Tage nachholen + abholen", `spiel.dorf.letzterTick -= 8*3600000; pruefeDorf(); dorfAbholen(); offeneFertigkeit = "dorf"; zeigeSeite("seiteFertigkeit")`);
   await schritt("Garten ernten", `for (const b of gartenStand().beete) if (b) b.start -= 99*3600000; gartenStand().beete.forEach((b, nr) => { if (b) ernte(nr); }); offeneFertigkeit = "garten"; zeigeSeite("seiteFertigkeit")`);
+  for (let i = 0; i < 6; i++) { alleFensterZu(); await schritt(`Heute-Zeile ${i + 1}`, () => { ev(`zeigeSeite("seiteFertigkeiten")`); d.querySelectorAll(".heuteZeile:not(.erledigt)")[i]?.click(); }); }
+  alleFensterZu();
   await schritt("Glücksrad drehen", `dreheRad(); zeigeSeite("seiteFertigkeiten")`);
   await schritt("Stern kaufen", `kaufeStern(STERNBILDER[0], 0); offeneFertigkeit = "sterne"; zeigeSeite("seiteFertigkeit")`);
   await schritt("Jagd-Laden", `jagdKaufe(JAGD_LADEN[0]); abenteuerTab = "jagd"; zeigeSeite("seiteAbenteuer")`);
