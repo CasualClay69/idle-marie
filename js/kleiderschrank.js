@@ -64,6 +64,7 @@ function zeichneKleiderschrank() {
     else if (t.pfad) status = "🧰 Schatztruhe";
     else if (t.jagd) status = "🏅 Jagd-Laden";
     else if (t.karte) status = "🗺️ Entdecker-Insel";
+    else if (t.advent) status = "🎄 Adventskalender";
     else status = `🎟️ ${MONATSNAMEN[t.season - 1]}`;
     const vorschau = figurSvg(spiel.figur, { ...a, [kat.id]: t.id });
     return `<button type="button" class="schrankTeil${an ? " an" : ""}${hat ? "" : " zu"}${!hat && t.preis && spiel.muenzen < t.preis ? " teuer" : ""}" data-id="${t.id}">
@@ -82,6 +83,8 @@ function zeichneKleiderschrank() {
       melde(`🎉 ${t.name} gekauft und angezogen!`, "gross");
     } else if (t.pfad) {
       ton.nein(); melde(`🧰 ${t.name} liegt manchmal in der Schatztruhe vom ${t.pfad}`); return;
+    } else if (t.advent) {
+      ton.nein(); melde(`🎄 ${t.name} steckt in einem Türchen des Adventskalenders (im Dezember)`); return;
     } else if (t.karte) {
       ton.nein(); melde(`🗺️ ${t.name} wartet auf der geheimen Regenbogen-Insel der Entdecker-Karte`); return;
     } else if (t.jagd) {

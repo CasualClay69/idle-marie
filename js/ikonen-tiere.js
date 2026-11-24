@@ -56,5 +56,10 @@ ikon("🐼", B.k(8, 8, 4.4, "#3b3346") + B.k(24, 8, 4.4, "#3b3346") + B.k(16, 18
 ikon("🦝", B.p("M6 12L7 3L13 8Z", "#9aa3b5") + B.p("M26 12L25 3L19 8Z", "#9aa3b5") + B.k(16, 17, 11, "#b8bfcc") + B.p("M6 15Q16 9 26 15Q24 21 19 19Q16 17 13 19Q8 21 6 15Z", "#3b3346")
   + B.augen(11.5, 20.5, 16, 1.4) + B.e(16, 23, 4.5, 3.4, "#fff") + B.e(16, 21.5, 1.8, 1.3, "#3b3346") + B.mund(16, 24));
 
+// Flamingo
+ikon("🦩", B.l("M15 20L15 29M15 24L19 29", "#ff7eb6", 1.6) + B.e(17, 17, 7, 5, "#ff9fc8") + B.l("M20 15Q24 10 21 5Q19 2 16 4", "#ff9fc8", 3.2) + B.k(17, 5, 3, "#ff9fc8") + B.p("M14 4.5L10 6.5L14 7Z", "#3b3346") + B.fk(17.5, 4.3, 0.8, "#3b2240"));
+// Eisbär
+ikon("🐻", B.k(8, 9, 4, "#f2f6fb") + B.k(24, 9, 4, "#f2f6fb") + B.k(16, 18, 11, "#fff") + B.e(16, 22, 5, 3.8, "#eef3fa") + B.augen(11.5, 20.5, 16, 1.3) + B.e(16, 20.5, 2, 1.4, "#3b2240") + B.mund(16, 23) + B.backen(9, 23, 20));
+
 // Alle Zeichnungen sind geladen -> ab jetzt wird jedes Emoji als Zeichnung angezeigt (auch schon im Ladebildschirm)
 starteIkonen();

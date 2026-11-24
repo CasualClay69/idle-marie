@@ -16,6 +16,8 @@ function heuteListe() {
   // Auftrag fertig
   const q = aktuellerQuest();
   if (q && questStand(q).fertig) dazu("quest", "🎁", "Hol dir die Belohnung für deinen Auftrag ab", () => zeigeQuestFenster());
+  // Adventskalender
+  if (adventAktiv() && tuerchenErlaubt(Math.min(24, adventTag()))) dazu("advent", "🎄", `Öffne Türchen ${Math.min(24, adventTag())} im Adventskalender`, () => zeigeAdvent());
   // Glücksrad
   dazu("rad", "🎡", kannDrehen() ? "Dreh dein tägliches Glücksrad" : "Glücksrad gedreht", () => zeigeGluecksrad(), !kannDrehen());
   // Garten

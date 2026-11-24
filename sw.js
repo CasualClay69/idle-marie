@@ -76,6 +76,7 @@ const DATEIEN = [
   "js/einfuehrung.js",
   "js/season-anzeige.js",
   "js/gluecksrad.js",
+  "js/advent.js",
   "js/uebung-anzeige.js",
   "js/fortschritt.js",
   "js/sterne-anzeige.js",

@@ -104,6 +104,7 @@ function zeichneFertigkeiten() {
   zeichneGluecksKarte();
   zeichneFortschrittKnopf();
   heuteText = ""; zeichneHeute();
+  zeichneAdventKarte();
   $("gesamtStufe").textContent = `Gesamtstufe ${gesamtStufe()}`;
   const raster = $("fertigkeitenRaster");
   raster.textContent = "";

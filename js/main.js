@@ -246,6 +246,7 @@ function starteSpiel() {
   richteQuestsEin();
   richteBankEin();
   richteGluecksradEin();
+  richteAdventEin();
   richteUebungEin();
   richteFortschrittEin();
   richteSterneEin();

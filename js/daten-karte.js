@@ -60,7 +60,7 @@ const INSEL = (() => {
 })();
 
 RAHMEN.push({ id: "rk1", name: "Entdecker-Rahmen", icon: "🗺️", karte: true, svg: ring("#5fb8a8", 5, ringPunkte(8).map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="3.2" fill="${["#ffd54f", "#7ad7f0", "#8fcf6a", "#ff9fc8"][i % 4]}"/>`).join("")) });
-HAUSTIERE.push({ id: "schildi", name: "Schildi", tier: "Schildkröte", emoji: "🐢", karte: true, bonus: { art: "xp", wert: 0.03 }, text: "+3 % Erfahrung bei allem" });
+HAUSTIERE.push({ id: "fini", name: "Fini", tier: "Flamingo", emoji: "🦩", karte: true, bonus: { art: "xp", wert: 0.03 }, text: "+3 % Erfahrung bei allem" });
 {
   const alle = ERFOLGE.find(e => e.id === "haustiere-14");
   if (alle) alle.ziel = HAUSTIERE.filter(h => !h.season).length;
@@ -116,7 +116,7 @@ function entdecke(f) {
   else if (f.art === "aussicht") b.text = "Von hier oben siehst du weit – die Felder rundherum gehen jetzt schneller!";
   else if (f.art === "quelle") b.text = "+1 % Erfahrung bei allem – für immer!";
   else if (f.art === "schatzkarte") b.text = `Bessere Funde beim Ausgraben: ${GRABUNGEN.find(g => g.id === f.grabung).name}`;
-  else if (f.art === "nest") { const h = HAUSTIERE.find(x => x.id === "schildi"); if (gibHaustier(h)) b.haustier = h; b.text = "Ein kleines Tier wohnt jetzt bei dir!"; }
+  else if (f.art === "nest") { const h = HAUSTIERE.find(x => x.id === "fini"); if (gibHaustier(h)) b.haustier = h; b.text = "Ein kleines Tier wohnt jetzt bei dir!"; }
   else if (f.art === "geheim") { gibTeil("rk1"); b.text = `${geld(5000000)} und der Entdecker-Rahmen!`; }
   else b.text = geld(500 * (t + 1) ** 2);
   spiel.statistik.felder = (spiel.statistik.felder || 0) + 1;

@@ -1365,3 +1365,18 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .kOrte { display: flex; flex-wrap: wrap; gap: 6px; }
 .kOrt { padding: 3px 9px; border-radius: 999px; background: #eef2f8; font-size: 0.8rem; font-weight: 800; color: var(--text-sanft); }
 .kOrt.da { background: #e3f7e6; color: #2f8a4a; }
+
+/* ----- Adventskalender ----- */
+.adventKarte.bereit { background: linear-gradient(120deg, #ffe3e3, #e3f7e6 70%); border-color: #ff8a8a; }
+.adventFenster { background: linear-gradient(160deg, #fff4f4, #f1fbf3); }
+.adventGitter { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin: 8px 0; }
+.tuerchen { aspect-ratio: 1; display: grid; place-items: center; border-radius: 12px; border: 3px solid #fff; padding: 0;
+  background: linear-gradient(150deg, #e8453a, #b8322a); color: #fff; box-shadow: 0 3px 8px rgba(184, 50, 42, 0.3); }
+.tuerchen:nth-child(3n) { background: linear-gradient(150deg, #4f9a5a, #3a7a44); }
+.tuerchen:nth-child(4n) { background: linear-gradient(150deg, #e0b440, #b88a1a); }
+.tuerchen .tZahl { font-size: 1.3rem; font-weight: 900; text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2); }
+.tuerchen:disabled:not(.offen) { opacity: 0.5; filter: saturate(0.6); }
+.tuerchen.bereit { animation: pochen 1.6s ease-in-out infinite; cursor: pointer; }
+.tuerchen.heute { border-color: #ffd54f; }
+.tuerchen.offen { background: #fff; border: 3px dashed #e8c39e; opacity: 1; }
+.tuerchen.offen .tGeschenk { font-size: 1.6rem; }

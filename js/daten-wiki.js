@@ -124,6 +124,9 @@ const WIKI_REGELN = [
     <p>Die Entdecker-Karte gibt es, sobald du <b>sieben Abenteuer-Pfade</b> geschafft hast. Eine Insel aus ${alleFelder()} Feldern liegt im Nebel – nur dein Lager in der Mitte ist frei.</p>
     <p>Tipp ein Feld neben dem Entdeckten an und lass ${figurName()} es erkunden. Weiter außen dauert es länger und braucht eine höhere Entdecken-Stufe (${KARTE.stufeFuerAbstand.slice(1).join(", ")}). Hast du kein Feld gewählt, nimmt sie das nächste günstige.</p>
     <p>Zu finden: ${["schatz", "kristall", "aussicht", "quelle", "schatzkarte", "nest", "geheim"].map(a => `${FELD_ARTEN[a].icon} ${FELD_ARTEN[a].name}`).join(", ")}.</p>` },
+  { id: "advent", icon: "🎄", titel: "Adventskalender", text: () => `
+    <p>Vom 1. bis 24. Dezember darfst du jeden Tag ein Türchen öffnen – die Karte dafür steht im Dezember oben auf der 🌟 Fertigkeiten-Seite. Verpasste Türchen kannst du bis Silvester nachholen.</p>
+    <p>Hinter den Türchen: Münzen, Leckerli, Essen, Samen, Tränke, Edelsteine, Season-Punkte, ein 🦌 Rentier-Geweih, ein 🎄 Adventskranz-Rahmen – und hinter Türchen 24 Eisbär Flocke. Jedes Jahr gibt es den Kalender neu.</p>` },
   { id: "gluecksrad", icon: "🎁", titel: "Tägliches Glücksrad", text: () => `
     <p>Jeden Tag darfst du einmal am Glücksrad drehen – die Karte dafür ist oben auf der 🌟 Fertigkeiten-Seite. Jeder ${GLUECKSRAD.serieBonus}. Tag in Folge bringt ein <b>doppeltes</b> Geschenk.</p>
     <p>Mögliche Geschenke: ${GLUECKSRAD.felder.map(f => `${f.icon} ${f.name}`).join(", ")}. Die Geschenke wachsen mit deiner Gesamtstufe mit.</p>` },

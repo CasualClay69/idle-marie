@@ -242,6 +242,7 @@ function haustierQuelle(h) {
   if (h.start) return "📜 Belohnung für einen frühen Auftrag";
   if (h.jagd) return `📋 Am Ende eines Monster-Auftrags: 1 von ${Math.round(1 / JAGD.haustierChance)}`;
   if (h.karte) return "🗺️ Im Tiernest auf der Entdecker-Insel";
+  if (h.advent) return "🎄 Türchen 24 im Adventskalender";
   if (h.chef) return `💤 ${wName(MONSTER[h.chef].name)} (Chef): 1 von ${Math.round(1 / HAUSTIER_REGEL.chefChance)}`;
   if (h.truhe) return `🧰 Schatztruhen der Pfade: 1 von ${Math.round(1 / PFAD_REGEL.kikiChance)}`;
   if (h.fertigkeit === "garten") return `🌱 Beim Ernten: 1 von ${Math.round(1 / HAUSTIER_REGEL.gartenChance)}`;
@@ -280,6 +281,7 @@ function teilQuelle(t) {
   if (t.pfad) return `🧰 Schatztruhe: ${t.pfad} (${Math.round(PFAD_REGEL.rahmenChance * 100)} %)`;
   if (t.jagd) return "🏅 Jagd-Laden bei der Jägerin";
   if (t.karte) return "🌈 Auf der Regenbogen-Insel (Entdecker-Karte)";
+  if (t.advent) return "🎄 Adventskalender im Dezember";
   if (t.questNr) return `📜 Belohnung für Auftrag ${t.questNr}`;
   if (t.quest) return `📜 Belohnung: ${t.quest}`;
   if (t.preis) return `${muenzeHtml("muenze klein")} ${zahl(t.preis)} Münzen im Kleiderschrank`;
