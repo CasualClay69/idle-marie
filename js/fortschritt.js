@@ -11,7 +11,7 @@
 
 const ohneSeason = liste => liste.filter(x => !x.season);
 const FORTSCHRITT_BEREICHE = [
-  { id: "fertigkeiten", name: "Fertigkeiten auf 99", icon: "🌟", gewicht: 21,
+  { id: "fertigkeiten", name: "Fertigkeiten auf 99", icon: "🌟", gewicht: 18,
     stand: () => [FERTIGKEITEN.reduce((s, f) => s + Math.min(SPIEL.maxStufe, stufe(f.id)), 0), FERTIGKEITEN.length * SPIEL.maxStufe],
     hilfe: { seite: "seiteFertigkeiten" } },
   { id: "auftraege", name: "Aufträge", icon: "📜", gewicht: 8,
@@ -53,6 +53,9 @@ const FORTSCHRITT_BEREICHE = [
     stand: () => [spiel.parcours ? gebauteStationen().length + (spiel.parcours.podest ? 1 : 0) : 0, PARCOURS.length + 1], hilfe: { fertigkeit: "turnen" } },
   { id: "museum", name: "Museum (alle Funde)", icon: "🏛️", gewicht: 3,
     stand: () => [spiel.museum ? museumAnzahl() : 0, FUNDE.length], hilfe: { fertigkeit: "graben" } },
+  { id: "topf", name: "Übungs-Töpfe (je 95 %)", icon: "🫙", gewicht: 3,
+    stand: () => { const t = topfFertigkeiten(); return [Math.round(t.reduce((s, f) => s + Math.min(1, topfAnteil(f) / 0.95), 0) * 100), t.length * 100]; },
+    hilfe: { seite: "seiteFertigkeiten" } },
   { id: "beete", name: "Garten-Beete", icon: "🟫", gewicht: 3,
     stand: () => [gartenStand().beete.length, GARTEN.startBeete + GARTEN.beetPreise.length + 3],
     hilfe: { fertigkeit: "garten", ziel: "#beetKaufen" } },

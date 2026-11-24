@@ -157,8 +157,10 @@ function zeichneFertigkeit() {
       <div class="fStufe">Stufe <b>${l}</b> / ${SPIEL.maxStufe}</div>
       <div class="balken dick"><div style="width:${(fortschrittInStufe(xp) * 100).toFixed(1)}%"></div></div>
       <small>${zahl(xp)} / ${zahl(naechste)} EP${werkzeugText ? ` · ${werkzeugText}` : ""}</small>
+      ${topfFertigkeiten().includes(f.id) ? `<button type="button" class="topfMini" id="topfMini">🫙 Übungs-Topf ${Math.floor(topfAnteil(f.id) * 100)} %</button>` : ""}
     </div>`;
 
+  kopf.querySelector("#topfMini")?.addEventListener("click", () => { ton.klick(); zeigeUebung(f.id); });
   const raster = $("taetigkeitenRaster");
   raster.textContent = "";
   raster.classList.toggle("garten", f.id === "garten");

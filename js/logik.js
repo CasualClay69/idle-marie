@@ -78,14 +78,14 @@ function dauer(t) {
   if (f.werkzeug) faktor -= WERKZEUG_BONUS * (spiel.werkzeuge[f.werkzeug] || 0);
   if (uebungStufe(t.id) >= SPIEL.maxStufe) faktor -= SPIEL.meisterSchneller;
   faktor -= trankSchneller(t);
-  faktor -= sternBonus("schneller", t.fertigkeit);
+  faktor -= sternBonus("schneller", t.fertigkeit) + topfBonus(t.fertigkeit, "schneller");
   if (f.art === "machen") faktor -= haustierBonus("schneller", t.fertigkeit);
   if (f.art === "sammeln") faktor -= baumhausBonus("sammeln") + schmuckBonus("sammeln");
   if (f.art === "machen") faktor -= baumhausBonus("machen") + schmuckBonus("machen");
   return Math.max(0.5, t.zeit * faktor);
 }
 function doppeltChance(t) {
-  return Math.floor(uebungStufe(t.id) / 10) * SPIEL.uebungDoppeltProZehn + trankDoppelt(t) + haustierBonus("doppelt", t.fertigkeit) + baumhausBonus("doppelt") + schmuckBonus("doppelt") + sternBonus("doppelt", t.fertigkeit);
+  return Math.floor(uebungStufe(t.id) / 10) * SPIEL.uebungDoppeltProZehn + trankDoppelt(t) + haustierBonus("doppelt", t.fertigkeit) + baumhausBonus("doppelt") + schmuckBonus("doppelt") + sternBonus("doppelt", t.fertigkeit) + topfBonus(t.fertigkeit, "doppelt");
 }
 
 // ----- Bank -----
@@ -156,10 +156,10 @@ function fuehreAus(t) {
     const stein = `stein${t.id.replace(/\D/g, "")}`;
     if (passtInBank(stein)) { gibInBank(stein, 1); zaehle(stein, 1); ereignisse.edelstein = stein; }
   }
-  const xp = Math.round(t.xp * (trankFaktorXp() + sternBonus("xp", t.fertigkeit)));
+  const xp = Math.round(t.xp * (trankFaktorXp() + sternBonus("xp", t.fertigkeit) + topfBonus(t.fertigkeit, "xp")));
   ereignisse.xp = xp;
   spiel.xp[t.fertigkeit] = (spiel.xp[t.fertigkeit] || 0) + xp;
-  spiel.uebung[t.id] = (spiel.uebung[t.id] || 0) + xp;
+  uebungGeben(t.id, t.fertigkeit, xp);   // füllt auch den Übungs-Topf
   spiel.statistik.aktionen++;
   zaehleAktion(t.fertigkeit);
   trankNachTaetigkeit(t);

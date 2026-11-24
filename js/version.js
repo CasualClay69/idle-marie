@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.25";
-const APP_NEU = "Neu: Jeden Monat ein Fest im Wichteldorf!";
+const APP_VERSION = "1.26";
+const APP_NEU = "Neu: Übungs-Töpfe für jede Fertigkeit und Ausrüstungs-Sets zum schnellen Wechseln.";

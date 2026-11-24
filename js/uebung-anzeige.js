@@ -44,7 +44,18 @@ function uebungZeile(u) {
     <div class="ueText"><b>${wName(u.name)}</b>
       <span class="ueStufe">⭐ ${l}<span class="balken duenn"><div style="width:${meister ? 100 : (fortschrittInStufe(xp) * 100).toFixed(1)}%"></div></span></span>
       ${bringt.length ? `<span class="ueBringt">${bringt.join("")}</span>` : ""}
-      <small>${ziel}</small></div></div>`;
+      <small>${ziel}</small></div>
+    ${offen && !meister && steckKosten(u.id) && topfVerfuegbar(u.fertigkeit) >= steckKosten(u.id) ? `<button type="button" class="knopf kaufen topfStecken" data-id="${u.id}" data-f="${u.fertigkeit}" title="Erfahrung aus dem Topf hineinstecken">🫙 +1 ⭐</button>` : ""}</div>`;
+}
+
+// Der Übungs-Topf einer Fertigkeit (oben im Übungs-Fenster)
+function topfHtml(fid) {
+  const a = topfAnteil(fid);
+  const marken = TOPF.marken.map(m => `<i class="topfMarke${a >= m.p ? " an" : ""}" style="left:${m.p * 100}%"></i>`).join("");
+  return `<div class="topfKarte"><b>🫙 Übungs-Topf: ${wName(fertigkeit(fid).name)} <small>${(a * 100).toLocaleString("de-DE", { maximumFractionDigits: 1 })} %</small></b>
+    <div class="topfBalken"><div style="width:${(a * 100).toFixed(1)}%"></div>${marken}</div>
+    <div class="topfListe">${TOPF.marken.map(m => `<span class="${a >= m.p ? "an" : ""}">${a >= m.p ? "✅" : "🔒"} ${Math.round(m.p * 100)} %: ${m.text}</span>`).join("")}</div>
+    <small>Ein Viertel jeder Übung fließt in den Topf. Zum Hineinstecken frei: <b>${zahl(topfVerfuegbar(fid))} EP</b> (unter eine erreichte Marke fällt der Topf nie).</small></div>`;
 }
 
 function zeichneUebung() {
@@ -71,7 +82,12 @@ function zeichneUebung() {
       <button type="button" data-filter="alle" class="${uebungFilter === "alle" ? "aktiv" : ""}">⭐ Geübt</button>
       ${fertigkeiten.map(f => `<button type="button" data-filter="${f.id}" class="${uebungFilter === f.id ? "aktiv" : ""}">${f.icon} ${wName(f.name)}</button>`).join("")}
     </div>
+    ${uebungFilter === "alle" ? `<div class="topfChips">${topfFertigkeiten().filter(f => topfStand(f) > 0).map(f => `<button type="button" data-filter="${f}">${fertigkeit(f).icon} ${Math.floor(topfAnteil(f) * 100)} %</button>`).join("")}</div>` : topfHtml(uebungFilter)}
     <div class="ueListe">${zeigen.length ? zeigen.map(uebungZeile).join("") : `<p class="hinweis">Du hast noch nichts geübt. Fang einfach mit einer Tätigkeit an!</p>`}</div>`;
+  for (const b of $("uebungInhalt").querySelectorAll(".topfStecken")) b.addEventListener("click", () => {
+    if (!steckeInTaetigkeit(b.dataset.id, b.dataset.f)) { ton.nein(); return; }
+    ton.stufe(); herzchen(b); melde("🫙 +1 ⭐ Übung aus dem Topf!"); speichern(); zeichneUebung();
+  });
   for (const b of $("uebungInhalt").querySelectorAll("[data-filter]")) b.addEventListener("click", () => {
     ton.klick(); uebungFilter = b.dataset.filter; zeichneUebung();
   });

@@ -31,6 +31,7 @@ const WIKI_REGELN = [
     <p>Jede einzelne Tätigkeit hat ihre eigene <b>Übungs-Stufe ⭐</b> (bis 99). Je öfter du sie machst, desto besser wirst du darin.</p>
     <p>Alle 10 Übungs-Stufen gibt es ${Math.round(SPIEL.uebungDoppeltProZehn * 100)} % mehr Chance auf <b>doppelte Ausbeute</b>. Bei ⭐ 99 bist du Meister und ${Math.round(SPIEL.meisterSchneller * 100)} % schneller.</p>
     <p>Doppelte Ausbeute gibt es außerdem durch Haustiere, Tränke, Schmuck (Smaragd) und das Regal im Baumhaus.</p>
+    <p><b>🫙 Übungs-Topf:</b> Jede Fertigkeit hat einen Topf, in den ${Math.round(TOPF.anteil * 100)} % jeder Übungs-Erfahrung fließt. Boni ab ${TOPF.marken.map(m => `${Math.round(m.p * 100)} % (${m.text})`).join(", ")}. Was über der letzten erreichten Marke liegt, kannst du in einzelne Tätigkeiten stecken.</p>
     <p>Deine Übung bei allem siehst du im Übungs-Fenster: unten auf jeder Fertigkeits-Seite oder unter 👤 Ich → 📊 Statistik.</p>` },
   { id: "offline", icon: "🌙", titel: "Wenn das Spiel zu ist", text: () => `
     <p>Deine Figur arbeitet weiter, auch wenn das Spiel zu ist – bis zu ${SPIEL.offlineMaxStunden} Stunden. Mit dem 🛏️ Bett im Baumhaus wird diese Zeit länger.</p>
@@ -60,7 +61,8 @@ const WIKI_REGELN = [
     <p>Fernkampf und Magie sind je <b>eine</b> Fertigkeit für Treffen und Schlag. Schutz und Herzen helfen bei jeder Kampfart.</p>` },
   { id: "ausruestung", icon: "🛡️", titel: "Ausrüstung", text: () => `
     <p>Schwert, Helm, Schild und Rüstung schmiedest du beim 🔨 Schmieden aus Barren. Zum Anlegen brauchst du Mut (Schwert) oder Schutz (Rest) auf der Stufe des Materials.</p>
-    <p>Dazu kommen 💍 Ring und 📿 Kette vom Goldschmieden – jeder Edelstein hat eine andere Kraft.</p>` },
+    <p>Dazu kommen 💍 Ring und 📿 Kette vom Goldschmieden – jeder Edelstein hat eine andere Kraft.</p>
+    <p><b>🎒 Ausrüstungs-Sets:</b> Im Reiter Ausrüstung speicherst du bis zu ${SET_ANZAHL} Ausrüstungen (mit Munition und Essen) und legst sie mit einem Tipp wieder an – auch über die Schnellwahl im Kampf-Reiter.</p>` },
   { id: "traenke", icon: "🧪", titel: "Tränke", text: () => `
     <p>Tränke braust du aus einem Kraut aus dem Garten und einer Beute aus dem Abenteuer. Trinken kannst du sie in der Bank.</p>
     <p>Ein Trank wirkt eine bestimmte Anzahl Male (Ladungen). Oben siehst du, welche Tränke gerade wirken.</p>` },
@@ -211,6 +213,12 @@ const GUIDE_EINSCHUEBE = [
   { nach: "Schaffe den Sternenpfad", schritt: { id: "traum:3", icon: "🧰", titel: "Schaffe den Traumpfad",
     text: "Der allerschwerste Pfad: Am Ende wartet der Mitternachtsdrache!",
     ziel: 1, wert: () => spiel.pfade?.["p-traum"] || 0, hilfe: { seite: "seiteAbenteuer", abenteuerTab: "pfade", ziel: '.pfadKarte[data-pfad="p-traum"]' } } },
+  { nach: "Erreiche Gesamtstufe 100", schritt: { id: "topf:1", icon: "🫙", titel: "Ein Übungs-Topf auf 10 %",
+    text: "Jede Übung füllt den Übungs-Topf der Fertigkeit. Ab 10 % steigt die Übung dort schneller! Du siehst den Topf oben auf jeder Fertigkeits-Seite.",
+    ziel: 1, wert: () => topfFertigkeiten().filter(f => topfAnteil(f) >= 0.1).length, hilfe: { seite: "seiteFertigkeiten" } } },
+  { nach: "Trink einen Trank", schritt: { id: "sets:1", icon: "🎒", titel: "Speichere ein Ausrüstungs-Set",
+    text: "Im ⚔️ Abenteuer unter 🎒 Ausrüstung kannst du deine Ausrüstung in einem Set speichern – so wechselst du später mit einem Tipp zwischen Schwert und Bogen.",
+    ziel: 1, wert: () => (spiel.sets || []).filter(Boolean).length, hilfe: { seite: "seiteAbenteuer", abenteuerTab: "ausruestung", ziel: ".setSpeichern" } } },
   { nach: "Schaffe den Pusteblumen-Pfad", schritt: { id: "sterne:1", icon: "🔭", titel: "Beobachte die Sterne",
     text: "Nach deinem ersten Pfad öffnet sich die 🔭 Sternenkunde. Beobachte das Eichhörnchen-Sternbild und sammle 30 Sternsplitter.",
     ziel: 30, wert: () => spiel.zaehler?.sternsplitter2 || 0, hilfe: { fertigkeit: "sterne" } } },
@@ -294,6 +302,9 @@ function guideVervollstaendigen() {
   schritt({ id: "museum:alle", kapitel: K4, icon: "🏛️", titel: "Das ganze Museum",
     text: "Spende jedes Fundstück ans Museum. Die riesigen Funde sind ganz selten – die Schaufel hilft!",
     ziel: FUNDE.length, wert: () => (spiel.museum ? museumAnzahl() : 0), hilfe: { fertigkeit: "graben", ziel: ".spenden, #alleSpenden" } });
+  schritt({ id: "topf:alle", kapitel: K4, icon: "🫙", titel: "Alle Übungs-Töpfe auf 95 %",
+    text: "Fülle den Übungs-Topf jeder Fertigkeit bis zur letzten Marke.",
+    ziel: topfFertigkeiten().length, wert: () => topfFertigkeiten().filter(f => topfAnteil(f) >= 0.95).length, hilfe: { seite: "seiteFertigkeiten" } });
   schritt({ id: "e:alle", kapitel: K4, icon: "🏆", titel: "Alle Erfolge (ohne Season)",
     text: "Schau unter 👤 Ich → 🏆 Erfolge, welche dir noch fehlen.",
     ziel: erfolge().length, wert: () => erfolge().filter(erfolgErreicht).length, hilfe: { seite: "seiteIch", ichTab: "erfolge" } });

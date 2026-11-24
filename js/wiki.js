@@ -91,6 +91,8 @@ function kampfZiel(fid) {
   const brauchtArt = fid === "fernkampf" ? "fern" : fid === "magie" ? "magie" : ["mut", "kraft"].includes(fid) ? "nah" : null;
   if (brauchtArt && kampfArt() !== brauchtArt) {
     const ka = KAMPFARTEN[brauchtArt];
+    const setNr = sets().findIndex(s => s && setArt(s) === brauchtArt && anzahl(s.ausruestung.waffe) > 0);
+    if (setNr >= 0) return { seite: "seiteAbenteuer", abenteuerTab: "ausruestung", ziel: `.setAnlegen[data-set="${setNr}"]`, hinweis: `Leg dein Set ${setNr + 1} an – dann übst du ${fertigkeit(fid).name.replaceAll("\u00ad", "")}.` };
     const passt = id => GEGENSTAENDE[id]?.platz === "waffe" && (GEGENSTAENDE[id].kampfart || "nah") === brauchtArt && darfTragen(GEGENSTAENDE[id]);
     if (Object.keys(spiel.bank).some(id => anzahl(id) > 0 && passt(id)) || brauchtArt === "nah")
       return { seite: "seiteAbenteuer", abenteuerTab: "ausruestung", ziel: '.platz[data-platz="waffe"]', hinweis: `Leg ${brauchtArt === "nah" ? "ein Schwert" : `einen ${ka.waffe}`} an – dann übst du ${fertigkeit(fid).name.replaceAll("\u00ad", "")}.` };

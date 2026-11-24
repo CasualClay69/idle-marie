@@ -15,7 +15,7 @@ function gartenStand() {
 const pflanze = id => PFLANZEN.find(p => p.id === id);
 
 // Wachszeit in ms (der Blumenkasten im Baumhaus macht schneller)
-function wachsMs(beet) { return pflanze(beet.pflanze).minuten * 60000 * (1 - baumhausBonus("garten") - sternBonus("schneller", "garten")); }
+function wachsMs(beet) { return pflanze(beet.pflanze).minuten * 60000 * (1 - baumhausBonus("garten") - sternBonus("schneller", "garten") - topfBonus("garten", "schneller")); }
 function beetFortschritt(beet, jetzt = Date.now()) {
   if (!beet) return 0;
   return Math.min(1, (jetzt - beet.start) / wachsMs(beet));
@@ -40,16 +40,16 @@ function ernte(nr) {
   if (!passtInBank(p.ertrag)) return "Die Bank ist voll";
   const uebungsId = `garten-${p.id}`;
   let menge = p.menge[0] + Math.floor(Math.random() * (p.menge[1] - p.menge[0] + 1));
-  if (Math.random() < Math.floor(stufeAusXp(spiel.uebung[uebungsId] || 0) / 10) * SPIEL.uebungDoppeltProZehn + haustierBonus("doppelt", "garten") + baumhausBonus("doppelt") + sternBonus("doppelt", "garten")) menge *= 2;
+  if (Math.random() < Math.floor(stufeAusXp(spiel.uebung[uebungsId] || 0) / 10) * SPIEL.uebungDoppeltProZehn + haustierBonus("doppelt", "garten") + baumhausBonus("doppelt") + sternBonus("doppelt", "garten") + topfBonus("garten", "doppelt")) menge *= 2;
   if (beet.geduengt) menge = Math.round(menge * (1 + FEUER.duengerMehr));
   gibInBank(p.ertrag, menge);
   zaehle(p.ertrag, menge);
   let samen = 0;
   if (Math.random() < GARTEN.samenZurueck && passtInBank(p.samen)) { gibInBank(p.samen, 1); samen = 1; }
   const vorher = stufe("garten");
-  const xp = Math.round(p.xp * (trankFaktorXp() + sternBonus("xp", "garten")));
+  const xp = Math.round(p.xp * (trankFaktorXp() + sternBonus("xp", "garten") + topfBonus("garten", "xp")));
   spiel.xp.garten = (spiel.xp.garten || 0) + xp;
-  spiel.uebung[uebungsId] = (spiel.uebung[uebungsId] || 0) + xp;
+  uebungGeben(uebungsId, "garten", xp);
   spiel.statistik.geerntet = (spiel.statistik.geerntet || 0) + 1;
   zaehleAktion("garten");
   g.beete[nr] = null;

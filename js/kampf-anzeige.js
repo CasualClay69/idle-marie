@@ -62,6 +62,7 @@ function zeichneAbenteuer() {
   const ohneMun = ka.munition && !munitionBereit(w.art) ? `<p class="dreieckHinweis schlecht">${ka.icon} Du hast keine ${ka.munition === "pfeile" ? "Pfeile" : "Zauberperlen"} gewählt – ohne sie bist du ganz schwach! Tippe in der 🎒 Ausrüstung auf ${ka.munition === "pfeile" ? "den Köcher" : "die Perlen"}.</p>` : "";
   const werte = `<div class="karte"><h3>🎯 Kampfstil <small>${ka.icon} ${ka.name}${w.art === "nah" ? "" : ` mit ${ka.waffe}`}</small></h3><div class="stile">${stile}</div>
     <p class="werte">💥 Stärkster Schlag: <b>${w.maxSchlag}</b> · 🛡️ Weniger Schaden: <b>${prozent(w.weniger)}</b>${gegnerTreff}</p>${dreieckText}${ohneMun}
+    ${setsHtml(false)}
     <p class="hinweis">Die Waffe bestimmt die Kampfart: 🗡️ Schwert = Nahkampf, 🏹 Bogen = Fernkampf, 🪄 Zauberstab = Magie.</p></div>`;
 
   // ----- Ausrüstung & Essen -----
@@ -109,12 +110,13 @@ function zeichneAbenteuer() {
     }).join("")}</div>`;
   const reiter = `<div class="ichReiter abenteuerReiter">${ABENTEUER_REITER.map(([id, icon, name]) =>
     `<button type="button" data-tab="${id}" class="${abenteuerTab === id ? "aktiv" : ""}"><span>${icon}</span>${name}${id === "kampf" && a ? " ●" : ""}</button>`).join("")}</div>`;
-  const inhalt = { kampf: kampf + werte, ausruestung, gebiete: legende + seasonGebiet + gebiete, pfade, jagd: jagdHtml() }[abenteuerTab] || kampf + werte;
+  const inhalt = { kampf: kampf + werte, ausruestung: ausruestung + setsHtml(true), gebiete: legende + seasonGebiet + gebiete, pfade, jagd: jagdHtml() }[abenteuerTab] || kampf + werte;
   seite.innerHTML = reiter + inhalt;
   for (const b of seite.querySelectorAll(".abenteuerReiter button")) b.addEventListener("click", () => { ton.klick(); zeigeAbenteuerTab(b.dataset.tab); $("inhalt").scrollTop = 0; });
 
   // ----- Knöpfe -----
   if (abenteuerTab === "jagd") verdrahteJagd(seite);
+  verdrahteSets(seite);
   seite.querySelector("#weglaufen")?.addEventListener("click", () => {
     ton.klick(); stoppe(); ruheAus(); speichern(); zeichneAktivLeiste(); zeichneAbenteuer();
   });
