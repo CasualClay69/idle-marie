@@ -11,6 +11,7 @@ function haustierHerkunft(h) {
   if (h.truhe) return "versteckt sich in den Schatztruhen der Abenteuer-Pfade";
   if (h.season) return `Belohnung der Season im ${MONATSNAMEN[h.season - 1]}`;
   if (h.jagd) return "kommt manchmal am Ende eines Monster-Auftrags zu dir";
+  if (h.karte) return "wohnt in einem Nest auf der Entdecker-Insel";
   if (h.fertigkeit) return `taucht ${wo[h.fertigkeit] || `bei ${(fertigkeit(h.fertigkeit)?.name || "der Arbeit").replaceAll("­", "")}`} auf`;
   const m = MONSTER[h.chef];
   if (!m) return "ist irgendwo da draußen versteckt";

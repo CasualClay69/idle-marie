@@ -85,7 +85,7 @@ async function besucheAlles(titel) {
   ];
   for (const f of ev("FERTIGKEITEN")) fenster.push([`Übung ${f.id}`, `zeigeUebung("${f.id}")`]);
   for (const p of [...ev("PLAETZE").map(p => p.id), "essen", "pfeile", "perlen"]) fenster.push([`Platz ${p}`, `zeigePlatzWahl("${p}")`]);
-  for (const intro of ["Stern", "Dorf", "Feuer", "Jagd", "Turnen", "Graben", "Freunde"]) {
+  for (const intro of ["Stern", "Dorf", "Feuer", "Jagd", "Turnen", "Graben", "Freunde", "Karte"]) {
     fenster.push([`Einführung ${intro}`, `zeige${intro}Einfuehrung()`]);
     for (let i = 1; i < 4; i++) fenster.push([`Einführung ${intro} Seite ${i + 1}`, () => d.getElementById(`${intro.toLowerCase()}IntroWeiter`).click()]);
   }
@@ -100,7 +100,7 @@ const ALLES = `
   spiel.pfade = {}; for (const p of PFADE) spiel.pfade[p.id] = 3;
   spiel.besiegt = {}; for (const id in MONSTER) if (id !== "season") spiel.besiegt[id] = 5;
   spiel.haustiere = HAUSTIERE.filter((h, i) => i % 2 === 0).map(h => h.id);
-  spiel.sternIntro = spiel.dorfIntro = spiel.feuerIntro = spiel.jagdIntro = spiel.turnenIntro = spiel.grabenIntro = spiel.freundeIntro = true;
+  spiel.sternIntro = spiel.dorfIntro = spiel.feuerIntro = spiel.jagdIntro = spiel.turnenIntro = spiel.grabenIntro = spiel.freundeIntro = spiel.karteIntro = true;
   spiel.begleiter = spiel.haustiere[0]; spiel.bank.leckerli2 = 500; spiel.napf = "leckerli2";
   spiel.einfuehrung = "fertig"; spiel.quest = 60;
   spiel.bankFaecherGekauft = 400;
@@ -151,6 +151,9 @@ async function spieleDurch() {
   await schritt("Begleiter hilft im Kampf", `spiel.begleiter = spiel.haustiere[0]; spiel.bank.leckerli2 = 500; spiel.napf = "leckerli2"; starteKampf("frechdachs"); verarbeite(tick(Date.now() + 300000)); ichTab = "tiere"; zeigeSeite("seiteIch")`);
   await schritt("Futternapf wählen", `zeigeNapfWahl()`);
   alleFensterZu();
+  await schritt("Insel erkunden", `karte(); spiel.karte.ziel = null; const t = taetigkeitNachId("karte-0"); for (let i = 0; i < 400; i++) fuehreAus(t); offeneFertigkeit = "karte"; zeigeSeite("seiteFertigkeit")`, 150);
+  await schritt("Inselfeld wählen", () => { d.querySelector(".kFeld.waehlbar")?.dispatchEvent(new w.MouseEvent("click", { bubbles: true })); });
+  await schritt("Ganze Insel offen", `for (const id in INSEL) { spiel.karte.offen[id] = true; entdecke(INSEL[id]); } zeigeSeite("seiteFertigkeiten"); offeneFertigkeit = "karte"; zeigeSeite("seiteFertigkeit")`, 150);
   await schritt("Sets speichern + wechseln", `ruesteAus("schwert3"); speichereSet(0); spiel.bank.bogen3 = 1; ruesteAus("bogen3"); speichereSet(1); legeSetAn(0); abenteuerTab = "ausruestung"; zeigeSeite("seiteAbenteuer")`);
   await schritt("Set-Schnellwahl", `legeSetAn(1); abenteuerTab = "kampf"; zeigeSeite("seiteAbenteuer")`);
   await schritt("Übungs-Topf füllen + stecken", `spiel.topf = spiel.topf || {}; spiel.topf.holz = TOPF.max * 0.6; steckeInTaetigkeit("holz-0", "holz"); zeigeUebung("holz")`);

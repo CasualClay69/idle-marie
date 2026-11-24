@@ -120,6 +120,10 @@ const WIKI_REGELN = [
     <p>Sobald der <b>Pusteblumen-Riese</b> eingeschlafen ist, beginnt die <b>Tierfreundschaft</b>. Du backst Leckerli aus Fisch (${LECKERLI.length} Sorten, ab Stufe ${STUFEN.join(", ")}).</p>
     <p>Leg Leckerli in den <b>Futternapf</b> (👤 Ich → 🐾 Tiere). Dann ist dein Begleiter <b>aktiv</b>: Sein Bonus wirkt ${Math.round(FREUNDE.bonusBasis * 100)}–${Math.round((FREUNDE.bonusBasis + FREUNDE.bonusProSorte * 7) * 100)} % stärker, und im Kampf stupst er die Monster mit an. Alle ${FREUNDE.aktionenProLeckerli} Aktionen frisst er ein Leckerli – dafür gibt es Tierfreundschafts-Erfahrung.</p>
     <p>Bessere Leckerli = mehr Hilfe. Je höher die Pflege-Stufe deines Begleiters, desto fester stupst er.</p>` },
+  { id: "karte", icon: "🗺️", titel: "Entdecker-Karte", text: () => `
+    <p>Die Entdecker-Karte gibt es, sobald du <b>sieben Abenteuer-Pfade</b> geschafft hast. Eine Insel aus ${alleFelder()} Feldern liegt im Nebel – nur dein Lager in der Mitte ist frei.</p>
+    <p>Tipp ein Feld neben dem Entdeckten an und lass ${figurName()} es erkunden. Weiter außen dauert es länger und braucht eine höhere Entdecken-Stufe (${KARTE.stufeFuerAbstand.slice(1).join(", ")}). Hast du kein Feld gewählt, nimmt sie das nächste günstige.</p>
+    <p>Zu finden: ${["schatz", "kristall", "aussicht", "quelle", "schatzkarte", "nest", "geheim"].map(a => `${FELD_ARTEN[a].icon} ${FELD_ARTEN[a].name}`).join(", ")}.</p>` },
   { id: "gluecksrad", icon: "🎁", titel: "Tägliches Glücksrad", text: () => `
     <p>Jeden Tag darfst du einmal am Glücksrad drehen – die Karte dafür ist oben auf der 🌟 Fertigkeiten-Seite. Jeder ${GLUECKSRAD.serieBonus}. Tag in Folge bringt ein <b>doppeltes</b> Geschenk.</p>
     <p>Mögliche Geschenke: ${GLUECKSRAD.felder.map(f => `${f.icon} ${f.name}`).join(", ")}. Die Geschenke wachsen mit deiner Gesamtstufe mit.</p>` },
@@ -219,6 +223,12 @@ const GUIDE_EINSCHUEBE = [
   { nach: "Trink einen Trank", schritt: { id: "sets:1", icon: "🎒", titel: "Speichere ein Ausrüstungs-Set",
     text: "Im ⚔️ Abenteuer unter 🎒 Ausrüstung kannst du deine Ausrüstung in einem Set speichern – so wechselst du später mit einem Tipp zwischen Schwert und Bogen.",
     ziel: 1, wert: () => (spiel.sets || []).filter(Boolean).length, hilfe: { seite: "seiteAbenteuer", abenteuerTab: "ausruestung", ziel: ".setSpeichern" } } },
+  { nach: "Schaffe den Sternenpfad", schritt: { id: "karte:1", icon: "🗺️", titel: "Entdecke 5 Felder der Insel",
+    text: "Nach deinem siebten Pfad gibt es die 🗺️ Entdecker-Karte. Tipp ein Feld neben deinem Lager an und erkunde die Insel!",
+    ziel: 5, wert: () => (spiel.karte ? offeneFelder() - 1 : 0), hilfe: { fertigkeit: "karte", ziel: ".kartenLauf" } } },
+  { nach: "Schaffe den Sternenpfad", schritt: { id: "karte:2", icon: "✨", titel: "Finde eine Zauberquelle",
+    text: "Irgendwo auf der Insel sprudeln Zauberquellen – jede gibt dir für immer mehr Erfahrung.",
+    ziel: 1, wert: () => kartenAnzahl("quelle"), hilfe: { fertigkeit: "karte", ziel: ".kartenLauf" } } },
   { nach: "Schaffe den Pusteblumen-Pfad", schritt: { id: "sterne:1", icon: "🔭", titel: "Beobachte die Sterne",
     text: "Nach deinem ersten Pfad öffnet sich die 🔭 Sternenkunde. Beobachte das Eichhörnchen-Sternbild und sammle 30 Sternsplitter.",
     ziel: 30, wert: () => spiel.zaehler?.sternsplitter2 || 0, hilfe: { fertigkeit: "sterne" } } },
@@ -284,6 +294,10 @@ function guideVervollstaendigen() {
   schritt({ id: "a:alle", kapitel: K2, icon: "👗", titel: "Kleiderschrank komplett",
     text: "Kauf, näh und finde alle Hüte, Kleider und Rahmen (ohne Season-Sachen). Was woher kommt, steht in der Wiki unter 👗 Aussehen.",
     ziel: teile().length, wert: () => teile().filter(besitztTeil).length, hilfe: { seite: "seiteIch", ichTab: "figur", ziel: "#schrankRaster" } });
+
+  schritt({ id: "karte:alle", kapitel: K2, icon: "🗺️", titel: "Die ganze Insel entdeckt",
+    text: "Erkunde jedes Feld der Entdecker-Insel – ganz außen in der Ecke wartet die geheime Regenbogen-Insel!",
+    ziel: alleFelder(), wert: () => (spiel.karte ? offeneFelder() : 0), hilfe: { fertigkeit: "karte", ziel: ".kartenLauf" } });
 
   // --- Meister in allem: jede Fertigkeit auf 99 (Sammeln und Herstellen zuerst, Kampf zum Schluss) ---
   const K3 = "Meister in allem";

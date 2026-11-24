@@ -36,6 +36,7 @@ function verarbeite(ergebnis) {
       for (const t of neu) melde(`🔓 Neu freigeschaltet: ${t.name}`, "gross");
     }
     if (e.neueUebung && e.neueUebung % 10 === 0) melde(`⭐ Übung ${e.neueUebung}: ${e.taetigkeit.name}`);
+    if (e.karte) { const fa = FELD_ARTEN[e.karte.art]; ton.stufe(); melde(`🗺️ Entdeckt: ${fa.name}! ${e.karte.text}`, "gross"); if (e.karte.haustier) zeigeHaustierFund(e.karte.haustier); }
     if (e.fund) { const g = GEGENSTAENDE[e.fund]; ton.stufe(); melde(`🦴 Fundstück! ${g.name} (${SELTENHEITEN[seltenheit(e.fund)].name})${imMuseum(e.fund) ? "" : " – ab ins Museum!"}`, "gross"); }
     if (e.goldsplitter) { ton.muenze(); melde("🌟 Ein Goldsplitter funkelt am Himmel!", "gross"); }
     if (e.edelstein) { ton.muenze(); melde(`💎 Ein ${GEGENSTAENDE[e.edelstein].name} gefunden!`); }
@@ -254,6 +255,7 @@ function starteSpiel() {
   richteTurnenEin();
   richteGrabenEin();
   richteFreundeEin();
+  richteKarteEin();
   richteHeuteEin();
   richteWikiEin();
   holeOfflineNach();

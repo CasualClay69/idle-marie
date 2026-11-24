@@ -80,7 +80,7 @@ function fundChance(groesse) {
 function grabeFund(t) {
   const ort = GRABUNGEN.find(o => o.id === t.grabung);
   for (let g = FUND_GROESSEN.length - 1; g >= 0; g--) {
-    if (Math.random() < fundChance(FUND_GROESSEN[g].id)) {
+    if (Math.random() < fundChance(FUND_GROESSEN[g].id) * (1 + (typeof karteFundBonus === "function" ? karteFundBonus(ort.id) : 0))) {
       const kandidaten = FUNDE.filter(f => f.ort === ort.id && f.groesse === FUND_GROESSEN[g].id);
       const f = kandidaten[Math.floor(Math.random() * kandidaten.length)];
       if (!passtInBank(f.id)) return null;

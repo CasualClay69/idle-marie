@@ -1353,3 +1353,15 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .setLeiste small { font-size: 0.72rem; color: var(--text-sanft); font-weight: 800; width: 100%; }
 .setLeiste .setPlatz { flex: 1; min-width: 0; }
 .setLeiste .setAnlegen { padding: 5px 8px; }
+
+/* ----- Entdecker-Karte ----- */
+.inselKarte { padding: 8px; }
+.inselBild { display: block; width: 100%; height: auto; }
+.inselBild.klein { max-width: 240px; margin: 0 auto; }
+.kFeld.waehlbar { cursor: pointer; }
+.kFeld.ziel rect:first-child { animation: zielPuls 1.4s ease-in-out infinite; }
+@keyframes zielPuls { 50% { opacity: 0.6; } }
+.kartenLauf { width: 100%; display: grid; justify-items: center; gap: 3px; padding: 12px; }
+.kOrte { display: flex; flex-wrap: wrap; gap: 6px; }
+.kOrt { padding: 3px 9px; border-radius: 999px; background: #eef2f8; font-size: 0.8rem; font-weight: 800; color: var(--text-sanft); }
+.kOrt.da { background: #e3f7e6; color: #2f8a4a; }

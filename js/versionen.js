@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.27", datum: "2026-11-24", neu: ["🗺️ Neue Fertigkeit Entdecken (nach dem siebten Abenteuer-Pfad): Eine Insel aus 81 Feldern liegt im Nebel. Erkunde sie Feld für Feld!", "🧰 Zu finden: Schätze, Kristallhöhlen, Aussichtspunkte, Zauberquellen (+1 % Erfahrung bei allem), alte Schatzkarten (bessere Funde beim Ausgraben), ein Tiernest mit Schildkröte Schildi – und ganz weit draußen die geheime Regenbogen-Insel.", "Dazu: Einführung, Wiki-Seite, Guide-Schritte, Season-Aufgabe und neue Erfolge."] },
   { v: "1.26.1", datum: "2026-11-24", neu: ["Behoben: Die Leiste unten (und die ganze Seite) lässt sich auf dem Handy nicht mehr nach oben ziehen – nur der Inhalt scrollt."] },
   { v: "1.26", datum: "2026-11-24", neu: ["🫙 Übungs-Töpfe: Jede Fertigkeit hat einen Topf, der sich mit jeder Übung füllt. Ab 10, 25, 50 und 95 % gibt es Boni für die ganze Fertigkeit – und du kannst Topf-Erfahrung in einzelne Tätigkeiten stecken.", "🎒 Ausrüstungs-Sets: Speichere bis zu 3 Ausrüstungen (mit Munition und Essen) und wechsle mit einem Tipp – im Abenteuer unter Ausrüstung oder schnell im Kampf-Reiter."] },
   { v: "1.25", datum: "2026-11-24", neu: ["🎪 Dorffeste: Jeden Monat feiert das Wichteldorf ein Fest passend zur Season. Die Wichtel wünschen sich drei Sachen – spende sie und feier mit!", "🎉 Festtag: 24 Stunden doppelt so fleißige Wichtel und +20 Glück, dazu Münzen und 100 Season-Punkte."] },

@@ -99,9 +99,9 @@ function sternBonus(art, fid = null) {
 }
 // Bonus der goldenen Sterne – in derselben Einheit wie baumhausBonus (bank/offline: Anzahl, sonst Anteil)
 function sternGold(art) {
-  if (!spiel.sterne) return (parcoursAllgemein(art) + museumAllgemein(art));   // + Abenteuer-Spielplatz
+  if (!spiel.sterne) return (parcoursAllgemein(art) + museumAllgemein(art) + karteAllgemein(art));   // + Abenteuer-Spielplatz
   const summe = STERNBILDER.reduce((s, sb) => s + (sb.gold.art === art ? (spiel.sterne[sb.id]?.g || 0) * sb.gold.wert : 0), 0);
-  return (["bank", "offline"].includes(art) ? summe : summe / 100) + (parcoursAllgemein(art) + museumAllgemein(art));
+  return (["bank", "offline"].includes(art) ? summe : summe / 100) + (parcoursAllgemein(art) + museumAllgemein(art) + karteAllgemein(art));
 }
 
 // Was kostet die nächste Stufe? nr = 0,1,2 (normal) oder "g" (golden). null = schon voll

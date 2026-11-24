@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.26.1";
-const APP_NEU = "Behoben: Die Leiste unten lässt sich nicht mehr nach oben ziehen.";
+const APP_VERSION = "1.27";
+const APP_NEU = "Neu: Die Entdecker-Karte! Nach dem siebten Pfad wartet eine Insel im Nebel auf dich.";

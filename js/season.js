@@ -54,6 +54,7 @@ const AUFGABEN_VORLAGEN = [
   ["jagd", null, 1, 5, n => (n === 1 ? "Schaffe einen Monster-Auftrag" : `Schaffe ${n} Monster-Aufträge`), () => jagdFrei()],
   ["aktion", "turnen", 15, 100, n => `Lauf ${n} Runden auf dem Spielplatz`, () => turnenFrei() && gebauteStationen().length > 0],
   ["aktion", "graben", 30, 200, n => `Grab ${n} Mal nach Schätzen`, () => grabenFrei()],
+  ["aktion", "karte", 40, 250, n => `Erkunde ${n} Mal die Insel`, () => karteFrei()],
   ["aktion", "feuer", 50, 300, n => `Leg ${n}× Holz ins Lagerfeuer`, () => feuerFrei()],
   ["truhe", null, 1, 6, n => `Öffne ${n === 1 ? "eine Schatztruhe" : `${n} Schatztruhen`} auf einem Abenteuer-Pfad`, () => PFADE.some(pfadFrei)],
 ];

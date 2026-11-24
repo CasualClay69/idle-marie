@@ -19,6 +19,7 @@ const WIKI_TABS = [
   { id: "dorf",         name: "Dorf",         icon: "🏘️", html: () => wikiDorf() },
   { id: "turnen",       name: "Spielplatz",   icon: "🤸", html: () => wikiTurnen() },
   { id: "museum",       name: "Museum",       icon: "🏛️", html: () => wikiMuseum() },
+  { id: "karte",        name: "Insel",        icon: "🗺️", html: () => wikiKarte() },
   { id: "aussehen",     name: "Aussehen",     icon: "👗", html: () => wikiAussehen() },
   { id: "erfolge",      name: "Erfolge",      icon: "🏆", html: () => wikiErfolge() },
   { id: "season",       name: "Season",       icon: "🎟️", html: () => wikiSeason() },
@@ -240,6 +241,7 @@ function haustierQuelle(h) {
   if (h.season) return `🎟️ Season ${MONATSNAMEN[h.season - 1]}: Stufe ${SEASON.stufen}`;
   if (h.start) return "📜 Belohnung für einen frühen Auftrag";
   if (h.jagd) return `📋 Am Ende eines Monster-Auftrags: 1 von ${Math.round(1 / JAGD.haustierChance)}`;
+  if (h.karte) return "🗺️ Im Tiernest auf der Entdecker-Insel";
   if (h.chef) return `💤 ${wName(MONSTER[h.chef].name)} (Chef): 1 von ${Math.round(1 / HAUSTIER_REGEL.chefChance)}`;
   if (h.truhe) return `🧰 Schatztruhen der Pfade: 1 von ${Math.round(1 / PFAD_REGEL.kikiChance)}`;
   if (h.fertigkeit === "garten") return `🌱 Beim Ernten: 1 von ${Math.round(1 / HAUSTIER_REGEL.gartenChance)}`;
@@ -277,6 +279,7 @@ function teilQuelle(t) {
   if (t.season) return `🎟️ Season ${MONATSNAMEN[t.season - 1]}`;
   if (t.pfad) return `🧰 Schatztruhe: ${t.pfad} (${Math.round(PFAD_REGEL.rahmenChance * 100)} %)`;
   if (t.jagd) return "🏅 Jagd-Laden bei der Jägerin";
+  if (t.karte) return "🌈 Auf der Regenbogen-Insel (Entdecker-Karte)";
   if (t.questNr) return `📜 Belohnung für Auftrag ${t.questNr}`;
   if (t.quest) return `📜 Belohnung: ${t.quest}`;
   if (t.preis) return `${muenzeHtml("muenze klein")} ${zahl(t.preis)} Münzen im Kleiderschrank`;
@@ -391,5 +394,17 @@ function wikiMuseum() {
     }).join(""))).join("");
   html += wEintrag("m-werkzeuge", "🧰 Grabe-Werkzeuge", GRABE_WERKZEUGE.map(w => wZeile(w.icon, w.name,
     `+${Math.round(WERKZEUG_GRAB.plusProStufe * 100)} % ${FUND_GROESSEN.find(g => g.id === w.groesse).name}e Funde je Stufe · ${WERKZEUG_GRAB.stufen} Stufen ab Ausgraben ${WERKZEUG_GRAB.ab.join(" / ")} · du hast Stufe ${grabWerkzeug(w.id)}`, grabWerkzeug(w.id) > 0)).join(""));
+  return html;
+}
+
+// ===================== ENTDECKER-INSEL =====================
+function wikiKarte() {
+  let html = wEintrag("r-karte2", "🗺️ So funktioniert die Entdecker-Karte", WIKI_REGELN.find(r => r.id === "karte").text());
+  const arten = ["schatz", "kristall", "aussicht", "quelle", "schatzkarte", "nest", "geheim"];
+  html += wEintrag("k-orte", "📍 Besondere Orte", arten.map(a => {
+    const alle = Object.values(INSEL).filter(f => f.art === a), da = spiel.karte ? alle.filter(f => spiel.karte.offen[feldId(f.x, f.y)]).length : 0;
+    return wZeile(FELD_ARTEN[a].icon, `${FELD_ARTEN[a].name} <small>${da} / ${alle.length}</small>`, FELD_ARTEN[a].text || "", da > 0);
+  }).join(""));
+  html += wEintrag("k-abstand", "📏 Wie lange dauert ein Feld?", [1, 2, 3, 4].map(d => wZeile(KARTE.stufeFuerAbstand[d], `${d}. Ring`, `${KARTE.schritteBasis * (d + 1) * (d + 1)} Schritte (neben einem Aussichtspunkt die Hälfte)`, stufe("karte") >= KARTE.stufeFuerAbstand[d])).join(""));
   return html;
 }
