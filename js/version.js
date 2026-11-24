@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.30.1";
-const APP_NEU = "Rote Hinweis-Punkte, Danach weitermachen mit, Bank-Suche und EP-Wochenenden (jedes erste Wochenende im Monat +50 % Erfahrung)!";
+const APP_VERSION = "1.30.2";
+const APP_NEU = "Willkommen zurück zeigt jetzt auch beim Herstellen und im Abenteuer genau, was passiert ist.";

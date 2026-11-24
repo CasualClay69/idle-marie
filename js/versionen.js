@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.30.2", datum: "2026-11-24", neu: ["🌙 Willkommen zurück zeigt jetzt auch beim Herstellen, was gemacht wurde (z. B. „Hannah kocht: Stichling-Happen“), die neuen Stufen, was dabei herauskam und was verbraucht wurde.", "⚔️ Nach dem Abenteuer gibt es einen eigenen Abenteuer-Block: gegen wen gekämpft wurde, wie viele Monster eingeschlafen sind, Münzen, alle Kampf-Stufen, die ganze Beute und das gegessene Essen."] },
   { v: "1.30.1", datum: "2026-11-24", neu: ["📍 Rote Punkte an der Leiste unten zeigen, wo etwas wartet: bei Ich, wenn ein Haustier gestreichelt werden möchte – bei Fertigkeiten, wenn ein Beet reif ist oder Season-Punkte abholbereit sind – bei Abenteuer, wenn die Jägerin einen neuen Auftrag hat.", "🔀 Danach weitermachen mit …: Braucht eine Tätigkeit Material (z. B. Kochen), kannst du oben in der Leiste wählen, womit deine Figur weitermacht, wenn es ausgeht – auch wenn du weg bist.", "🏦 Suche in der Bank: Tippe oben einen Namen ein, dann siehst du nur noch passende Sachen.", "🎉 EP-Wochenende: Jedes erste Wochenende im Monat gibt es bei allem +50 % Erfahrung. Ab Mittwoch steht es im Lauftext."] },
   { v: "1.29.5", datum: "2026-11-24", neu: ["💖 Unter Ich → Tiere leuchten jetzt alle Haustiere, die gestreichelt werden möchten, und haben ein Schild „Streicheln!“."] },
   { v: "1.29.4", datum: "2026-11-24", neu: ["Das Fenster „Was ist neu?“ hat jetzt auch den roten Schließen-Knopf oben rechts."] },

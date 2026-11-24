@@ -59,43 +59,83 @@ function zeigeRueckkehr(s, weg) {
   const abschnitte = [];
   const liste = (titel, zeilen) => { if (zeilen.length) abschnitte.push(`<h3 class="rkTitel">${titel}</h3><ul class="offlineListe">${zeilen.join("")}</ul>`); };
 
-  // Gegenstände: was ist dazugekommen, was wurde verbraucht? Gewonnenes wird der Fertigkeit zugeordnet, die es macht.
-  const sachenNach = {}, verbraucht = [];
+  // Was lief, als man ging? (Kampf: "kampf:<monster oder pfad>", sonst die Tätigkeit)
   const imKampf = String(s.aktiv || "").startsWith("kampf:");
+  const aktT = !imKampf && s.aktiv ? taetigkeitNachId(s.aktiv) : null;
+  const stufeText = (vorher, jetzt) => jetzt > vorher ? `<span class="rkStufe neu">Stufe ${vorher} → ${jetzt} 🎉</span>` : `<span class="rkStufe">Stufe ${jetzt}</span>`;
+  const plusText = (plus, vorher, jetzt) => plus >= 1 ? `<small class="rkEp">+${zahl(plus)} EP${jetzt > vorher ? ` · ${jetzt - vorher === 1 ? "eine Stufe" : `${jetzt - vorher} Stufen`} höher!` : ""}</small>` : "";
+  const sachenListe = (gewonnen, verbr = []) => (gewonnen.length || verbr.length) ? `<ul class="offlineListe rkSachen">${gewonnen.join("")}${verbr.join("")}</ul>` : "";
+
+  // Gegenstände: Gewonnenes gehört zur Fertigkeit, die es macht – im Kampf ist alles Beute.
+  // Verbrauchtes gehört zur Tätigkeit, die es braucht (z. B. Fisch beim Kochen) – im Kampf ist es Essen/Munition.
+  const sachenNach = {}, verbrauchtNach = {}, verbraucht = [];
   for (const id of new Set([...Object.keys(s.bank), ...Object.keys(spiel.bank)])) {
     if (!GEGENSTAENDE[id]) continue;
     const d = anzahl(id) - (s.bank[id] || 0);
-    const zeile = `<li>${symbolHtml(id, "mini")} <span class="rkName">${GEGENSTAENDE[id].name}</span> ${d > 0 ? `<b>+${zahl(d)}</b>` : `−${zahl(-d)}`}</li>`;
-    if (d > 0) (sachenNach[herkunftVon(id) || (imKampf ? "abenteuer" : "sonst")] ||= []).push(zeile);
-    if (d < 0) verbraucht.push(zeile.replace("<li>", `<li class="sanft">`));
+    if (!d) continue;
+    const name = `${symbolHtml(id, "mini")} <span class="rkName">${GEGENSTAENDE[id].name}</span>`;
+    if (d > 0) (sachenNach[imKampf ? "abenteuer" : herkunftVon(id) || "sonst"] ||= []).push(`<li>${name} <b>+${zahl(d)}</b></li>`);
+    else {
+      const zeile = `<li class="sanft">${name} <span>−${zahl(-d)} verbraucht</span></li>`;
+      if (imKampf) (verbrauchtNach.abenteuer ||= []).push(zeile);
+      else if (aktT && aktT.braucht?.[id]) (verbrauchtNach[aktT.fertigkeit] ||= []).push(zeile);
+      else verbraucht.push(zeile);
+    }
   }
 
-  // Pro Fertigkeit: Stufe vorher → jetzt, EP und was man dabei bekommen hat
   let stufenPlus = 0;
   const bloecke = [];
+
+  // Abenteuer: ein Block mit Gegner, Monstern, Münzen, allen Kampf-Stufen, Beute und Essen
+  const muenzen = spiel.muenzen - s.muenzen;
+  const monster = (spiel.statistik.besiegt || 0) - s.besiegt;
+  const truhen = (spiel.statistik.truhen || 0) - s.truhen;
+  if (imKampf) {
+    const zielId = s.aktiv.slice(6);
+    const pfad = typeof PFADE !== "undefined" && PFADE.find(p => p.id === zielId);
+    const gegen = pfad ? `auf dem ${pfad.name}` : MONSTER[zielId] ? `gegen ${MONSTER[zielId].name}` : "im Abenteuer";
+    const kampfZeilen = [];
+    for (const f of FERTIGKEITEN.filter(f => f.art === "kampf")) {
+      const plus = (spiel.xp[f.id] || 0) - (s.xp[f.id] || 0);
+      if (plus < 1) continue;
+      const vorher = stufeAusXp(s.xp[f.id] || 0), jetzt = stufe(f.id);
+      stufenPlus += jetzt - vorher;
+      kampfZeilen.push(`<li>${f.icon} <span class="rkName">${f.name} <small class="sanft">+${zahl(plus)} EP</small></span>${stufeText(vorher, jetzt)}</li>`);
+    }
+    const zahlen = [monster > 0 && `💤 ${zahl(monster)} Monster eingeschlafen`, truhen > 0 && `🧰 ${zahl(truhen)} Schatztruhe${truhen === 1 ? "" : "n"}`,
+      muenzen > 0 && `${muenzeHtml("muenze klein")} +${zahl(muenzen)} Münzen`].filter(Boolean);
+    bloecke.push(`<div class="rkBlock" style="--farbe:#ff7a7a">
+      <div class="rkKopf"><span class="rkIcon">⚔️</span><b class="rkName">Abenteuer</b></div>
+      <small class="rkGemacht">${figurName()} kämpft ${gegen}</small>
+      ${zahlen.length ? `<small class="rkEp">${zahlen.join(" · ")}</small>` : ""}
+      ${kampfZeilen.length ? `<ul class="offlineListe rkSachen">${kampfZeilen.join("")}</ul>` : ""}
+      ${sachenListe(sachenNach.abenteuer || [], verbrauchtNach.abenteuer || [])}</div>`);
+  }
+
+  // Pro Fertigkeit: was gemacht wurde, Stufe vorher → jetzt, EP, Bekommenes und Verbrauchtes
   for (const f of FERTIGKEITEN) {
-    const plus = (spiel.xp[f.id] || 0) - (s.xp[f.id] || 0), sachen = sachenNach[f.id] || [];
-    if (plus < 1 && !sachen.length) continue;
+    if (imKampf && f.art === "kampf") continue;
+    const plus = (spiel.xp[f.id] || 0) - (s.xp[f.id] || 0), sachen = sachenNach[f.id] || [], verbr = verbrauchtNach[f.id] || [];
+    if (plus < 1 && !sachen.length && !verbr.length) continue;
     const vorher = stufeAusXp(s.xp[f.id] || 0), jetzt = stufe(f.id);
     stufenPlus += jetzt - vorher;
+    const gemacht = aktT && aktT.fertigkeit === f.id ? `<small class="rkGemacht">${figurName()} ${f.tun}: <b>${aktT.name}</b></small>`
+      : spiel.aktiv && !spiel.aktiv.kampf && taetigkeitNachId(spiel.aktiv.id)?.fertigkeit === f.id ? `<small class="rkGemacht">Danach: <b>${taetigkeitNachId(spiel.aktiv.id).name}</b></small>` : "";
     bloecke.push(`<div class="rkBlock" style="--farbe:${f.farbe}">
-      <div class="rkKopf"><span class="rkIcon">${f.icon}</span><b class="rkName">${f.name}</b>
-        ${jetzt > vorher ? `<span class="rkStufe neu">Stufe ${vorher} → ${jetzt} 🎉</span>` : `<span class="rkStufe">Stufe ${jetzt}</span>`}</div>
-      ${plus >= 1 ? `<small class="rkEp">+${zahl(plus)} EP${jetzt > vorher ? ` · ${jetzt - vorher === 1 ? "eine Stufe" : `${jetzt - vorher} Stufen`} höher!` : ""}</small>` : ""}
-      ${sachen.length ? `<ul class="offlineListe rkSachen">${sachen.join("")}</ul>` : ""}</div>`);
+      <div class="rkKopf"><span class="rkIcon">${f.icon}</span><b class="rkName">${f.name}</b>${stufeText(vorher, jetzt)}</div>
+      ${gemacht}${plusText(plus, vorher, jetzt)}${sachenListe(sachen, verbr)}</div>`);
   }
   const sonstBlock = (titel, liste) => liste?.length ? `<div class="rkBlock"><div class="rkKopf"><b class="rkName">${titel}</b></div><ul class="offlineListe rkSachen">${liste.join("")}</ul></div>` : "";
-  const alleBloecke = bloecke.join("") + sonstBlock("⚔️ Beute aus dem Abenteuer", sachenNach.abenteuer) + sonstBlock("🎒 Außerdem bekommen", sachenNach.sonst);
-  if (alleBloecke) abschnitte.push(`<h3 class="rkTitel">✨ Gelevelt und bekommen${stufenPlus > 0 ? ` <small class="rkGesamt">🎉 ${stufenPlus} ${stufenPlus === 1 ? "Stufe" : "Stufen"} höher</small>` : ""}</h3>${alleBloecke}`);
+  const alleBloecke = bloecke.join("") + sonstBlock("🎒 Außerdem bekommen", sachenNach.sonst);
+  if (alleBloecke) abschnitte.push(`<h3 class="rkTitel">✨ Gemacht, gelevelt und bekommen${stufenPlus > 0 ? ` <small class="rkGesamt">🎉 ${stufenPlus} ${stufenPlus === 1 ? "Stufe" : "Stufen"} höher</small>` : ""}</h3>${alleBloecke}`);
 
-  // Abenteuer & Besonderes
+  // Besonderes (Münzen/Monster/Truhen stehen beim Kampf schon im Abenteuer-Block)
   const extra = [];
-  const muenzen = spiel.muenzen - s.muenzen;
-  if (muenzen > 0) extra.push(`<li>${muenzeHtml("muenze klein")} <span class="rkName">Münzen</span> <b>+${zahl(muenzen)}</b></li>`);
-  const monster = (spiel.statistik.besiegt || 0) - s.besiegt;
-  if (monster > 0) extra.push(`<li>💤 <span class="rkName">Monster eingeschlafen</span> <b>${zahl(monster)}</b></li>`);
-  const truhen = (spiel.statistik.truhen || 0) - s.truhen;
-  if (truhen > 0) extra.push(`<li>🧰 <span class="rkName">Schatztruhen geöffnet</span> <b>${zahl(truhen)}</b></li>`);
+  if (!imKampf) {
+    if (muenzen > 0) extra.push(`<li>${muenzeHtml("muenze klein")} <span class="rkName">Münzen</span> <b>+${zahl(muenzen)}</b></li>`);
+    if (monster > 0) extra.push(`<li>💤 <span class="rkName">Monster eingeschlafen</span> <b>${zahl(monster)}</b></li>`);
+    if (truhen > 0) extra.push(`<li>🧰 <span class="rkName">Schatztruhen geöffnet</span> <b>${zahl(truhen)}</b></li>`);
+  }
   for (const id of (spiel.haustiere || []).filter(x => !s.haustiere.includes(x))) {
     const h = HAUSTIERE.find(x => x.id === id);
     if (h) extra.push(`<li>🎉 <b>${h.emoji} ${h.name}</b> ist bei dir eingezogen!</li>`);

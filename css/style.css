@@ -1432,3 +1432,6 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
   background: #fff; color: var(--text-sanft); font-size: 0.72rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .danachKnopf.gewaehlt { border-style: solid; border-color: var(--farbe, var(--akzent)); color: var(--akzent-dunkel); background: #fff7fb; }
 .bankSuche { margin: 2px 0 8px; }
+.rkGemacht { display: block; margin: 2px 0 0 2px; font-size: 0.82rem; color: var(--text); }
+.rkSachen li.sanft span { margin-left: auto; font-size: 0.78rem; }
+.rkSachen .rkStufe { margin-left: auto; }
