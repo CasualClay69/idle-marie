@@ -44,7 +44,7 @@ function zeichneAbenteuer() {
         <div class="balken duenn takt"><div id="monsterTakt"></div></div>
       </div>
     </div>
-    ${a.pfad ? (() => { const p = PFADE.find(x => x.id === a.pfad.id); return `<div class="pfadFortschritt"><b>🗺️ ${p.name}</b>
+    ${a.pfad ? (() => { const p = pfadNachId(a.pfad.id); return `<div class="pfadFortschritt"><b>🗺️ ${p.name}</b>
       <div class="pfadPunkte">${p.liste.map((id, i) => `<span class="${i < a.pfad.schritt ? "geschafft" : i === a.pfad.schritt ? "jetzt" : ""}${i === p.liste.length - 1 ? " waechter" : ""}">${i === p.liste.length - 1 ? "🧰" : i < a.pfad.schritt ? "💤" : i + 1}</span>`).join("")}</div></div>`; })() : ""}
     <ul id="kampfLog" class="kampfLog"></ul>
     <button id="weglaufen" class="knopf leise" type="button">🏃 Nach Hause gehen</button>`;
@@ -103,6 +103,8 @@ function zeichneAbenteuer() {
         <span class="mBild">${monsterSvg(sm.aussehen)}</span><b>${sm.name}</b><small>Stufe ${sm.stufe}</small>
         <span class="mBeute">${(sm.beute || []).map(b => symbolHtml(b.id, "mini")).join("")}</span></button></div>${beuteTabelle([sm])}</div>`;
   const pfade = `<p class="hinweis">Mehrere Monster hintereinander – ohne Ausruhen. Am Ende wartet ein Wächter und eine 🧰 Schatztruhe! Nimm genug Essen mit.</p>
+    ${typeof dungeonHtml === "function" ? dungeonHtml() : ""}
+    <h3 class="rasterTitel">🗺️ Abenteuer-Pfade</h3>
     <div class="pfadListe">${PFADE.map(p => {
       const frei = pfadFrei(p), w = MONSTER[p.waechter], laeuft = a?.pfad?.id === p.id;
       return `<button type="button" class="pfadKarte${frei ? "" : " gesperrt"}${laeuft ? " laeuft" : ""}" data-pfad="${p.id}" style="--farbe:${GEBIETE.find(g => g.id === p.gebiet).farbe}">
@@ -126,7 +128,8 @@ function zeichneAbenteuer() {
     ton.klick(); spiel.kampfstil = b.dataset.stil; speichern(); zeichneAbenteuer();
   });
   for (const b of seite.querySelectorAll(".platz")) b.addEventListener("click", () => { ton.klick(); zeigePlatzWahl(b.dataset.platz); });
-  for (const b of seite.querySelectorAll(".pfadKarte")) b.addEventListener("click", () => {
+  if (typeof verdrahteDungeons === "function") verdrahteDungeons(seite);
+  for (const b of seite.querySelectorAll(".pfadKarte:not(.dungeonKarte)")) b.addEventListener("click", () => {
     const p = PFADE.find(x => x.id === b.dataset.pfad);
     if (!pfadFrei(p)) { ton.nein(); melde(`🔒 Bring zuerst ${MONSTER[p.chef].name} zum Einschlafen`); return; }
     if (spiel.aktiv?.pfad?.id === p.id) return;

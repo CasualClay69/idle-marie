@@ -13,7 +13,10 @@ function wochenText(d = new Date(Date.now())) {
   return tagText(montag);
 }
 function seasonId(d = new Date(Date.now())) { return `${d.getFullYear()}-${zweistellig(d.getMonth() + 1)}`; }
-function aktuellesThema() { return SEASON_THEMEN[new Date(Date.now()).getMonth()]; }
+function aktuellesThema() {   // 36 Seasons ab November 2026, danach von vorn
+  const n = SEASON_ALLE.length, nr = seasonNummer(seasonId());
+  return SEASON_ALLE[(((nr - 1) % n) + n) % n];
+}
 function seasonTageUebrig() {
   const d = new Date(Date.now());
   const ende = new Date(d.getFullYear(), d.getMonth() + 1, 1);

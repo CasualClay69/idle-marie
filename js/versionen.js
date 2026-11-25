@@ -5,6 +5,14 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.32", datum: "2026-11-25", neu: [
+    "🍰 Neue Fertigkeit Bäckerei: Aus Gemüse und Kräutern backst du 8 Kuchen. Iss einen (Bank → Kuchen → Essen) – er hilft dir ein paar Stunden lang, z. B. +10 % Erfahrung. Neues Haustier: Backstubenmaus Zimt.",
+    "🥚 Haustier-Zucht: Zwei Haustiere auf Pflege-Stufe 10 kommen ins Brutnest (Ich → Tiere). Nach 12 Stunden schlüpft eins von 12 seltenen Mischtieren – welches, hängt von den Eltern ab.",
+    "🏰 Verliese: Kobold-Keller, Drachengruft und Sternenturm (Abenteuer → Pfade). Jedes einmal am Tag – 5 Räume, ein Endgegner und eine große Truhe. Neues Haustier: Fledermaus Gruftie.",
+    "🎪 Der Wanderzirkus kommt am 2. Wochenende jedes Monats: Aufgaben bringen Tickets, im Zirkus-Laden gibt es Zylinder, Jacke, Rahmen und das Zirkuspony Konfetti.",
+    "⭐ Prestige: Nach 100 % kannst du ein neues Abenteuer beginnen – mit 10 Prestige-Stufen, Boni für immer und eigenen Prestige-Rahmen. Haustiere, Kleiderschrank und Erfolge bleiben.",
+    "🎟️ Season-Pass für 36 Monate: Ab November 2027 gibt es jeden Monat ein ganz neues Thema mit eigenem Monster, Haustier, Hut, Pulli und Rahmen – bis Oktober 2029."
+  ] },
   { v: "1.31", datum: "2026-11-25", neu: ["📖 Der Guide in der Wiki ist jetzt sehr genau: fast 700 kleine Schritte von 0 bis 100 %. Für jede Fertigkeit gibt es Stufen-Schritte (3, 5, 7, 10, 15 … 95, 99) – mit Tipp, welche Tätigkeit gerade am meisten Erfahrung bringt, was du dafür brauchst und ab wann du wechseln solltest.", "⚔️ Bei den Kampf-Fertigkeiten steht, welches Monster gerade gut passt und welchen Kampfstil du wählen musst. 🧭 „Zeig mir wo“ springt direkt zur richtigen Stelle."] },
   { v: "1.30.4", datum: "2026-11-25", neu: ["🌙 Willkommen zurück ist auf dem iPhone repariert: Das automatische Speichern kam beim Zurückkommen zuerst dran und hat die Uhr auf „jetzt“ gestellt – deshalb wurde die Zeit, in der du weg warst, erst nach dem Fenster nachgeholt und das Fenster war leer. Jetzt wird zuerst alles nachgerechnet und dann angezeigt."] },
   { v: "1.30.3", datum: "2026-11-25", neu: ["🌙 Willkommen zurück geht nicht mehr verloren: Vorher kam auf dem iPhone oft gleichzeitig das Update-Fenster – und „Jetzt holen“ hat den Bericht weggeladen. Jetzt kommt das Update erst, wenn du den Bericht zugemacht hast, und nach einem Neustart erscheint der Bericht noch einmal.", "📊 Unter Ich → Statistik gibt es den Knopf „Was zuletzt passiert ist“ – damit siehst du den letzten Bericht jederzeit wieder."] },

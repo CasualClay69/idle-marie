@@ -238,7 +238,8 @@ function wikiGarten() {
 
 // ===================== HAUSTIERE =====================
 function haustierQuelle(h) {
-  if (h.season) return `🎟️ Season ${MONATSNAMEN[h.season - 1]}: Stufe ${SEASON.stufen}`;
+  if (h.quelle) return h.quelle;
+  if (h.season) return `🎟️ Season ${h.season} (${seasonName(h.season)}): Stufe ${SEASON.stufen}`;
   if (h.start) return "📜 Belohnung für einen frühen Auftrag";
   if (h.jagd) return `📋 Am Ende eines Monster-Auftrags: 1 von ${Math.round(1 / JAGD.haustierChance)}`;
   if (h.karte) return "🗺️ Im Tiernest auf der Entdecker-Insel";
@@ -274,10 +275,11 @@ function wikiBaumhaus() {
 
 // ===================== AUSSEHEN =====================
 function teilQuelle(t) {
+  if (t.quelle) return t.quelle.lang;
   const genaeht = TAETIGKEITEN.find(x => x.kleidung === t.id);
   if (t.gratis) return "Hast du von Anfang an";
   if (genaeht) return `🧵 Nähen ab Stufe ${genaeht.stufe}: ${wSachen(genaeht.braucht)}`;
-  if (t.season) return `🎟️ Season ${MONATSNAMEN[t.season - 1]}`;
+  if (t.season) return `🎟️ Season ${t.season} (${seasonName(t.season)})`;
   if (t.pfad) return `🧰 Schatztruhe: ${t.pfad} (${Math.round(PFAD_REGEL.rahmenChance * 100)} %)`;
   if (t.jagd) return "🏅 Jagd-Laden bei der Jägerin";
   if (t.karte) return "🌈 Auf der Regenbogen-Insel (Entdecker-Karte)";
@@ -311,9 +313,9 @@ function wikiErfolge() {
 function wikiSeason() {
   const monat = new Date().getMonth() + 1;
   let html = wEintrag("r-season2", "🎟️ So funktioniert der Season-Pass", WIKI_REGELN.find(r => r.id === "season").text());
-  html += wEintrag("s-themen", "📅 Alle Seasons im Jahr", SEASON_THEMEN.map(t => {
-    const tier = HAUSTIERE.find(h => h.id === t.haustierId);
-    return `<div class="wikiZeile${t.monat === monat ? " jetzt" : ""}"><span class="wStufe">${t.icon}</span><span class="wName">${MONATSNAMEN[t.monat - 1]}: ${t.titel}${t.monat === monat ? " <small>(jetzt)</small>" : ""}</span>
+  html += wEintrag("s-themen", "📅 Alle 36 Seasons", SEASON_ALLE.map(t => {
+    const tier = HAUSTIERE.find(h => h.id === t.haustierId), jetzt = t === aktuellesThema();
+    return `<div class="wikiZeile${jetzt ? " jetzt" : ""}"><span class="wStufe">${t.icon}</span><span class="wName">Season ${t.nr} · ${seasonName(t.nr)}: ${t.titel}${jetzt ? " <small>(jetzt)</small>" : ""}</span>
       <small>Monster: ${wName(t.monster.name)} · Haustier: ${tier ? `${tier.emoji} ${tier.name} – ${tier.text}` : ""} ${wHaken(tier && hatHaustier(tier.id))}</small></div>`;
   }).join(""));
   return html;

@@ -1,0 +1,16 @@
+"use strict";
+// Wiki-Einträge zu den neuen Inhalten (v1.32) – lädt nach daten-wiki.js
+// ===================== WIKI =====================
+WIKI_REGELN.push(
+  { id: "backen", icon: "🍰", titel: "Bäckerei und Kuchen", text: () => `<p>Bei 🍰 <b>Bäckerei</b> backst du aus 2 Gemüse und 1 Kraut einen Kuchen. Tippe einen Kuchen in der 🏦 Bank an und dann auf „Essen“ – er wirkt ein paar Stunden lang (auch wenn das Spiel zu ist). Es wirkt immer nur ein Kuchen.</p>
+    ${KUCHEN.map((k, i) => `<p>${symbolHtml(k.id, "mini")} <b>${k.name}</b> (ab Stufe ${STUFEN[i]}): ${k.text} · ${k.stunden} Std.</p>`).join("")}` },
+  { id: "zucht", icon: "🥚", titel: "Haustier-Zucht", text: () => `<p>Unter 👤 Ich → 🐾 Tiere steht das <b>Brutnest</b>. Zwei Haustiere auf Pflege-Stufe ${PFLEGE.maxStufe} bekommen zusammen ein Ei – nach ${ZUCHT.stunden} Stunden schlüpft ein <b>Mischtier</b>. Welches, hängt von den Eltern ab:</p>
+    ${MISCHTIERE.map(m => `<p>${hatHaustier(m.id) ? `${m.emoji} <b>${m.name}</b>` : "❔ <b>???</b>"}: ${m.eltern.map(e => ({ sammeln: "Sammel-Tier", machen: "Herstell-Tier", kampf: "Kampf-Tier", glueck: "Glücks-Tier", season: "Season-Tier", chef: "Chef-Tier", "*": "irgendein Tier" }[e])).join(" + ")}${hatHaustier(m.id) ? ` – ${m.text}` : ""}</p>`).join("")}
+    <p>Sammel-Tiere helfen beim Sammeln (doppelt), Herstell-Tiere machen schneller, Kampf-Tiere helfen im Kampf, Glücks-Tiere geben Erfahrung oder Münzen. Chef-Tiere bekommt man von Abenteuer-Chefs.</p>` },
+  { id: "zirkus", icon: "🎪", titel: "Der Wanderzirkus", text: () => `<p>Am <b>2. Wochenende jedes Monats</b> (Samstag und Sonntag) kommt der Wanderzirkus. Oben auf der 🌟 Fertigkeiten-Seite siehst du ihn. Erledige die Zirkus-Aufgaben und hol dir 🎟️ Tickets. Im Zirkus-Laden gibt es dafür einen Zylinder, eine Jacke, einen Rahmen, das Zirkuspony Konfetti und mehr. Tickets bleiben dir bis zum nächsten Zirkus.</p>` },
+  { id: "prestige", icon: "⭐", titel: "Prestige: Neues Abenteuer", text: () => `<p>Wer <b>100 %</b> geschafft hat, kann unter 👤 Ich → ⚙️ Optionen ein <b>neues Abenteuer</b> beginnen: Fast alles fängt von vorn an, aber Haustiere, Kleiderschrank, Erfolge und Season bleiben. Jede Prestige-Stufe gibt für immer +${Math.round(PRESTIGE.xp * 100)} % Erfahrung, +${Math.round(PRESTIGE.muenzen * 100)} % Münzen, +${PRESTIGE.offline} Std. Offline-Zeit, +${PRESTIGE.bank} Bankfächer und einen eigenen Prestige-Rahmen.</p>
+    <p>Es gibt ${PRESTIGE.max} Stufen. Prestige 1 braucht 100 %, ab Prestige 2 brauchst du eine hohe Gesamtstufe (${[2, 3, 4, 5, 10].map(n => `P${n}: ${zahl(1000 + (n - 2) * 175)}`).join(", ")}).</p>` },
+  { id: "verliese", icon: "🏰", titel: "Verliese", text: () => `<p>Unter ⚔️ Abenteuer → 🗺️ Pfade findest du drei <b>Verliese</b>. In jedes darfst du <b>einmal am Tag</b>: 5 Räume mit Monstern, dann ein starker Endgegner – ohne Ausruhen dazwischen. Am Ende wartet eine große Verlies-Truhe mit vielen Münzen, Barren, Essen, Edelsteinen, Goldsplittern und Kuchen. Mit Glück liegt ein besonderes Kleidungsstück darin – oder die Fledermaus Gruftie kommt mit.</p>
+    ${DUNGEONS.map(d => `<p>${d.icon} <b>${d.name}</b> (ab Kampfstufe ${d.ab}): ${d.liste.map(id => wName(MONSTER[id].name)).join(", ")}</p>`).join("")}` },
+);
+

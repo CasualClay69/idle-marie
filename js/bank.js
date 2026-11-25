@@ -36,7 +36,7 @@ const BANK_ARTEN = [
   { id: "holz",       name: "Holz",       icon: "🪵", muster: ["holz", "brett"] },
   { id: "fisch",      name: "Fisch",      icon: "🐟", muster: ["fisch"] },
   { id: "bergbau",    name: "Bergbau",    icon: "⛏️", muster: ["erz", "barren", "stein"] },
-  { id: "essen",      name: "Essen",      icon: "🍲", muster: ["essen", "gericht", "leckerli"] },
+  { id: "essen",      name: "Essen",      icon: "🍲", muster: ["essen", "gericht", "leckerli", "kuchen"] },
   { id: "garten",     name: "Garten",     icon: "🌱", muster: ["gemuese", "kraut", "faser", "samen-gemuese", "samen-kraut", "samen-faser"] },
   { id: "basteln",    name: "Basteln",    icon: "🧸", muster: ["schnitz", "stoff", "kuschel"] },
   { id: "ausruestung", name: "Ausrüstung", icon: "⚔️", muster: ["schwert", "bogen", "stab", "helm", "schild", "ruestung", "ring", "kette", "pfeil", "perle"] },

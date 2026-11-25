@@ -90,7 +90,7 @@ function legeAb(platz) {
 // ----- Kampf starten / beenden -----
 function starteKampf(monsterId, pfadId = null) {
   if (monsterId === "season") aktualisiereSeasonMonster();
-  const pfad = pfadId && PFADE.find(p => p.id === pfadId);
+  const pfad = pfadId && pfadNachId(pfadId);
   if (pfad) monsterId = pfad.liste[0];
   const m = MONSTER[monsterId];
   if (!m) return false;
@@ -173,6 +173,7 @@ function kampfTick(jetzt, ergebnis) {
       if (a.mhp <= 0) {
         besiegt(m, ergebnis);
         if (a.pfad) pfadWeiter(a, ergebnis);
+        if (!spiel.aktiv) break;   // Verlies zu Ende
         a.pauseBis = naechster + KAMPF.pauseNachSieg * 1000;
       }
     } else {
@@ -189,7 +190,7 @@ function kampfTick(jetzt, ergebnis) {
       if (spiel.hp <= 0) {
         logge(`😴 ${figurNameKurz()} ist zu müde und geht nach Hause.`);
         ergebnis.gestoppt = a.pfad
-          ? `Der ${PFADE.find(p => p.id === a.pfad.id).name} war diesmal zu schwer – nimm mehr Essen mit oder werde noch etwas stärker!`
+          ? `Der ${pfadNachId(a.pfad.id).name} war diesmal zu schwer – nimm mehr Essen mit oder werde noch etwas stärker!`
           : `${figurNameKurz()} war zu müde und ist nach Hause gegangen – nimm mehr Essen mit!`;
         ergebnis.muede = true;
         spiel.hp = maxHp();
@@ -248,8 +249,9 @@ function besiegt(m, ergebnis) {
 // ----- Abenteuer-Pfade -----
 const zufallAus = ([a, b]) => a + Math.floor(Math.random() * (b - a + 1));
 function pfadWeiter(a, ergebnis) {
-  const p = PFADE.find(x => x.id === a.pfad.id);
+  const p = pfadNachId(a.pfad.id);
   a.pfad.schritt++;
+  if (p.dungeon && a.pfad.schritt >= p.liste.length) { verliesEnde(p, ergebnis); return; }   // Verlies geschafft: für heute Schluss
   if (a.pfad.schritt >= p.liste.length) {
     ergebnis.ereignisse.push({ truhe: oeffneTruhe(p) });
     a.pfad.schritt = 0;

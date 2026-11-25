@@ -149,6 +149,16 @@ const WIKI_REGELN = [
 // Zusätzliche Guide-Schritte direkt NACH einem bestimmten Auftrag (Titel). So ändert sich die
 // Nummerierung der Aufträge nicht (spiel.quest zählt mit Nummern!).
 const GUIDE_EINSCHUEBE = [
+  { nach: "Trink einen Trank", schritt: { id: "backen:1", icon: "🍰", titel: "Back einen Karotten-Muffin",
+    text: "Bei 🍰 Bäckerei backst du aus 2 Salat und 1 Minze einen Karotten-Muffin.", ziel: 1, wert: () => gemacht("kuchen0"), hilfe: { fertigkeit: "backen", ziel: '.taetigkeit[data-id="backen-0"]' } } },
+  { nach: "Trink einen Trank", schritt: { id: "backen:2", icon: "🍰", titel: "Iss einen Kuchen",
+    text: "Tippe den Kuchen in der 🏦 Bank an und dann auf „Essen“. Er hilft dir ein paar Stunden lang.", ziel: 1, wert: () => spiel.statistik.kuchen || 0, hilfe: { seite: "seiteBank" } } },
+  { nach: "Ein Haustier auf Stufe 10", schritt: { id: "zucht:1", icon: "🥚", titel: "Züchte ein Mischtier",
+    text: "Bring ein zweites Haustier auf Stufe 10 und setz beide ins 🥚 Brutnest (Ich → Tiere). Nach 12 Stunden schlüpft ein Mischtier!", ziel: 1,
+    wert: () => (spiel.haustiere || []).filter(id => id.startsWith("zucht")).length, hilfe: { seite: "seiteIch", ichTab: "tiere", ziel: "#brutnest" } } },
+  { nach: "Schaffe den Spukgang", schritt: { id: "verlies:1", icon: "🏰", titel: "Schaffe den Kobold-Keller",
+    text: "Unter ⚔️ Abenteuer → 🗺️ Pfade gibt es Verliese – jedes einmal am Tag. Nimm viel Essen mit!", ziel: 1, wert: () => spiel.statistik.verliese || 0,
+    hilfe: { seite: "seiteAbenteuer", abenteuerTab: "pfade", ziel: ".dungeonKarte" } } },
   { nach: "Verdiene 30 Münzen", schritt: { id: "rad:1", icon: "🎁", titel: "Dreh das Glücksrad",
     text: "Oben auf der 🌟 Fertigkeiten-Seite wartet jeden Tag ein Geschenk. Dreh das Glücksrad – am besten jeden Tag!",
     ziel: 1, wert: () => spiel.gluecksrad?.gedreht || 0, hilfe: { seite: "seiteFertigkeiten", ziel: "#gluecksKarte" } } },
@@ -312,7 +322,7 @@ function guideVervollstaendigen() {
   schritt({ id: "m:alle", kapitel: K2, icon: "💤", titel: "Jedes Monster einmal",
     text: "Lass jedes Monster mindestens einmal einschlafen – auch die Pfad-Wächter. In der Wiki unter ⚔️ Abenteuer siehst du, welche dir noch fehlen.",
     ziel: monster().length, wert: () => monster().filter(id => (spiel.besiegt?.[id] || 0) > 0).length, hilfe: { seite: "seiteAbenteuer", abenteuerTab: "gebiete" } });
-  const teile = () => alleTeile().filter(t => !t.season);
+  const teile = () => alleTeile().filter(t => !t.season && !t.prestige);
   schritt({ id: "a:alle", kapitel: K2, icon: "👗", titel: "Kleiderschrank komplett",
     text: "Kauf, näh und finde alle Hüte, Kleider und Rahmen (ohne Season-Sachen). Was woher kommt, steht in der Wiki unter 👗 Aussehen.",
     ziel: teile().length, wert: () => teile().filter(besitztTeil).length, hilfe: { seite: "seiteIch", ichTab: "figur", ziel: "#schrankRaster" } });

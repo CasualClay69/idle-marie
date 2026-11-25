@@ -93,7 +93,7 @@ function zeigeRueckkehr(s, weg) {
   const truhen = (spiel.statistik.truhen || 0) - s.truhen;
   if (imKampf) {
     const zielId = s.aktiv.slice(6);
-    const pfad = typeof PFADE !== "undefined" && PFADE.find(p => p.id === zielId);
+    const pfad = typeof pfadNachId === "function" && pfadNachId(zielId);
     const gegen = pfad ? `auf dem ${pfad.name}` : MONSTER[zielId] ? `gegen ${MONSTER[zielId].name}` : "im Abenteuer";
     const kampfZeilen = [];
     for (const f of FERTIGKEITEN.filter(f => f.art === "kampf")) {

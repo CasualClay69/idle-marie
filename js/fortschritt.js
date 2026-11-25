@@ -36,7 +36,7 @@ const FORTSCHRITT_BEREICHE = [
     stand: () => { const p = PLAETZE.map(x => x.id); return [p.reduce((s, x) => s + ruestungsStufe(x) + 1, 0), p.length * ERZE.length]; },
     hilfe: { seite: "seiteAbenteuer", abenteuerTab: "ausruestung" } },
   { id: "kleider", name: "Kleiderschrank (ohne Season)", icon: "👗", gewicht: 5,
-    stand: () => { const t = alleTeile().filter(x => !x.season); return [t.filter(besitztTeil).length, t.length]; },
+    stand: () => { const t = alleTeile().filter(x => !x.season && !x.prestige); return [t.filter(besitztTeil).length, t.length]; },
     hilfe: { seite: "seiteIch", ichTab: "figur", ziel: "#schrankRaster" } },
   { id: "monster", name: "Jedes Monster einmal", icon: "💤", gewicht: 4,
     stand: () => { const m = Object.keys(MONSTER).filter(id => id !== "season"); return [m.filter(id => (spiel.besiegt?.[id] || 0) > 0).length, m.length]; },

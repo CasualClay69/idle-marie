@@ -103,7 +103,7 @@ function schleifenSchritt() {
     pruefeQuest();
     if (!document.hidden) merkeSchnappschuss();
     if (pruefeSeasonWechsel()) { speichern(); melde(`🎟️ Neue Season-Aufgaben sind da!`); }
-    if (aktuelleSeite === "seiteFertigkeiten") { zeichneSeasonBanner(); zeichneGluecksKarte(); }
+    if (aktuelleSeite === "seiteFertigkeiten") { zeichneSeasonBanner(); zeichneGluecksKarte(); zeichneZirkusKarte(); }
     if (aktuelleSeite === "seiteSeason") {
       const stand = spiel.season.aufgaben.map(a => aufgabeStand(a).wert).join();
       if (stand !== letzterSeasonStand) { letzterSeasonStand = stand; zeichneSeason(); }
@@ -267,6 +267,8 @@ function starteSpiel() {
   richteTierMarkenEin();
   richteDanachEin();
   richteEpWochenendeEin();
+  $("zirkusKarte").addEventListener("click", () => { ton.klick(); zeigeZirkus(); });
+  $("zirkusZu").addEventListener("click", () => { ton.klick(); $("zirkusOverlay").hidden = true; });
   richteHeuteEin();
   richteWikiEin();
   holeOfflineNach();

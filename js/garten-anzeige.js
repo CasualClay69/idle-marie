@@ -132,6 +132,7 @@ function zeichneTrankLeiste() {
   const leiste = $("trankLeiste");
   const aktiv = aktiveTraenke();
   const feuer = feuerBrennt() ? `<span class="trankChip feuerChip" title="Großes Lagerfeuer">🔥 +${Math.round(feuerBonus() * 100)} % EP <b>${feuerRestText()}</b></span>` : "";
-  leiste.hidden = !aktiv.length && !feuer;
-  leiste.innerHTML = feuer + aktiv.map(t => `<span class="trankChip" title="${t.text}">${symbolHtml(t.id, "mini")} ${t.name} <b>${t.ladungen}</b></span>`).join("");
+  const kuchen = typeof kuchenChip === "function" ? kuchenChip() : "";
+  leiste.hidden = !aktiv.length && !feuer && !kuchen;
+  leiste.innerHTML = feuer + kuchen + aktiv.map(t => `<span class="trankChip" title="${t.text}">${symbolHtml(t.id, "mini")} ${t.name} <b>${t.ladungen}</b></span>`).join("");
 }

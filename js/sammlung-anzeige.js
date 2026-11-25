@@ -5,11 +5,12 @@
 
 function haustierHerkunft(h) {
   const wo = { holz: "beim Holzsammeln", angeln: "beim Angeln", bergbau: "im Bergbau", garten: "beim Ernten im Garten",
-    kochen: "beim Kochen", schmieden: "beim Schmieden", schnitzen: "beim Schnitzen", traenke: "beim Tränke-Brauen", bauen: "beim Bretter-Sägen", naehen: "beim Nähen",
+    kochen: "beim Kochen", backen: "beim Backen", schmieden: "beim Schmieden", schnitzen: "beim Schnitzen", traenke: "beim Tränke-Brauen", bauen: "beim Bretter-Sägen", naehen: "beim Nähen",
     schmuck: "beim Goldschmieden", sterne: "beim Sternegucken", feuer: "am Lagerfeuer", turnen: "auf dem Abenteuer-Spielplatz", graben: "beim Ausgraben" };
+  if (h.quelle) return h.quelle;
   if (h.start) return "kommt als Belohnung für einen Auftrag";
   if (h.truhe) return "versteckt sich in den Schatztruhen der Abenteuer-Pfade";
-  if (h.season) return `Belohnung der Season im ${MONATSNAMEN[h.season - 1]}`;
+  if (h.season) return `Belohnung der Season ${h.season} (${seasonName(h.season)})`;
   if (h.jagd) return "kommt manchmal am Ende eines Monster-Auftrags zu dir";
   if (h.karte) return "wohnt in einem Nest auf der Entdecker-Insel";
   if (h.advent) return "wartet hinter Türchen 24 im Adventskalender";

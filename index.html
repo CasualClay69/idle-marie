@@ -39,6 +39,7 @@
   <script src="js/daten-gebiet7.js" defer></script>
   <script src="js/daten-freunde.js" defer></script>
   <script src="js/daten-karte.js" defer></script>
+  <script src="js/daten-extras.js" defer></script>
   <script src="js/symbole.js" defer></script>
   <script src="js/ikonen.js" defer></script>
   <script src="js/ikonen-natur.js" defer></script>
@@ -72,6 +73,8 @@
   <script src="js/gluecksrad.js" defer></script>
   <script src="js/advent.js" defer></script>
   <script src="js/daten-gebiet8.js" defer></script>
+  <script src="js/daten-season2.js" defer></script>
+  <script src="js/extras.js" defer></script>
   <script src="js/uebung-anzeige.js" defer></script>
   <script src="js/fortschritt.js" defer></script>
   <script src="js/sterne-anzeige.js" defer></script>
@@ -89,6 +92,7 @@
   <script src="js/heute.js" defer></script>
   <script src="js/rueckkehr.js" defer></script>
   <script src="js/daten-wiki.js" defer></script>
+  <script src="js/wiki-extras.js" defer></script>
   <script src="js/guide-stufen.js" defer></script>
   <script src="js/wiki.js" defer></script>
   <script src="js/wiki-anzeige.js" defer></script>
@@ -141,6 +145,7 @@
         <div id="heuteKarte" class="heuteKarte"></div>
         <button type="button" id="adventKarte" class="gluecksKarte adventKarte" hidden></button>
         <button type="button" id="gluecksKarte" class="gluecksKarte"></button>
+        <button type="button" id="zirkusKarte" class="gluecksKarte zirkusKarte" hidden></button>
         <button type="button" id="seasonBanner" class="seasonBanner"></button>
         <h2 class="seitenTitel">🌟 Fertigkeiten <small id="gesamtStufe"></small><button type="button" id="fortschrittKnopf" class="fsPille"></button></h2>
         <div id="fertigkeitenRaster" class="fertigkeitenRaster"></div>
@@ -213,6 +218,7 @@
         <div class="karte ichTeil" data-teil="tiere">
           <h3>🐾 Haustiere <small id="haustierZahl"></small></h3>
           <div id="futternapf"></div>
+          <div id="brutnest" class="brutnest"></div>
           <div id="haustierListe" class="haustierListe"></div>
           <p class="hinweis">Tippe ein Haustier an, um es zu streicheln, zu füttern oder zum Begleiter zu machen. Je höher seine Stufe, desto mehr hilft es dir.</p>
         </div>
@@ -245,6 +251,8 @@
           <label class="schalter"><input type="checkbox" id="tonAn"> 🔊 Töne</label>
           <button id="loeschen" class="knopf gefahr" type="button">🗑️ Spielstand löschen</button>
         </div>
+
+        <div class="karte ichTeil prestigeKarte" data-teil="optionen" id="prestigeKarte"></div>
 
         <div class="karte ichTeil" data-teil="optionen">
           <h3>💾 Spielstand sichern</h3>
@@ -479,6 +487,13 @@
       <button type="button" class="zuX" id="finaleX" aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6L18 18M18 6L6 18" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg></button>
       <div id="finaleInhalt"></div>
       <button id="finaleWeiter" class="knopf" type="button">🌈 Weiterspielen</button>
+    </div>
+  </div>
+
+  <div id="zirkusOverlay" class="overlay" hidden>
+    <div class="fenster zirkusFenster">
+      <button type="button" class="zuX" id="zirkusZu" aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6L18 18M18 6L6 18" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg></button>
+      <div id="zirkusInhalt"></div>
     </div>
   </div>
 

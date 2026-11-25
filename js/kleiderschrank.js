@@ -66,7 +66,8 @@ function zeichneKleiderschrank() {
     else if (t.karte) status = "🗺️ Entdecker-Insel";
     else if (t.advent) status = "🎄 Adventskalender";
     else if (t.finale) status = "🌈 Finale";
-    else status = `🎟️ ${MONATSNAMEN[t.season - 1]}`;
+    else if (t.quelle) status = t.quelle.kurz;
+    else status = `🎟️ ${seasonName(t.season)}`;
     const vorschau = figurSvg(spiel.figur, { ...a, [kat.id]: t.id });
     return `<button type="button" class="schrankTeil${an ? " an" : ""}${hat ? "" : " zu"}${!hat && t.preis && spiel.muenzen < t.preis ? " teuer" : ""}" data-id="${t.id}">
       <span class="schrankBild">${vorschau}</span><b>${t.name}</b><small>${status}</small></button>`;
@@ -84,6 +85,8 @@ function zeichneKleiderschrank() {
       melde(`🎉 ${t.name} gekauft und angezogen!`, "gross");
     } else if (t.pfad) {
       ton.nein(); melde(`🧰 ${t.name} liegt manchmal in der Schatztruhe vom ${t.pfad}`); return;
+    } else if (t.quelle) {
+      ton.nein(); melde(t.quelle.lang); return;
     } else if (t.finale) {
       ton.nein(); melde(`🌈 ${t.name} bekommst du, wenn du den Regenbogenpfad schaffst – das große Finale!`); return;
     } else if (t.advent) {
@@ -97,7 +100,7 @@ function zeichneKleiderschrank() {
     } else if (t.questNr) {
       ton.nein(); melde(`📜 ${t.name} gibt es als Belohnung für Auftrag ${t.questNr}`); return;
     } else {
-      ton.nein(); melde(`🎟️ ${t.name} gibt es in der Season im ${MONATSNAMEN[t.season - 1]}`); return;
+      ton.nein(); melde(`🎟️ ${t.name} gibt es in der Season ${t.season} (${seasonName(t.season)})`); return;
     }
     speichern();
     zeichneKopf();

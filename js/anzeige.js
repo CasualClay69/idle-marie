@@ -72,7 +72,7 @@ function zeichneAktivLeiste() {
     const m = MONSTER[spiel.aktiv.monster];
     leiste.classList.remove("ruhe");
     $("aktivSymbol").innerHTML = monsterSvg(m.aussehen);
-    const pfad = spiel.aktiv.pfad && PFADE.find(p => p.id === spiel.aktiv.pfad.id);
+    const pfad = spiel.aktiv.pfad && pfadNachId(spiel.aktiv.pfad.id);
     $("aktivTitel").textContent = pfad ? `${figurName()} auf dem ${pfad.name} (${spiel.aktiv.pfad.schritt + 1}/${pfad.liste.length})` : `${figurName()} ist im Abenteuer: ${m.name}`;
     leiste.style.setProperty("--farbe", fertigkeit(aktiverStil()).farbe);
     return;
@@ -101,7 +101,7 @@ function zeichneAktivBalken() {
 // ----- Übersicht aller Fertigkeiten -----
 function zeichneFertigkeiten() {
   zeichneSeasonBanner();
-  zeichneGluecksKarte();
+  zeichneGluecksKarte(); zeichneZirkusKarte();
   zeichneFortschrittKnopf();
   heuteText = ""; zeichneHeute();
   zeichneAdventKarte();
@@ -228,6 +228,7 @@ function zeigeGegenstand(id) {
     ${g.trank ? `<p class="hinweis">🧪 ${g.trank.text} · wirkt ${g.trank.ladungen}-mal${spiel.traenke?.[id] ? ` · noch aktiv: ${spiel.traenke[id]}` : ""}</p>
       <button type="button" class="knopf" id="trinken">🧪 Trinken</button>` : ""}
     ${g.heilt ? `<button type="button" class="knopf" id="alsEssen">🍽️ Im Kampf essen${spiel.essen === id ? " ✓" : ""}</button>` : ""}
+    ${typeof gegenstandExtra === "function" ? gegenstandExtra(id) : ""}
     <div class="verkaufKnoepfe"></div>`;
   inhalt.querySelector("#anlegen")?.addEventListener("click", () => {
     if (ruesteAus(id)) { ton.klick(); melde(`🎒 ${g.name} angelegt`); speichern(); zeichneSeite(); zeigeGegenstand(id); }
@@ -235,6 +236,7 @@ function zeigeGegenstand(id) {
   inhalt.querySelector("#trinken")?.addEventListener("click", () => {
     if (trinke(id)) { ton.stufe(); melde(`🧪 ${g.name} getrunken – ${g.trank.text}!`, "gross"); speichern(); zeichneTrankLeiste(); zeichneSeite(); zeigeGegenstand(id); }
   });
+  if (typeof gegenstandExtraVerdrahten === "function") gegenstandExtraVerdrahten(inhalt, id);
   inhalt.querySelector("#alsEssen")?.addEventListener("click", () => {
     ton.klick(); spiel.essen = id; melde(`🍽️ ${figurName()} nimmt ${g.name} mit ins Abenteuer`); speichern(); zeigeGegenstand(id);
   });
@@ -327,7 +329,8 @@ function zeichneIch() {
   for (const k of document.querySelectorAll("#seiteIch .ichTeil")) k.hidden = k.dataset.teil !== ichTab;
   if (ichTab === "figur") zeichneKleiderschrank();
   if (ichTab === "liste") { zeichneBestenliste(); ladeListe(); }
-  if (ichTab === "tiere") { zeichneHaustiere(); zeichneFutternapf(); }
+  if (ichTab === "tiere") { zeichneHaustiere(); zeichneFutternapf(); zeichneBrutnest(); }
+  if (ichTab === "optionen") zeichnePrestige();
   if (ichTab === "erfolge") zeichneErfolge();
   zeichneFigurAuswahl($("figurAuswahlIch"), id => {
     ton.klick(); spiel.figur = id; speichern(); zeichneKopf(); zeichneAktivLeiste(); zeichneIch();

@@ -11,6 +11,7 @@ function heuteListe() {
   const dazu = (id, icon, text, los, erledigt = false) => liste.push({ id, icon, text, los, erledigt });
   const geh = h => () => zeigeWegHilfe(h);
 
+  if (typeof heuteExtras === "function") heuteExtras(dazu, geh);
   // EP-Wochenende
   if (epWochenendeAktiv()) dazu("epwe", "🎉", `EP-Wochenende: +${Math.round(EP_WOCHENENDE.bonus * 100)} % Erfahrung bei allem!`, () => kompass());
   // Die Figur hat nichts zu tun
