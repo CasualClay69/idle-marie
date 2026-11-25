@@ -38,8 +38,10 @@ function laden() {
     if (spiel.figur && !FIGUREN.some(f => f.id === spiel.figur)) spiel.figur = null;   // Figur gibt es nicht mehr
   } catch (e) { /* kaputter oder gesperrter Speicher -> neues Spiel */ }
 }
+// letzteZeit = wann das Spiel zuletzt WIRKLICH lief (setzt die Spielschleife, nicht das Speichern).
+// Sonst setzt auf dem iPhone der Speicher-Timer, der beim Zurückkommen als Erstes feuert, die Uhr auf "jetzt"
+// und die Zeit, in der man weg war, wird nicht mehr nachgeholt.
 function speichern() {
-  spiel.letzteZeit = Date.now();
   try { localStorage.setItem(SPEICHER_SCHLUESSEL, JSON.stringify(spiel)); } catch (e) { /* Speicher voll/gesperrt */ }
 }
 
@@ -240,8 +242,8 @@ function wechsleZuDanach(start, grund, ergebnis) {
 
 // Beim Öffnen: die Zeit, in der das Spiel zu war, nachholen (höchstens offlineMaxStunden)
 function holeOfflineNach() {
-  if (!spiel.aktiv) return null;
   const jetzt = Date.now();
+  if (!spiel.aktiv) { spiel.letzteZeit = jetzt; return null; }
   const weg = jetzt - spiel.letzteZeit;
   if (weg < 60 * 1000) return null;
   const grenze = (SPIEL.offlineMaxStunden + baumhausBonus("offline")) * 3600 * 1000;   // das Bett im Baumhaus verlängert
@@ -262,6 +264,7 @@ function holeOfflineNach() {
     if (jetzt - spiel.aktiv.start > grenze) spiel.aktiv.start = jetzt - grenze;
     ergebnis = tick(jetzt);
   }
+  spiel.letzteZeit = jetzt;   // nachgeholt – ein zweiter Aufruf tut nichts mehr
   ergebnis.weg = Math.min(weg, grenze);
   ergebnis.stufenVorher = stufenVorher;
   ergebnis.xpVorher = xpVorher;

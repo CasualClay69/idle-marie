@@ -96,6 +96,7 @@ function schleifenSchritt() {
     zeichneKopf(); zeichneAktivLeiste(); zeichneSeite();
   }
   verarbeite(tick());
+  if (!document.hidden) spiel.letzteZeit = Date.now();   // das Spiel läuft gerade wirklich
   if (Date.now() - letzteGartenPruefung > 1000) {
     letzteGartenPruefung = Date.now();
     sekundenTakt();

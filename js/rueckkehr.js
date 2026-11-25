@@ -30,6 +30,7 @@ function pruefeRueckkehr() {
   if (!s || !spiel.figur) { merkeSchnappschuss(); return false; }
   const weg = Date.now() - s.zeit;
   if (weg < RUECKKEHR.abMinuten * 60000) { merkeSchnappschuss(); return false; }
+  holeOfflineNach();   // erst alles nachrechnen, was in der Zeit passiert ist – dann vergleichen
   zeigeRueckkehr(s, weg);
   merkeSchnappschuss();
   return true;
