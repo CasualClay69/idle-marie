@@ -218,6 +218,7 @@ function verbraucheMunition(art, ergebnis) {
 
 function besiegt(m, ergebnis) {
   if (typeof karteFallen === "function") karteFallen(m);   // Sammelkarten
+  if (typeof eventFund === "function") eventFund();       // Jahres-Events
   const statKey = { nah: "besiegtNah", fern: "besiegtFern", magie: "besiegtMagie" }[kampfArt()];
   spiel.statistik[statKey] = (spiel.statistik[statKey] || 0) + 1;
   ergebnis.durchgaenge++;

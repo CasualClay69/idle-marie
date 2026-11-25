@@ -15,6 +15,7 @@ async function ladeListe(erzwingen = false) {
   try {
     if (mitglied) await meldeWerte();
     listeCache = await holeListe();
+    if (typeof ladeTitel === "function") await ladeTitel();
     listeZeit = Date.now();
     listeFehler = "";
   } catch (e) { listeFehler = e.message; }
@@ -52,7 +53,7 @@ function zeichneBestenliste() {
       const wert = listeTab === "woche" ? `${zahl(e.woche_xp)} EP` : `Stufe ${e.gesamtstufe}`;
       return `<li class="${ich ? "ich" : ""}"><span class="platzNr">${["🥇", "🥈", "🥉"][i] || i + 1}</span>
         <span class="listeFigur">${(({ figur, look }) => figurSvg(figur, look))(leseAussehenCode(e.figur))}${begleiter ? `<i>${begleiter.emoji}</i>` : ""}</span>
-        <span class="listeName"><b>${textSicher(e.name)}${e.wochen_sieger ? " 👑" : ""}</b>
+        <span class="listeName"><b>${textSicher(e.name)}${e.wochen_sieger ? " 👑" : ""}</b>${typeof titelOnline !== "undefined" && titelOnline[e.spieler_id] && titelText(titelOnline[e.spieler_id]) ? `<small class="listeTitel">${textSicher(titelText(titelOnline[e.spieler_id]))}</small>` : ""}
           <small>⚔️ ${e.kampfstufe} · 💤 ${zahl(e.monster)} · 🐾 ${e.haustiere} · 🏆 ${e.erfolge}</small></span>
         <span class="listeWert">${wert}</span></li>`;
     }).join("")}</ol>`;
@@ -117,7 +118,7 @@ async function pruefeLauftext() {
 }
 // Lauftext = Nachricht vom Admin + Ankündigung des EP-Wochenendes (das geht auch ohne Internet)
 function zeigeLauftext() {
-  const text = [epWochenendeText(), lauftextOnline].filter(Boolean).join("     •     ");
+  const text = [typeof eventLauftext === "function" ? eventLauftext() : "", epWochenendeText(), lauftextOnline].filter(Boolean).join("     •     ");
   if (text === lauftextJetzt) return;
   lauftextJetzt = text;
   const leiste = $("lauftext");

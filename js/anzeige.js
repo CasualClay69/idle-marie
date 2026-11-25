@@ -159,6 +159,7 @@ function zeichneFertigkeit() {
       <div class="balken dick"><div style="width:${(fortschrittInStufe(xp) * 100).toFixed(1)}%"></div></div>
       <small>${zahl(xp)} / ${zahl(naechste)} EP${werkzeugText ? ` · ${werkzeugText}` : ""}</small>
       ${topfFertigkeiten().includes(f.id) ? `<button type="button" class="topfMini" id="topfMini">🫙 Übungs-Topf ${Math.floor(topfAnteil(f.id) * 100)} %</button>` : ""}
+      ${f.id === "lesen" && typeof zeigeBuecher === "function" ? `<button type="button" class="topfMini" id="buecherKnopf">📚 Meine Bücher ${GESCHICHTEN.filter(b => buchFertig(b.id)).length} / ${GESCHICHTEN.length}</button>` : ""}
       ${f.id === "angeln" && typeof zeigeAngelWettbewerb === "function" ? `<button type="button" class="topfMini" id="angelKnopf">🏆 Angel-Wettbewerb${new Date(Date.now()).getDay() === 5 ? " – heute!" : ""}</button>` : ""}
       ${["kochen", "traenke", "backen"].includes(f.id) && typeof zeigeKochbuch === "function" ? `<button type="button" class="topfMini" id="kochbuchMini">📖 Kochbuch ${rezepteAnzahl()} / ${ALLE_REZEPTE.length}</button>` : ""}
     </div>`;
@@ -335,7 +336,7 @@ function zeichneIch() {
   if (ichTab === "liste") { zeichneBestenliste(); ladeListe(); }
   if (ichTab === "tiere") { zeichneHaustiere(); zeichneTierExtras(); zeichneFutternapf(); zeichneBrutnest(); }
   if (ichTab === "optionen") zeichnePrestige();
-  if (ichTab === "erfolge") zeichneErfolge();
+  if (ichTab === "erfolge") { zeichneErfolge(); zeichneTitel(); }
   zeichneFigurAuswahl($("figurAuswahlIch"), id => {
     ton.klick(); spiel.figur = id; speichern(); zeichneKopf(); zeichneAktivLeiste(); zeichneIch();
   });

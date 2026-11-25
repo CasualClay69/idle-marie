@@ -30,7 +30,8 @@ function zusatzAllgemein(art) {
   return kuchenBonus(art) + prestigeBonus(art)
     + (typeof kochbuchBonus === "function" ? kochbuchBonus(art) + wetterBonus(art) : 0)   // Kochbuch & Wetter (extras2.js)
     + (typeof extras3Bonus === "function" ? extras3Bonus(art) : 0)   // Garten-Deko & Sammelkarten (extras3.js)
-    + (typeof extras4Bonus === "function" ? extras4Bonus(art) : 0);   // Gießkanne & Laden-Verbesserungen (extras4.js)
+    + (typeof extras4Bonus === "function" ? extras4Bonus(art) : 0)   // Gießkanne & Laden-Verbesserungen (extras4.js)
+    + (typeof extras5Bonus === "function" ? extras5Bonus(art) : 0);   // Bücher (extras5.js)
 }
 
 // ===================== 🍰 KUCHEN =====================

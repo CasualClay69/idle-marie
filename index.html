@@ -40,6 +40,7 @@
   <script src="js/daten-freunde.js" defer></script>
   <script src="js/daten-karte.js" defer></script>
   <script src="js/daten-extras.js" defer></script>
+  <script src="js/daten-lesen.js" defer></script>
   <script src="js/symbole.js" defer></script>
   <script src="js/ikonen.js" defer></script>
   <script src="js/ikonen-natur.js" defer></script>
@@ -79,6 +80,7 @@
   <script src="js/extras3.js" defer></script>
   <script src="js/gemeinschaft.js" defer></script>
   <script src="js/extras4.js" defer></script>
+  <script src="js/extras5.js" defer></script>
   <script src="js/uebung-anzeige.js" defer></script>
   <script src="js/fortschritt.js" defer></script>
   <script src="js/sterne-anzeige.js" defer></script>
@@ -150,6 +152,7 @@
         <button type="button" id="adventKarte" class="gluecksKarte adventKarte" hidden></button>
         <button type="button" id="gluecksKarte" class="gluecksKarte"></button>
         <button type="button" id="zirkusKarte" class="gluecksKarte zirkusKarte" hidden></button>
+        <button type="button" id="eventKarte" class="gluecksKarte eventKarte" hidden></button>
         <button type="button" id="seasonBanner" class="seasonBanner"></button>
         <h2 class="seitenTitel">🌟 Fertigkeiten <small id="gesamtStufe"></small><button type="button" id="fortschrittKnopf" class="fsPille"></button></h2>
         <div id="fertigkeitenRaster" class="fertigkeitenRaster"></div>
@@ -227,6 +230,7 @@
           <div id="haustierListe" class="haustierListe"></div>
           <p class="hinweis">Tippe ein Haustier an, um es zu streicheln, zu füttern oder zum Begleiter zu machen. Je höher seine Stufe, desto mehr hilft es dir.</p>
         </div>
+        <div class="karte ichTeil titelKarte" data-teil="erfolge" id="titelKarte"></div>
         <div class="karte ichTeil" data-teil="erfolge">
           <h3>🏆 Erfolge <small id="erfolgZahl"></small></h3>
           <div id="erfolgListe" class="erfolgListe"></div>

@@ -1485,3 +1485,12 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .tauschZeile { gap: 6px; } .tauschZeile .knopf.klein { padding: 4px 8px; font-size: 0.75rem; white-space: nowrap; }
 .zubehoerKnopf { border: 2px dashed var(--rand); background: #fff; border-radius: 50%; width: 34px; height: 34px; padding: 0; font-size: 1rem; flex: none; }
 .zubehoerKnopf.an { border-style: solid; border-color: var(--akzent); background: #fff0f7; }
+
+/* ----- v1.36: Bücher, Titel, Events ----- */
+.buchText { margin: 4px 0; font-style: italic; line-height: 1.45; }
+.titelListe { display: flex; flex-wrap: wrap; gap: 5px; }
+.titelWahl { padding: 5px 10px; border-radius: 999px; border: 2px solid var(--rand); background: #fff; font-size: 0.78rem; font-weight: 700; }
+.titelWahl.an { border-color: var(--akzent); background: #fff0f7; color: var(--akzent-dunkel); }
+.titelWahl.zu { opacity: .5; font-weight: 600; }
+.listeTitel { display: block; font-size: 0.7rem; color: var(--text-sanft); font-weight: 700; font-style: italic; }
+.eventKarte { background: linear-gradient(120deg, #fff, #fff6e6); border-color: var(--farbe, #ffb347); }

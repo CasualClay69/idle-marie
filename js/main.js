@@ -272,6 +272,7 @@ function starteSpiel() {
   richteExtras2Ein();
   richteExtras3Ein();
   richteGemeinschaftEin();
+  richteExtras5Ein();
   $("zirkusZu").addEventListener("click", () => { ton.klick(); $("zirkusOverlay").hidden = true; });
   richteHeuteEin();
   richteWikiEin();

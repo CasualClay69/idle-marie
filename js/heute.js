@@ -14,6 +14,7 @@ function heuteListe() {
   if (typeof heuteExtras === "function") heuteExtras(dazu, geh);
   if (typeof heuteExtras3 === "function") heuteExtras3(dazu, geh);
   if (typeof heuteGemeinschaft === "function") heuteGemeinschaft(dazu, geh);
+  if (typeof heuteExtras5 === "function") heuteExtras5(dazu, geh);
   // EP-Wochenende
   if (epWochenendeAktiv()) dazu("epwe", "🎉", `EP-Wochenende: +${Math.round(EP_WOCHENENDE.bonus * 100)} % Erfahrung bei allem!`, () => kompass());
   // Die Figur hat nichts zu tun
