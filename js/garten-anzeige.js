@@ -31,6 +31,7 @@ function zeichneGarten(ziel) {
       <small class="beetRest">${fertig ? "✨ Ernten!" : restText(beetRestMs(b))}</small>${b.geduengt ? `<span class="beetDuenger" title="gedüngt">🌫️</span>` : ""}</button>`;
   });
   html += `</div>`;
+  if (typeof gartenDekoHtml === "function") html += gartenDekoHtml();
   if (feuerFrei()) {
     const bedarf = duengerBedarf(), beete = duengbareBeete().length;
     html += `<div class="ladenKarte duengerKarte">${symbolHtml("asche0")}<div class="lText"><b>Mit Asche düngen</b>
@@ -54,6 +55,7 @@ function zeichneGarten(ziel) {
   }
   html += `</div><p class="hinweis">🌱 Pflanzen wachsen von ganz allein – auch wenn ${figurName()} gerade etwas anderes macht oder das Spiel zu ist. Gemüse kannst du kochen, Kräuter brauchst du für Tränke 🧪, und aus Fasern webst du beim 🧵 Nähen Stoff.</p><button type="button" class="knopf leise ueKnopf" id="gartenUebung">⭐ Übung im Garten ansehen</button>`;
   ziel.innerHTML = html;
+  if (typeof gartenDekoVerdrahten === "function") gartenDekoVerdrahten(ziel);
 
   ziel.querySelector("#duengen")?.addEventListener("click", () => {
     const n = duengeAlle();

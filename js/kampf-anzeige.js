@@ -114,7 +114,7 @@ function zeichneAbenteuer() {
     }).join("")}</div>`;
   const reiter = `<div class="ichReiter abenteuerReiter">${ABENTEUER_REITER.map(([id, icon, name]) =>
     `<button type="button" data-tab="${id}" class="${abenteuerTab === id ? "aktiv" : ""}"><span>${icon}</span>${name}${id === "kampf" && a ? " ●" : ""}</button>`).join("")}</div>`;
-  const inhalt = { kampf: kampf + werte, ausruestung: ausruestung + setsHtml(true), gebiete: legende + seasonGebiet + gebiete, pfade, jagd: jagdHtml() }[abenteuerTab] || kampf + werte;
+  const inhalt = { kampf: kampf + werte, ausruestung: ausruestung + setsHtml(true), gebiete: legende + (typeof weltbossHtml === "function" ? weltbossHtml() : "") + seasonGebiet + gebiete, pfade, jagd: jagdHtml() }[abenteuerTab] || kampf + werte;
   seite.innerHTML = reiter + inhalt;
   for (const b of seite.querySelectorAll(".abenteuerReiter button")) b.addEventListener("click", () => { ton.klick(); zeigeAbenteuerTab(b.dataset.tab); $("inhalt").scrollTop = 0; });
 
@@ -162,7 +162,7 @@ function zeichneKampfLive() {
   $("spielerHpText").textContent = `${spiel.hp} / ${maxHp()}`;
   const mhp = a.pauseBis ? 0 : a.mhp;
   $("monsterHp").style.width = balkenBreite(mhp / m.hp);
-  $("monsterHpText").textContent = `${mhp} / ${m.hp}`;
+  $("monsterHpText").textContent = m.weltboss ? "gemeinsam besiegen!" : `${mhp} / ${m.hp}`;
   $("monsterBild").dataset.schlaeft = a.pauseBis ? "1" : "";
   const bild = a.pauseBis ? monsterSvg(m.aussehen, true) : monsterSvg(m.aussehen);
   if ($("monsterBild").dataset.svg !== String(!!a.pauseBis)) { $("monsterBild").innerHTML = bild; $("monsterBild").dataset.svg = String(!!a.pauseBis); }

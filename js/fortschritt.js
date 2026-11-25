@@ -39,7 +39,7 @@ const FORTSCHRITT_BEREICHE = [
     stand: () => { const t = alleTeile().filter(x => !x.season && !x.prestige); return [t.filter(besitztTeil).length, t.length]; },
     hilfe: { seite: "seiteIch", ichTab: "figur", ziel: "#schrankRaster" } },
   { id: "monster", name: "Jedes Monster einmal", icon: "💤", gewicht: 4,
-    stand: () => { const m = Object.keys(MONSTER).filter(id => id !== "season"); return [m.filter(id => (spiel.besiegt?.[id] || 0) > 0).length, m.length]; },
+    stand: () => { const m = Object.keys(MONSTER).filter(id => id !== "season" && id !== "weltboss"); return [m.filter(id => (spiel.besiegt?.[id] || 0) > 0).length, m.length]; },
     hilfe: { seite: "seiteAbenteuer", abenteuerTab: "gebiete" } },
   { id: "pfade", name: "Abenteuer-Pfade", icon: "🗺️", gewicht: 4,
     stand: () => [PFADE.filter(p => spiel.pfade?.[p.id]).length, PFADE.length],

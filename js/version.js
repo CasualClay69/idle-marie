@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.33";
-const APP_NEU = "Neu: das Kochbuch mit Boni für volle Seiten – und Wetter, das alle 4 Stunden wechselt und dir hilft.";
+const APP_VERSION = "1.34";
+const APP_NEU = "Haustier-Ausflüge, Alle streicheln, Garten-Deko, Fotoalbum, Sammelkarten, Gemeinschafts-Boss und Angel-Wettbewerb am Freitag!";

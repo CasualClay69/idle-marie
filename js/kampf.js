@@ -90,6 +90,7 @@ function legeAb(platz) {
 // ----- Kampf starten / beenden -----
 function starteKampf(monsterId, pfadId = null) {
   if (monsterId === "season") aktualisiereSeasonMonster();
+  if (monsterId === "weltboss" && typeof aktualisiereWeltboss === "function") aktualisiereWeltboss();
   const pfad = pfadId && pfadNachId(pfadId);
   if (pfad) monsterId = pfad.liste[0];
   const m = MONSTER[monsterId];
@@ -159,6 +160,7 @@ function kampfTick(jetzt, ergebnis) {
       if (Math.random() < trefferChance(w.genauigkeit, m.ausweichen)) {
         const schaden = Math.min(a.mhp, zufall(1, w.maxSchlag));
         a.mhp -= schaden;
+        if (m.weltboss && typeof bossSchaden === "function") bossSchaden(schaden);   // Gemeinschafts-Boss
         gibKampfXp(schaden, ergebnis);
         logge(`💥 ${figurNameKurz()} trifft: ${schaden}`);
       } else logge(`💨 ${m.name} weicht aus`);
@@ -215,6 +217,7 @@ function verbraucheMunition(art, ergebnis) {
 }
 
 function besiegt(m, ergebnis) {
+  if (typeof karteFallen === "function") karteFallen(m);   // Sammelkarten
   const statKey = { nah: "besiegtNah", fern: "besiegtFern", magie: "besiegtMagie" }[kampfArt()];
   spiel.statistik[statKey] = (spiel.statistik[statKey] || 0) + 1;
   ergebnis.durchgaenge++;

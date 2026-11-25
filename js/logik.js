@@ -122,6 +122,7 @@ function verkaufe(id, n) {
 
 // ----- Kann die Tätigkeit laufen? Rückgabe: null = ja, sonst ein Grund -----
 function hindernis(t) {
+  if (t.wettbewerb && new Date(Date.now()).getDay() !== 5) return "Der Angel-Wettbewerb ist nur freitags";
   if (t.kleidung && (spiel.garderobe || []).includes(t.kleidung)) return "Fertig genäht – zieh es im 👗 Kleiderschrank an!";
   if (t.fertigkeit === "sterne" && !sterneFrei()) return "Schaffe zuerst einen Abenteuer-Pfad";
   if (t.fertigkeit === "feuer" && !feuerFrei()) return "Schaffe zuerst drei Abenteuer-Pfade";
@@ -148,6 +149,7 @@ function fuehreAus(t) {
   const mal = Math.random() < doppeltChance(t) ? 2 : 1;
   ereignisse.doppelt = mal === 2;
   for (const [id, n] of Object.entries(t.gibt)) { gibInBank(id, n * mal); zaehle(id, n * mal); if (typeof lerneRezept === "function") lerneRezept(id); }
+  if (t.wettbewerb && typeof angelFang === "function") angelFang();
   if (t.kleidung) { gibTeil(t.kleidung); ereignisse.kleidung = t.kleidung; }
   if (t.parcours) spiel.muenzen += rundenMuenzen() * mal;
   if (t.grabung) ereignisse.fund = grabeFund(t);

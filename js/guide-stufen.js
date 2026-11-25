@@ -24,7 +24,7 @@ const guideBraucht = t => Object.entries(t.braucht || {}).map(([id, n]) => `${n}
 
 // Die beste normale Tätigkeit einer Fertigkeit bei einer bestimmten Stufe (meiste EP pro Sekunde)
 function guideTaetigkeiten(fid) {
-  return TAETIGKEITEN.filter(t => t.fertigkeit === fid && !t.kleidung && !t.parcours && !t.karte);
+  return TAETIGKEITEN.filter(t => t.fertigkeit === fid && !t.kleidung && !t.parcours && !t.karte && !t.wettbewerb);
 }
 function guideBeste(fid, L) {
   const liste = guideTaetigkeiten(fid).filter(t => t.stufe <= L);

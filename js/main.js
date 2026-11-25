@@ -270,6 +270,8 @@ function starteSpiel() {
   richteEpWochenendeEin();
   $("zirkusKarte").addEventListener("click", () => { ton.klick(); zeigeZirkus(); });
   richteExtras2Ein();
+  richteExtras3Ein();
+  richteGemeinschaftEin();
   $("zirkusZu").addEventListener("click", () => { ton.klick(); $("zirkusOverlay").hidden = true; });
   richteHeuteEin();
   richteWikiEin();

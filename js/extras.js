@@ -28,7 +28,8 @@ for (let n = 1; n <= 10; n++) RAHMEN.push({ id: `rx${n}`, name: `Prestige-Rahmen
 // ===================== BONI (stecken in sternGold -> baumhausBonus) =====================
 function zusatzAllgemein(art) {
   return kuchenBonus(art) + prestigeBonus(art)
-    + (typeof kochbuchBonus === "function" ? kochbuchBonus(art) + wetterBonus(art) : 0);   // Kochbuch & Wetter (extras2.js)
+    + (typeof kochbuchBonus === "function" ? kochbuchBonus(art) + wetterBonus(art) : 0)   // Kochbuch & Wetter (extras2.js)
+    + (typeof extras3Bonus === "function" ? extras3Bonus(art) : 0);   // Garten-Deko & Sammelkarten (extras3.js)
 }
 
 // ===================== 🍰 KUCHEN =====================

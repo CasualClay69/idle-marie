@@ -1457,4 +1457,24 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .kochRezept { display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; font-size: 1.2rem; }
 .kochRezept small { font-size: 0.62rem; color: var(--text-sanft); line-height: 1.15; }
 .kochRezept.zu { opacity: .45; }
-.wetterChip { border: 0; font: inherit; cursor: pointer; background: linear-gradient(90deg, #e8f4ff, #fff); }
+.wetterChip { border: 0; font-family: inherit; font-size: 0.75rem; font-weight: 700; text-align: left; cursor: pointer; background: linear-gradient(90deg, #e8f4ff, #fff); color: inherit; }
+
+/* ----- v1.34: Ausflüge, Deko, Album, Karten, Boss, Angeln ----- */
+.tierExtras { display: grid; gap: 8px; margin-bottom: 12px; } .tierExtras h3 { margin: 6px 0 0; }
+.tierKnopfReihe { display: flex; flex-wrap: wrap; gap: 6px; } .tierKnopfReihe .knopf { flex: 1 1 auto; }
+.ausflugListe { display: grid; gap: 5px; }
+.ausflugZeile { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 14px; background: #fff; border: 2px solid var(--rand); }
+.ausflugTier { font-size: 1.5rem; } .ausflugKnoepfe { display: flex; gap: 4px; margin-left: auto; } .ausflugKnoepfe .knopf.klein { padding: 4px 8px; font-size: 0.78rem; }
+.dekoStreifen { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 10px 0 4px; padding: 8px; border-radius: 16px; background: linear-gradient(180deg, #e8f8e8, #c9eecb); font-size: 1.9rem; min-height: 52px; align-items: center; }
+.dekoStreifen small { font-size: 0.85rem; color: var(--text-sanft); }
+.kartenRaster { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 6px; }
+.sammelKarte { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px; border-radius: 10px; background: linear-gradient(160deg, #fff, #f1e4ff); border: 2px solid #c9b8ff; font-size: 1.4rem; }
+.sammelKarte svg { width: 48px; height: 48px; } .sammelKarte.chef { border-color: #f5b942; background: linear-gradient(160deg, #fff8e0, #ffe9a8); }
+.sammelKarte small { font-size: 0.6rem; text-align: center; color: var(--text-sanft); line-height: 1.1; } .sammelKarte.zu { opacity: .45; }
+.albumRaster { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.foto { margin: 0; padding: 6px 6px 4px; background: #fff; border-radius: 10px; box-shadow: 0 3px 8px rgba(91, 42, 79, 0.18); transform: rotate(-1deg); }
+.foto:nth-child(even) { transform: rotate(1.2deg); } .foto svg { width: 100%; height: auto; display: block; border-radius: 6px; }
+.foto figcaption { display: grid; text-align: center; font-size: 0.75rem; } .foto figcaption small { color: var(--text-sanft); }
+.foto.zu { opacity: .5; } .fotoLeer { aspect-ratio: 16 / 10; display: grid; place-items: center; font-size: 2rem; background: #f2eef6; border-radius: 6px; }
+.bossBalken { height: 12px; border-radius: 6px; background: #eee; overflow: hidden; } .bossBalken div { height: 100%; background: linear-gradient(90deg, #ff5f8f, #b48cff); }
+.angelListe { margin: 0; padding-left: 24px; display: grid; gap: 4px; } .angelListe li span { float: right; font-weight: 800; }

@@ -103,7 +103,7 @@ function guideProzent() {
 // Die beste Tätigkeit einer Fertigkeit: schon freigeschaltet, Material vorhanden, am meisten EP pro Sekunde
 function besteTaetigkeit(fid) {
   const L = stufe(fid);
-  const offen = TAETIGKEITEN.filter(t => t.fertigkeit === fid && t.stufe <= L && !(t.kleidung && (spiel.garderobe || []).includes(t.kleidung)));
+  const offen = TAETIGKEITEN.filter(t => t.fertigkeit === fid && t.stufe <= L && !t.wettbewerb && !(t.kleidung && (spiel.garderobe || []).includes(t.kleidung)));
   if (!offen.length) return null;
   const machbar = offen.filter(t => Object.entries(t.braucht || {}).every(([id, n]) => anzahl(id) >= n));
   const liste = machbar.length ? machbar : offen;

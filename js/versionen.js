@@ -5,6 +5,15 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.34", datum: "2026-11-26", neu: [
+    "🎒 Haustier-Ausflüge (Ich → Tiere): Schick deine Haustiere für 1, 4 oder 8 Stunden los – einzeln oder alle auf einmal. Sie bringen Holz, Fisch, Erz, Barren, Beute, Samen und Münzen mit. Je höher die Pflege-Stufe, desto mehr.",
+    "🐾 „Alle streicheln“: ein Knopf streichelt alle Haustiere, die gerade dürfen.",
+    "🏡 Garten-Deko: Zaun, Gartenzwerg, Vogelhaus, Rosenbogen, Teich, Springbrunnen, Laterne und Karussell – jede steht im Garten und lässt alles 3 % schneller wachsen.",
+    "📸 Fotoalbum (Ich → Statistik): Besondere Momente werden automatisch als gemaltes Bild festgehalten – 31 Fotos zu sammeln.",
+    "🃏 Sammelkarten: Monster lassen manchmal eine Karte fallen. 9 Alben – volle Alben geben Boni für immer.",
+    "🐉 Gemeinschafts-Boss (Abenteuer → Gebiete): Jede Woche kämpfen alle Spieler der Bestenliste zusammen gegen den Wolken-Titan. Ist er besiegt, gibt es für jeden Helfer eine Belohnung – und mit Glück das Titan-Baby Nimbus.",
+    "🎣 Angel-Wettbewerb: Jeden Freitag beißt der Riesenwels an. Der schwerste Fang kommt in eine eigene Liste (Knopf oben bei Angeln)."
+  ] },
   { v: "1.33", datum: "2026-11-26", neu: [
     "📖 Das Kochbuch: Jedes Gericht, jeder Trank und jeder Kuchen kommt beim ersten Herstellen hinein (Knopf oben bei Kochen, Tränke und Bäckerei). Volle Seiten geben Boni für immer – z. B. alle Fisch-Gerichte: Essen heilt 10 % mehr. Ganzes Kochbuch: +10 % Münzen. Was du schon gemacht hast, steht schon drin!",
     "☀️ Wetter: Alle 4 Stunden ändert sich das Wetter – für alle gleich. Sonne, Regen, Wolken, Gewitter, Nebel, im Winter Schnee und ganz selten ein Regenbogen. Jedes Wetter gibt einen kleinen Bonus. Oben in der Leiste antippen = Vorhersage."

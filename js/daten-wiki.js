@@ -318,7 +318,7 @@ function guideVervollstaendigen() {
   schritt({ id: "t:pflege", kapitel: K2, icon: "💖", titel: `Alle Haustiere auf Stufe ${PFLEGE.maxStufe}`,
     text: `Streichle jedes Haustier, so oft es geht (alle ${PFLEGE.streichelPauseMin / 60} Stunden), und füttere es mit gekochtem Essen.`,
     ziel: tiere().length, wert: () => tiere().filter(h => hatHaustier(h.id) && tierStufe(h.id) >= PFLEGE.maxStufe).length, hilfe: { seite: "seiteIch", ichTab: "tiere" } });
-  const monster = () => Object.keys(MONSTER).filter(id => id !== "season");
+  const monster = () => Object.keys(MONSTER).filter(id => id !== "season" && id !== "weltboss");
   schritt({ id: "m:alle", kapitel: K2, icon: "💤", titel: "Jedes Monster einmal",
     text: "Lass jedes Monster mindestens einmal einschlafen – auch die Pfad-Wächter. In der Wiki unter ⚔️ Abenteuer siehst du, welche dir noch fehlen.",
     ziel: monster().length, wert: () => monster().filter(id => (spiel.besiegt?.[id] || 0) > 0).length, hilfe: { seite: "seiteAbenteuer", abenteuerTab: "gebiete" } });
