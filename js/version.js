@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.30.4";
-const APP_NEU = "Willkommen zurück zeigt auf dem iPhone jetzt wirklich, was du in der Zeit geschafft und bekommen hast.";
+const APP_VERSION = "1.31";
+const APP_NEU = "Der Guide in der Wiki ist jetzt viel genauer: fast 700 kleine Schritte von 0 bis 100 %, mit Tipps, was du gerade anklicken solltest.";

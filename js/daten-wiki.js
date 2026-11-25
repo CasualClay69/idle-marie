@@ -323,14 +323,8 @@ function guideVervollstaendigen() {
 
   // --- Meister in allem: jede Fertigkeit auf 99 (Sammeln und Herstellen zuerst, Kampf zum Schluss) ---
   const K3 = "Meister in allem";
-  const reihe = [...FERTIGKEITEN.filter(f => f.art !== "kampf"), ...FERTIGKEITEN.filter(f => f.art === "kampf")];
-  for (const f of reihe) {
-    const kampf = f.art === "kampf";
-    schritt({ id: `f:${f.id}:99`, kapitel: K3, icon: f.icon, titel: `${f.name.replaceAll("­", "")} Stufe ${SPIEL.maxStufe}`, fertigkeitId: f.id,
-      text: kampf ? "Kämpfe gegen die stärksten Monster, die du gut schaffst. Der Kompass zeigt dir das beste." :
-        f.id === "garten" ? "Halte alle Beete voll und ernte oft." : "Mach immer die beste Tätigkeit, die du schon kannst. Der Kompass zeigt sie dir.",
-      ziel: SPIEL.maxStufe, wert: () => stufe(f.id), hilfe: kampf ? { seite: "seiteAbenteuer" } : { fertigkeit: f.id } });
-  }
+  // die feinen Stufen-Schritte aller Fertigkeiten bis 99 (guide-stufen.js) – route() setzt sie hier ein
+  schritt({ platzhalter: "leiter", kapitel: K3 });
 
   // --- Zum Schluss ---
   const K4 = "Das große Finale";

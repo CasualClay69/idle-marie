@@ -19,13 +19,48 @@ function route() {
     ids.add(id); s.id = id; liste.push(s);
   };
   const letzter = QUESTS.find(q => q.ziel === FERTIGKEITEN.length * SPIEL.maxStufe);   // „Werde Meister in allem“
+  // Feine Stufen-Schritte (guide-stufen.js): vor dem ersten Auftrag, der die Stufe braucht
+  const leiter = guideLeiterSchritte(), platziert = new Set();
+  const leiterBis = (fid, L, kapitel, ausser) => {
+    for (const s of leiter) {
+      if (platziert.has(s) || s.leiter.fid !== fid || s.leiter.stufe > L) continue;
+      platziert.add(s);
+      if (s.leiter.stufe !== ausser) dazu({ ...s, kapitel });
+    }
+  };
+  const rest = () => {   // alles, was kein Auftrag braucht – nach Stufe sortiert, damit alle gleichmäßig wachsen
+    const reihe = [...FERTIGKEITEN.filter(f => f.art !== "kampf"), ...FERTIGKEITEN.filter(f => f.art === "kampf")].map(f => f.id);
+    return leiter.filter(s => !platziert.has(s)).sort((a, b) => a.leiter.stufe - b.leiter.stufe || reihe.indexOf(a.leiter.fid) - reihe.indexOf(b.leiter.fid));
+  };
+  const vervollstaendigen = () => guideVervollstaendigen().forEach(s => {
+    if (s.platzhalter === "leiter") rest().forEach(r => { platziert.add(r); dazu({ ...r, kapitel: s.kapitel }); });
+    else dazu(s);
+  });
+  // Ab welchem Auftrag ist eine Fertigkeit "im Spiel"? Und wie weit ist man da ungefähr (höchste verlangte Stufe bisher)?
+  const frei = {}, stand = [];
+  let hoechste = 1;
+  const merkFrei = (fid, i) => { if (fid && frei[fid] === undefined) frei[fid] = i; };
   QUESTS.forEach((q, i) => {
-    if (q === letzter) guideVervollstaendigen().forEach(dazu);
+    const b = guideAuftragBraucht(q);
+    for (const [fid, L] of Object.entries(b)) { merkFrei(fid, i); hoechste = Math.max(hoechste, L); }
+    merkFrei(q.hilfe?.fertigkeit, i); merkFrei(q.fertigkeitId, i);
+    for (const e of GUIDE_EINSCHUEBE.filter(x => x.nach === q.titel)) { merkFrei(e.schritt.hilfe?.fertigkeit, i + 1); merkFrei(e.schritt.fertigkeitId, i + 1); }
+    stand[i] = hoechste;
+  });
+  merkFrei("herzen", frei.mut ?? 0);
+  QUESTS.forEach((q, i) => {
+    if (q === letzter) vervollstaendigen();
+    else {
+      const b = guideAuftragBraucht(q);
+      for (const [fid, L] of Object.entries(b)) leiterBis(fid, L, q.kapitel || "Aufträge", q.fertigkeitId === fid ? q.ziel : null);
+      // alle anderen schon freien Fertigkeiten ungefähr mitziehen (bis knapp unter den aktuellen Stand)
+      for (const f of FERTIGKEITEN) if (frei[f.id] !== undefined && frei[f.id] < i && !b[f.id]) leiterBis(f.id, Math.floor(stand[i] * 0.8), q.kapitel || "Aufträge");
+    }
     dazu({ id: `q:${q.titel}`, kapitel: q === letzter && liste.length ? liste[liste.length - 1].kapitel : q.kapitel || "Aufträge", nurAbholen: q.nurAbholen, titel: q.titel, text: q.text, quest: q, questNr: i,
       ziel: q.ziel, wert: q.wert, fertigkeitId: q.fertigkeitId, hilfe: q.hilfe, icon: q.icon, symbol: q.symbol });
     for (const e of GUIDE_EINSCHUEBE.filter(x => x.nach === q.titel)) dazu({ ...e.schritt, kapitel: q.kapitel || "Aufträge" });
   });
-  if (!letzter) guideVervollstaendigen().forEach(dazu);
+  if (!letzter) vervollstaendigen();
   ROUTE = liste;
   return ROUTE;
 }

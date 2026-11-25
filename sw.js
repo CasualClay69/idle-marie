@@ -95,6 +95,7 @@ const DATEIEN = [
   "js/heute.js",
   "js/rueckkehr.js",
   "js/daten-wiki.js",
+  "js/guide-stufen.js",
   "js/wiki.js",
   "js/wiki-anzeige.js",
   "js/main.js",
