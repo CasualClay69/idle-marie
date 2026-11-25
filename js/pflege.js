@@ -36,7 +36,7 @@ function tierStufe(id) {
   while (l < PFLEGE.maxStufe && xp >= PFLEGE.xpBis[l]) l++;
   return l;
 }
-function tierBonusFaktor(id) { return 1 + PFLEGE.bonusProStufe * (tierStufe(id) - 1); }
+function tierBonusFaktor(id) { return (1 + PFLEGE.bonusProStufe * (tierStufe(id) - 1)) * (typeof zubehoerFaktor === "function" ? zubehoerFaktor(id, "bonus") : 1); }
 
 function gibTierXp(id, n) {
   const vorher = tierStufe(id);
@@ -50,14 +50,16 @@ function streichle(id) {
   if (streichelnIn(id) > 0) return null;
   pflegeStand(id).gestreichelt = Date.now();
   spiel.statistik.gestreichelt = (spiel.statistik.gestreichelt || 0) + 1;
-  return { neueStufe: gibTierXp(id, PFLEGE.streichelXp), xp: PFLEGE.streichelXp };
+  const xp = Math.round(PFLEGE.streichelXp * (typeof zubehoerFaktor === "function" ? zubehoerFaktor(id, "pflege") : 1));   // Halsband
+  return { neueStufe: gibTierXp(id, xp), xp };
 }
 function futterXp(essenId) { return Math.max(3, Math.round(GEGENSTAENDE[essenId].heilt / 5)); }
 function fuettere(id, essenId) {
   if (anzahl(essenId) < 1 || tierStufe(id) >= PFLEGE.maxStufe) return null;
   nimmAusBank(essenId, 1);
   spiel.statistik.gefuettert = (spiel.statistik.gefuettert || 0) + 1;
-  return { neueStufe: gibTierXp(id, futterXp(essenId)), xp: futterXp(essenId) };
+  const xp = Math.round(futterXp(essenId) * (typeof zubehoerFaktor === "function" ? zubehoerFaktor(id, "pflege") : 1));   // Halsband
+  return { neueStufe: gibTierXp(id, xp), xp };
 }
 
 // ===================== FENSTER =====================

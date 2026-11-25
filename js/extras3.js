@@ -21,7 +21,8 @@ function schickeAufAusflug(id, stunden) {
 function ausflugBeute(id) {
   const h = HAUSTIERE.find(x => x.id === id), a = ausfluege()[id];
   const st = tierStufe(id), tier = Math.min(7, Math.floor(st * 0.7) + (h.zucht || h.chef ? 1 : 0));
-  const menge = Math.max(1, Math.round(a.stunden * AUSFLUG.mengeProStunde * (0.7 + st * 0.06) * (0.8 + Math.random() * 0.4)));
+  const menge = Math.max(1, Math.round(a.stunden * AUSFLUG.mengeProStunde * (0.7 + st * 0.06) * (0.8 + Math.random() * 0.4)
+    * (typeof zubehoerFaktor === "function" ? zubehoerFaktor(id, "ausflug") : 1)));   // Mini-Rucksack
   const gruppe = zuchtGruppe(h), beute = {};
   const dazu = (gid, n) => { if (GEGENSTAENDE[gid] && n > 0) beute[gid] = (beute[gid] || 0) + n; };
   if (gruppe === "sammeln") { const art = h.fertigkeit === "angeln" ? "fisch" : h.fertigkeit === "bergbau" ? "erz" : h.fertigkeit === "garten" ? "kraut" : "holz"; dazu(`${art}${tier}`, menge); }
@@ -78,6 +79,9 @@ function zeichneTierExtras() {
     <p class="hinweis">Haustiere (außer deinem Begleiter) können auf Ausflug gehen und bringen Sachen mit – je höher ihre Pflege-Stufe, desto mehr und bessere. Auch wenn das Spiel zu ist!</p>
     ${zurueck ? `<button type="button" class="knopf kaufen" id="alleAbholen">📦 Alle abholen (${zurueck} zurück)</button>` : ""}
     ${frei.length ? `<div class="tierKnopfReihe">${AUSFLUG.dauern.map(d => `<button type="button" class="knopf" data-alle="${d}">🎒 Alle ${d} Std. losschicken (${frei.length})</button>`).join("")}</div>` : ""}
+    ${spiel.begleiter && typeof tierZubehoer === "function" ? (() => { const b = HAUSTIERE.find(x => x.id === spiel.begleiter), zb = tierZubehoer(spiel.begleiter);
+      return b ? `<div class="ausflugZeile"><span class="ausflugTier">${b.emoji}</span><span class="rkName">${b.name} <small class="sanft">Begleiter · bleibt bei dir</small></span>
+        <button type="button" class="zubehoerKnopf${zb ? " an" : ""}" data-zubehoerwahl="${spiel.begleiter}" title="Zubehör">${zb ? zb.icon : "🎀"}</button></div>` : ""; })() : ""}
     <div class="ausflugListe">${(spiel.haustiere || []).map(id => {
       const h = HAUSTIERE.find(x => x.id === id);
       if (!h || id === spiel.begleiter) return "";
@@ -85,7 +89,9 @@ function zeichneTierExtras() {
       const rechts = !a ? AUSFLUG.dauern.map(d => `<button type="button" class="knopf klein" data-tier="${id}" data-std="${d}">${d} Std.</button>`).join("")
         : ausflugZurueck(id) ? `<button type="button" class="knopf kaufen klein" data-holen="${id}">📦 Abholen</button>`
         : `<small>🎒 noch ${restZeit(a.bis - Date.now())}</small>`;
-      return `<div class="ausflugZeile"><span class="ausflugTier">${h.emoji}</span><span class="rkName">${h.name} <small class="sanft">Stufe ${tierStufe(id)}</small></span><span class="ausflugKnoepfe">${rechts}</span></div>`;
+      const zb = typeof tierZubehoer === "function" ? tierZubehoer(id) : null;
+      return `<div class="ausflugZeile"><span class="ausflugTier">${h.emoji}</span><span class="rkName">${h.name} <small class="sanft">Stufe ${tierStufe(id)}</small></span>
+        <button type="button" class="zubehoerKnopf${zb ? " an" : ""}" data-zubehoerwahl="${id}" title="Zubehör">${zb ? zb.icon : "🎀"}</button><span class="ausflugKnoepfe">${rechts}</span></div>`;
     }).join("")}</div>`;
   $("alleStreicheln")?.addEventListener("click", () => {
     const e = streichleAlle();
@@ -107,6 +113,7 @@ function zeichneTierExtras() {
     if (!schickeAufAusflug(b.dataset.tier, Number(b.dataset.std))) return;
     ton.klick(); speichern(); zeichneIch();
   });
+  for (const b of ziel.querySelectorAll("[data-zubehoerwahl]")) b.addEventListener("click", () => { ton.klick(); zeigeZubehoerWahl(b.dataset.zubehoerwahl); });
   for (const b of ziel.querySelectorAll("[data-holen]")) b.addEventListener("click", () => {
     const e = holeAusflug(b.dataset.holen);
     if (!e) return;

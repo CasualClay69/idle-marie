@@ -1478,3 +1478,10 @@ li.erreicht .stNr { background: #2f9e57; color: #fff; }
 .foto.zu { opacity: .5; } .fotoLeer { aspect-ratio: 16 / 10; display: grid; place-items: center; font-size: 2rem; background: #f2eef6; border-radius: 6px; }
 .bossBalken { height: 12px; border-radius: 6px; background: #eee; overflow: hidden; } .bossBalken div { height: 100%; background: linear-gradient(90deg, #ff5f8f, #b48cff); }
 .angelListe { margin: 0; padding-left: 24px; display: grid; gap: 4px; } .angelListe li span { float: right; font-weight: 800; }
+
+/* ----- v1.35: großer Laden ----- */
+.ladenAbschnitt { display: grid; gap: 6px; margin-top: 10px; }
+.ladenAbschnitt .rasterTitel small { font-weight: 700; color: var(--text-sanft); font-size: 0.75rem; }
+.tauschZeile { gap: 6px; } .tauschZeile .knopf.klein { padding: 4px 8px; font-size: 0.75rem; white-space: nowrap; }
+.zubehoerKnopf { border: 2px dashed var(--rand); background: #fff; border-radius: 50%; width: 34px; height: 34px; padding: 0; font-size: 1rem; flex: none; }
+.zubehoerKnopf.an { border-style: solid; border-color: var(--akzent); background: #fff0f7; }

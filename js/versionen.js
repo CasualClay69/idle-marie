@@ -5,6 +5,14 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.35", datum: "2026-11-26", neu: [
+    "🛒 Tagesangebote: Jeden Tag 3 neue Angebote im Laden – 30 % billiger.",
+    "⛏️ Neue Werkzeuge: Pfanne (Kochen), Amboss (Schmieden), Schnitzmesser, Zauberkessel (Tränke), Nudelholz (Bäckerei) und Gießkanne (Garten wächst schneller) – je 7 Stufen.",
+    "🎟️ Verbesserungen für immer: Großer Rucksack (mehr Offline-Zeit), Glücksklee (mehr Haustier-Funde), Sparschwein (mehr Münzen), Lernbuch (mehr Erfahrung) und Doppel-Tresor (mehr Bankfächer).",
+    "🧳 Der Händler kauft jeden Tag eine andere Sorte zum doppelten Preis.",
+    "🎀 Haustier-Zubehör: Halsband (schneller pflegen), Mini-Rucksack (mehr Ausflugs-Beute) und Goldenes Glöckchen (stärkerer Bonus) – anlegen unter Ich → Tiere.",
+    "💎 Tausch-Ecke: Beute umtauschen – 10 gegen 1 der nächstbesseren Sorte oder 1 gegen 3 der einfacheren."
+  ] },
   { v: "1.34", datum: "2026-11-26", neu: [
     "🎒 Haustier-Ausflüge (Ich → Tiere): Schick deine Haustiere für 1, 4 oder 8 Stunden los – einzeln oder alle auf einmal. Sie bringen Holz, Fisch, Erz, Barren, Beute, Samen und Münzen mit. Je höher die Pflege-Stufe, desto mehr.",
     "🐾 „Alle streicheln“: ein Knopf streichelt alle Haustiere, die gerade dürfen.",

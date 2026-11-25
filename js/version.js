@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.34";
-const APP_NEU = "Haustier-Ausflüge, Alle streicheln, Garten-Deko, Fotoalbum, Sammelkarten, Gemeinschafts-Boss und Angel-Wettbewerb am Freitag!";
+const APP_VERSION = "1.35";
+const APP_NEU = "Der Laden ist viel größer: Tagesangebote, neue Werkzeuge, Verbesserungen, ein Händler, Haustier-Zubehör und eine Tausch-Ecke!";

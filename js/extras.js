@@ -29,7 +29,8 @@ for (let n = 1; n <= 10; n++) RAHMEN.push({ id: `rx${n}`, name: `Prestige-Rahmen
 function zusatzAllgemein(art) {
   return kuchenBonus(art) + prestigeBonus(art)
     + (typeof kochbuchBonus === "function" ? kochbuchBonus(art) + wetterBonus(art) : 0)   // Kochbuch & Wetter (extras2.js)
-    + (typeof extras3Bonus === "function" ? extras3Bonus(art) : 0);   // Garten-Deko & Sammelkarten (extras3.js)
+    + (typeof extras3Bonus === "function" ? extras3Bonus(art) : 0)   // Garten-Deko & Sammelkarten (extras3.js)
+    + (typeof extras4Bonus === "function" ? extras4Bonus(art) : 0);   // Gießkanne & Laden-Verbesserungen (extras4.js)
 }
 
 // ===================== 🍰 KUCHEN =====================

@@ -307,6 +307,7 @@ function zeichneLaden() {
   fach.append(b);
   liste.append(fach);
   liste.append(el("p", "hinweis", "💡 Münzen bekommst du, wenn du in der Bank Sachen verkaufst."));
+  if (typeof ladenExtras === "function") ladenExtras(liste);
 }
 
 // ----- Ich -----

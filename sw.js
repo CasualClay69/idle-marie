@@ -84,6 +84,7 @@ const DATEIEN = [
   "js/extras2.js",
   "js/extras3.js",
   "js/gemeinschaft.js",
+  "js/extras4.js",
   "js/uebung-anzeige.js",
   "js/fortschritt.js",
   "js/sterne-anzeige.js",
