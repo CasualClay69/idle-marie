@@ -145,7 +145,8 @@ function richteKnoepfeEin() {
   });
   $("figurKnopf").addEventListener("click", () => { ton.klick(); ichTab = "figur"; zeigeSeite("seiteIch"); });
   for (const b of document.querySelectorAll("#ichReiter button")) b.addEventListener("click", () => { ton.klick(); zeigeIchTab(b.dataset.teil); $("inhalt").scrollTop = 0; });
-  $("offlineZu").addEventListener("click", () => { ton.klick(); $("offlineOverlay").hidden = true; });
+  $("offlineZu").addEventListener("click", () => { ton.klick(); schliesseBericht(); });
+  $("letzterBerichtKnopf").addEventListener("click", () => { ton.klick(); if (!zeigeLetztenBericht()) melde("Noch kein Bericht da – der kommt, wenn du mindestens 3 Minuten weg warst."); });
   $("gegenstandZu").addEventListener("click", () => { ton.klick(); $("gegenstandOverlay").hidden = true; });
   $("gegenstandOverlay").addEventListener("click", e => { if (e.target.id === "gegenstandOverlay") $("gegenstandOverlay").hidden = true; });
   $("tonAn").addEventListener("change", e => { ton.an = e.target.checked; ton.speichern(); ton.klick(); });
@@ -180,6 +181,7 @@ function istNeuereVersion(a, b) {
   return false;
 }
 let updateSpaeter = false;
+let updateWartet = false;   // Update erst zeigen, wenn "Willkommen zurück" zu ist – sonst lädt "Jetzt holen" den Bericht weg
 async function pruefeAufUpdate() {
   if (updateSpaeter || !location.protocol.startsWith("http") || !$("updateOverlay").hidden) return;
   try {
@@ -191,7 +193,8 @@ async function pruefeAufUpdate() {
     if (version && istNeuereVersion(version, APP_VERSION)) {
       $("updateVersionen").textContent = `Du spielst Version ${APP_VERSION} – neu ist Version ${version}.`;
       $("updateNeu").textContent = neu ? `🆕 ${neu}` : "";
-      $("updateOverlay").hidden = false;
+      if (!$("offlineOverlay").hidden) updateWartet = true;
+      else $("updateOverlay").hidden = false;
     }
   } catch (e) { /* offline -> später nochmal */ }
 }
@@ -273,7 +276,7 @@ function starteSpiel() {
   for (const b of gartenStand().beete) if (b && beetFortschritt(b) >= 1) b.gemeldet = true;   // beim Start nicht alles auf einmal melden
   zeigeSeite("seiteFertigkeiten");
   if (!spiel.figur) fragFigur();
-  else pruefeRueckkehr();   // "Willkommen zurück!" mit allem, was passiert ist
+  else if (!pruefeRueckkehr() && spiel.rueckkehrBericht?.offen) zeigeLetztenBericht();   // "Willkommen zurück!" – auch wenn ein Update dazwischen kam
   for (const e of pruefeErfolge()) melde(`🏆 Erfolg: ${e.name}! +${zahl(e.muenzen)} Münzen`, "gross");
   speichern();
   requestAnimationFrame(schleife);

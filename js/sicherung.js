@@ -22,7 +22,7 @@ async function packe(text, richtung) {
 
 async function sicherungsCode() {
   speichern();
-  const json = JSON.stringify(spiel);
+  const json = JSON.stringify({ ...spiel, rueckkehrBericht: undefined });   // der Bericht muss nicht in den Code
   if (typeof CompressionStream === "function") {
     try { return "IM1Z:" + zuBase64(await packe(json, "ein")); } catch (e) { /* dann ungepackt */ }
   }

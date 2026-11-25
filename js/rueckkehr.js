@@ -168,8 +168,29 @@ function zeigeRueckkehr(s, weg) {
   else if (!spiel.aktiv && !s.aktiv) hinweis += `<p class="hinweis">💤 ${figurName()} hat Pause gemacht – tippe eine Tätigkeit an, dann geht es weiter, auch wenn du weg bist.</p>`;
   if (weg > grenzeStd * 3600000 && s.aktiv) hinweis += `<p class="hinweis">🛏️ ${figurName()} arbeitet höchstens ${grenzeStd} Stunden ohne dich. Ein besseres Bett im 🏡 Baumhaus macht die Zeit länger!</p>`;
 
-  $("offlineTitel").innerHTML = `🌙 Willkommen zurück!`;
-  $("offlineInhalt").innerHTML = `<div class="rkZeit"><small>Du warst weg:</small><b>${zeitText(weg)}</b></div>
+  const html = `<div class="rkZeit"><small>Du warst weg:</small><b>${zeitText(weg)}</b></div>
     ${abschnitte.length ? abschnitte.join("") : `<p>In der Zwischenzeit ist nichts passiert.</p>`}${hinweis}`;
+  // Bericht aufheben: Kommt z. B. das Update-Fenster dazwischen und die App lädt neu,
+  // erscheint er danach noch einmal – und unter "Ich → Statistik" kann man ihn jederzeit wieder ansehen.
+  spiel.rueckkehrBericht = { zeit: Date.now(), html, offen: true };
+  $("offlineTitel").innerHTML = `🌙 Willkommen zurück!`;
+  $("offlineInhalt").innerHTML = html;
   $("offlineOverlay").hidden = false;
+  speichern();
+}
+
+// Den letzten Bericht noch einmal zeigen (nach einem Neustart oder über den Knopf in der Statistik)
+function zeigeLetztenBericht() {
+  const b = spiel.rueckkehrBericht;
+  if (!b) return false;
+  const vor = Date.now() - b.zeit;
+  $("offlineTitel").innerHTML = b.offen ? `🌙 Willkommen zurück!` : `🌙 Was zuletzt passiert ist`;
+  $("offlineInhalt").innerHTML = (b.offen ? "" : `<p class="hinweis">📅 Dieser Bericht ist von ${vor < 120000 ? "gerade eben" : `vor ${zeitText(vor)}`}.</p>`) + b.html;
+  $("offlineOverlay").hidden = false;
+  return true;
+}
+function schliesseBericht() {
+  $("offlineOverlay").hidden = true;
+  if (spiel.rueckkehrBericht?.offen) { spiel.rueckkehrBericht.offen = false; speichern(); }
+  if (updateWartet) { updateWartet = false; $("updateOverlay").hidden = false; }
 }

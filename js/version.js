@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.30.2";
-const APP_NEU = "Willkommen zurück zeigt jetzt auch beim Herstellen und im Abenteuer genau, was passiert ist.";
+const APP_VERSION = "1.30.3";
+const APP_NEU = "Willkommen zurück geht nicht mehr verloren, wenn ein Update dazwischenkommt – und du kannst den Bericht unter Ich, Statistik jederzeit nochmal ansehen.";
