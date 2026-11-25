@@ -147,7 +147,7 @@ function fuehreAus(t) {
   for (const [id, n] of Object.entries(t.braucht || {})) nimmAusBank(id, n);
   const mal = Math.random() < doppeltChance(t) ? 2 : 1;
   ereignisse.doppelt = mal === 2;
-  for (const [id, n] of Object.entries(t.gibt)) { gibInBank(id, n * mal); zaehle(id, n * mal); }
+  for (const [id, n] of Object.entries(t.gibt)) { gibInBank(id, n * mal); zaehle(id, n * mal); if (typeof lerneRezept === "function") lerneRezept(id); }
   if (t.kleidung) { gibTeil(t.kleidung); ereignisse.kleidung = t.kleidung; }
   if (t.parcours) spiel.muenzen += rundenMuenzen() * mal;
   if (t.grabung) ereignisse.fund = grabeFund(t);

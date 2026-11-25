@@ -104,6 +104,7 @@ function schleifenSchritt() {
     if (!document.hidden) merkeSchnappschuss();
     if (pruefeSeasonWechsel()) { speichern(); melde(`🎟️ Neue Season-Aufgaben sind da!`); }
     if (aktuelleSeite === "seiteFertigkeiten") { zeichneSeasonBanner(); zeichneGluecksKarte(); zeichneZirkusKarte(); }
+    if (new Date().getSeconds() === 0) zeichneTrankLeiste();
     if (aktuelleSeite === "seiteSeason") {
       const stand = spiel.season.aufgaben.map(a => aufgabeStand(a).wert).join();
       if (stand !== letzterSeasonStand) { letzterSeasonStand = stand; zeichneSeason(); }
@@ -268,6 +269,7 @@ function starteSpiel() {
   richteDanachEin();
   richteEpWochenendeEin();
   $("zirkusKarte").addEventListener("click", () => { ton.klick(); zeigeZirkus(); });
+  richteExtras2Ein();
   $("zirkusZu").addEventListener("click", () => { ton.klick(); $("zirkusOverlay").hidden = true; });
   richteHeuteEin();
   richteWikiEin();

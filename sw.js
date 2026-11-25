@@ -81,6 +81,7 @@ const DATEIEN = [
   "js/daten-gebiet8.js",
   "js/daten-season2.js",
   "js/extras.js",
+  "js/extras2.js",
   "js/uebung-anzeige.js",
   "js/fortschritt.js",
   "js/sterne-anzeige.js",

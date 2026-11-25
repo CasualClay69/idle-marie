@@ -12,5 +12,8 @@ WIKI_REGELN.push(
     <p>Es gibt ${PRESTIGE.max} Stufen. Prestige 1 braucht 100 %, ab Prestige 2 brauchst du eine hohe Gesamtstufe (${[2, 3, 4, 5, 10].map(n => `P${n}: ${zahl(1000 + (n - 2) * 175)}`).join(", ")}).</p>` },
   { id: "verliese", icon: "🏰", titel: "Verliese", text: () => `<p>Unter ⚔️ Abenteuer → 🗺️ Pfade findest du drei <b>Verliese</b>. In jedes darfst du <b>einmal am Tag</b>: 5 Räume mit Monstern, dann ein starker Endgegner – ohne Ausruhen dazwischen. Am Ende wartet eine große Verlies-Truhe mit vielen Münzen, Barren, Essen, Edelsteinen, Goldsplittern und Kuchen. Mit Glück liegt ein besonderes Kleidungsstück darin – oder die Fledermaus Gruftie kommt mit.</p>
     ${DUNGEONS.map(d => `<p>${d.icon} <b>${d.name}</b> (ab Kampfstufe ${d.ab}): ${d.liste.map(id => wName(MONSTER[id].name)).join(", ")}</p>`).join("")}` },
+  { id: "kochbuch", icon: "📖", titel: "Das Kochbuch", text: () => `<p>Alles, was du kochst, braust oder backst, kommt beim ersten Mal ins <b>📖 Kochbuch</b> (Knopf oben bei 🍳 Kochen, 🧪 Tränke und 🍰 Bäckerei). Ist eine Seite voll, gibt sie dir einen Bonus für immer:</p>
+    ${KOCHBUCH_SEITEN.map(s => `<p>${s.icon} <b>${s.name}</b> (${s.rezepte.filter(rezeptBekannt).length} / ${s.rezepte.length}): ${s.text}</p>`).join("")}<p>📖 <b>Alle Seiten voll:</b> ${KOCHBUCH_VOLL.text}</p>` },
+  { id: "wetter", icon: "☀️", titel: "Das Wetter", text: () => `<p>Alle ${WETTER_STUNDEN} Stunden ändert sich das Wetter – für alle Spieler gleich. Oben in der Leiste siehst du es; tippe drauf für die Vorhersage. Jedes Wetter hilft ein bisschen:</p>
+    ${WETTER.map(w => `<p>${w.icon} <b>${w.name}</b>: ${w.text}${w.winter ? " (nur November bis Februar)" : ""}${w.id === "regenbogen" ? " – ganz selten!" : ""}</p>`).join("")}` },
 );
-

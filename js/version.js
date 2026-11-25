@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.32";
-const APP_NEU = "Ganz viel Neues: Bäckerei mit Kuchen, Haustier-Zucht, Verliese, der Wanderzirkus, Prestige mit 10 Stufen und Season-Pass für 36 Monate!";
+const APP_VERSION = "1.33";
+const APP_NEU = "Neu: das Kochbuch mit Boni für volle Seiten – und Wetter, das alle 4 Stunden wechselt und dir hilft.";

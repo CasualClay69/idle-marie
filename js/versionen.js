@@ -5,6 +5,10 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.33", datum: "2026-11-26", neu: [
+    "📖 Das Kochbuch: Jedes Gericht, jeder Trank und jeder Kuchen kommt beim ersten Herstellen hinein (Knopf oben bei Kochen, Tränke und Bäckerei). Volle Seiten geben Boni für immer – z. B. alle Fisch-Gerichte: Essen heilt 10 % mehr. Ganzes Kochbuch: +10 % Münzen. Was du schon gemacht hast, steht schon drin!",
+    "☀️ Wetter: Alle 4 Stunden ändert sich das Wetter – für alle gleich. Sonne, Regen, Wolken, Gewitter, Nebel, im Winter Schnee und ganz selten ein Regenbogen. Jedes Wetter gibt einen kleinen Bonus. Oben in der Leiste antippen = Vorhersage."
+  ] },
   { v: "1.32", datum: "2026-11-25", neu: [
     "🍰 Neue Fertigkeit Bäckerei: Aus Gemüse und Kräutern backst du 8 Kuchen. Iss einen (Bank → Kuchen → Essen) – er hilft dir ein paar Stunden lang, z. B. +10 % Erfahrung. Neues Haustier: Backstubenmaus Zimt.",
     "🥚 Haustier-Zucht: Zwei Haustiere auf Pflege-Stufe 10 kommen ins Brutnest (Ich → Tiere). Nach 12 Stunden schlüpft eins von 12 seltenen Mischtieren – welches, hängt von den Eltern ab.",

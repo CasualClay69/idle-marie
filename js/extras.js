@@ -26,7 +26,10 @@ for (let n = 1; n <= 10; n++) RAHMEN.push({ id: `rx${n}`, name: `Prestige-Rahmen
   svg: ring(PRESTIGE_FARBEN[n - 1], 5, ringPunkte(n).map(([x, y]) => stern(x, y, 4.5, n === 10 ? "#ff5fa2" : "#ffd54f")).join("")) });
 
 // ===================== BONI (stecken in sternGold -> baumhausBonus) =====================
-function zusatzAllgemein(art) { return kuchenBonus(art) + prestigeBonus(art); }
+function zusatzAllgemein(art) {
+  return kuchenBonus(art) + prestigeBonus(art)
+    + (typeof kochbuchBonus === "function" ? kochbuchBonus(art) + wetterBonus(art) : 0);   // Kochbuch & Wetter (extras2.js)
+}
 
 // ===================== 🍰 KUCHEN =====================
 const aktiverKuchen = () => (spiel.kuchen && spiel.kuchen.bis > Date.now() ? KUCHEN.find(k => k.id === spiel.kuchen.id) : null);

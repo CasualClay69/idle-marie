@@ -159,9 +159,11 @@ function zeichneFertigkeit() {
       <div class="balken dick"><div style="width:${(fortschrittInStufe(xp) * 100).toFixed(1)}%"></div></div>
       <small>${zahl(xp)} / ${zahl(naechste)} EP${werkzeugText ? ` · ${werkzeugText}` : ""}</small>
       ${topfFertigkeiten().includes(f.id) ? `<button type="button" class="topfMini" id="topfMini">🫙 Übungs-Topf ${Math.floor(topfAnteil(f.id) * 100)} %</button>` : ""}
+      ${["kochen", "traenke", "backen"].includes(f.id) && typeof zeigeKochbuch === "function" ? `<button type="button" class="topfMini" id="kochbuchMini">📖 Kochbuch ${rezepteAnzahl()} / ${ALLE_REZEPTE.length}</button>` : ""}
     </div>`;
 
   kopf.querySelector("#topfMini")?.addEventListener("click", () => { ton.klick(); zeigeUebung(f.id); });
+  kopf.querySelector("#kochbuchMini")?.addEventListener("click", () => { ton.klick(); zeigeKochbuch(); });
   const raster = $("taetigkeitenRaster");
   raster.textContent = "";
   raster.classList.toggle("garten", f.id === "garten");
