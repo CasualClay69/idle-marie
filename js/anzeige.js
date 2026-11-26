@@ -94,7 +94,8 @@ function zeichneAktivBalken() {
   $("aktivBalken").style.width = `${(aktivFortschritt() * 100).toFixed(1)}%`;
   if (aktuelleSeite === "seiteAbenteuer") zeichneKampfLive();
   zeichneGartenLive();
-  const karte = spiel.aktiv && document.querySelector(`.taetigkeit[data-id="${spiel.aktiv.id}"] .balken > div`);
+  // die Fortschritts-Leiste unten in der Karte (nicht der dünne Übungs-Balken darüber!)
+  const karte = spiel.aktiv && document.querySelector(`.taetigkeit[data-id="${spiel.aktiv.id}"] .balken.aktion > div`);
   if (karte) karte.style.width = `${(aktivFortschritt() * 100).toFixed(1)}%`;
 }
 
