@@ -76,7 +76,9 @@ function weltbossHtml() {
 
 // ===================== 🎣 ANGEL-WETTBEWERB =====================
 const istFreitag = () => new Date(Date.now()).getDay() === 5;
-taetigkeit({ id: "angeln-wettbewerb", fertigkeit: "angeln", name: "🏆 Riesenwels (nur freitags)", stufe: 10, xp: XP[3], zeit: 7, gibt: {}, wettbewerb: true });
+// Der Riesenwels ist ein echter Fisch (Bild + Bank); die Münzen gibt es über seinen Verkaufswert
+gegenstand("riesenwels", "Riesenwels", "fisch", "#7a8a5a", 60);
+taetigkeit({ id: "angeln-wettbewerb", fertigkeit: "angeln", name: "Riesenwels (nur freitags)", stufe: 10, xp: XP[3], zeit: 7, gibt: { riesenwels: 1 }, wettbewerb: true });
 function angelFang() {
   const L = stufe("angeln");
   const kg = Math.round((0.8 + Math.pow(Math.random(), 3) * (4 + L / 4) + (Math.random() < 0.02 ? L / 6 : 0)) * 100) / 100;
@@ -84,7 +86,6 @@ function angelFang() {
   spiel.angel = spiel.angel || { tag: "", heute: 0, rekord: 0 };
   const a = spiel.angel;
   if (a.tag !== tag) { a.tag = tag; a.heute = 0; }
-  spiel.muenzen += Math.round(kg * 30);
   if (kg > a.heute) {
     a.heute = kg;
     if (mitglied) rufeOnlineAuf("angel_melde", { p_spieler_id: mitglied.spielerId, p_geheimnis: mitglied.geheimnis, p_gewicht: kg }).then(() => { angelGeladen = 0; }).catch(() => {});

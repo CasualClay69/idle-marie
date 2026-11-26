@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.36.2", datum: "2026-11-26", neu: ["🎣 Der Riesenwels (Angel-Wettbewerb am Freitag) hat jetzt ein Bild und kommt beim Fangen in die Bank – verkaufen bringt die Münzen."] },
   { v: "1.36.1", datum: "2026-11-26", neu: ["🛠️ Die Fortschritts-Leiste unten in den Tätigkeits-Karten (z. B. Stichling, Birke, Eisenerz) läuft wieder mit. Vorher hat sich aus Versehen der dünne Übungs-Balken darüber bewegt."] },
   { v: "1.36", datum: "2026-11-26", neu: [
     "📚 Neue Fertigkeit Lesen: In 8 Bücherregalen schmökern bringt Erfahrung – und manchmal eine Seite eines der 12 Geschichtenbücher. Volle Bücher erzählen die große Geschichte von Hannah Idle und helfen dir für immer. Neues Haustier: Brillen-Eule Professor Eulalia.",
