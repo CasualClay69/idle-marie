@@ -5,6 +5,7 @@
 // =====================================================
 
 const VERSIONEN = [
+  { v: "1.36.3", datum: "2026-11-27", neu: ["🏷️ Titel gibt es jetzt in weiblicher und männlicher Form – unter Ich → Erfolge bei „Dein Titel“ umschalten (z. B. „die Drachenbezwingerin“ / „der Drachenbezwinger“). Auch die Bestenliste zeigt die gewählte Form.", "💎 Tausch-Ecke im Laden: Die Knöpfe verdecken den Text nicht mehr."] },
   { v: "1.36.2", datum: "2026-11-26", neu: ["🎣 Der Riesenwels (Angel-Wettbewerb am Freitag) hat jetzt ein Bild und kommt beim Fangen in die Bank – verkaufen bringt die Münzen."] },
   { v: "1.36.1", datum: "2026-11-26", neu: ["🛠️ Die Fortschritts-Leiste unten in den Tätigkeits-Karten (z. B. Stichling, Birke, Eisenerz) läuft wieder mit. Vorher hat sich aus Versehen der dünne Übungs-Balken darüber bewegt."] },
   { v: "1.36", datum: "2026-11-26", neu: [

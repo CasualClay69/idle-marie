@@ -7,5 +7,5 @@
 //  APP_NEU: kurze Beschreibung, was neu ist. Steht im Fenster "Neue Version verfügbar".
 //  (Bitte nur normale Anführungszeichen "…" benutzen, keine im Text selbst.)
 // =====================================================
-const APP_VERSION = "1.36.2";
+const APP_VERSION = "1.36.3";
 const APP_NEU = "Der Riesenwels hat jetzt ein Bild und landet beim Fangen in der Bank.";

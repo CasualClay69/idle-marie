@@ -42,35 +42,43 @@ function zeigeBuecher() {
 // Gespeichert wird die ID (online nur die ID – der Text kommt aus dieser Liste, so kann niemand Unsinn eintragen)
 const besiegtMal = id => spiel.besiegt?.[id] || 0;
 const TITEL = [
-  { id: "neu",        name: "die Abenteurerin",          ok: () => true },
-  { id: "fleiss",     name: "die Fleißige",              ok: () => gesamtStufe() >= 250, wie: "Gesamtstufe 250" },
-  { id: "drachen",    name: "die Drachenbezwingerin",    ok: () => besiegtMal("feuerdrache") > 0, wie: "Besiege den Feuerdrachen" },
-  { id: "geister",    name: "die Geisterflüsterin",      ok: () => besiegtMal("burggespenst") > 0, wie: "Besiege das Burggespenst" },
-  { id: "frost",      name: "die Frostkönigin",          ok: () => besiegtMal("frostkoenig") > 0, wie: "Besiege den Frostkönig" },
-  { id: "traum",      name: "die Traumhüterin",          ok: () => besiegtMal("traumkoenigin") > 0, wie: "Besiege die Traumkönigin" },
-  { id: "farben",     name: "die Retterin der Farben",   ok: () => (spiel.pfade?.["p-gipfel"] || 0) > 0, wie: "Schaffe das große Finale" },
-  { id: "koechin",    name: "die Meisterköchin",         ok: () => typeof KOCHBUCH_SEITEN !== "undefined" && KOCHBUCH_SEITEN.every(seiteVoll), wie: "Mach das Kochbuch voll" },
-  { id: "tiere",      name: "die Tierflüsterin",         ok: () => (spiel.haustiere || []).length >= 25, wie: "Hab 25 Haustiere" },
-  { id: "zucht",      name: "die Züchterin",             ok: () => (spiel.haustiere || []).some(id => id.startsWith("zucht")), wie: "Züchte ein Mischtier" },
-  { id: "zirkus",     name: "der Zirkusstar",            ok: () => hatHaustier("konfetti"), wie: "Hol dir Zirkuspony Konfetti" },
-  { id: "verlies",    name: "die Verlies-Heldin",        ok: () => (spiel.statistik.verliese || 0) >= 25, wie: "Schaffe 25 Verliese" },
-  { id: "titan",      name: "die Titanen-Bezwingerin",   ok: () => (spiel.statistik.bossSiege || 0) >= 1, wie: "Hilf beim Gemeinschafts-Boss" },
-  { id: "karten",     name: "die Kartenkönigin",         ok: () => typeof ALLE_KARTEN !== "undefined" && ALLE_KARTEN.every(karteDa), wie: "Sammle alle Sammelkarten" },
-  { id: "angel",      name: "die Petri-Heil-Meisterin",  ok: () => (spiel.angel?.rekord || 0) >= 10, wie: "Fang einen Riesenwels mit 10 kg" },
-  { id: "buch",       name: "der Bücherwurm",            ok: () => GESCHICHTEN.every(b => buchFertig(b.id)), wie: "Lies alle Geschichtenbücher" },
-  { id: "prestige",   name: "die Unermüdliche",          ok: () => (spiel.prestige || 0) >= 1, wie: "Erreiche Prestige 1" },
-  { id: "legende",    name: "die Legende",               ok: () => (spiel.prestige || 0) >= 5, wie: "Erreiche Prestige 5" },
-  { id: "ostern",     name: "der Osterhase",             ok: () => (spiel.events?.ostern?.gesamt || 0) >= 100, wie: "Finde 100 Ostereier" },
-  { id: "sommer",     name: "die Sonnenscheinin",        ok: () => (spiel.events?.sommer?.gesamt || 0) >= 100, wie: "Sammle 100 Sonnenblumen beim Sommerfest" },
-  { id: "halloween",  name: "die Kürbiskönigin",         ok: () => (spiel.events?.halloween?.gesamt || 0) >= 100, wie: "Sammle 100 Bonbons an Halloween" },
-  ...FERTIGKEITEN.map(f => ({ id: `f-${f.id}`, name: `Meisterin: ${f.name.replaceAll("­", "")}`, ok: () => stufe(f.id) >= 99, wie: `${f.name.replaceAll("­", "")} Stufe 99` })),
+  { id: "neu",        name: "die Abenteurerin", m: "der Abenteurer",          ok: () => true },
+  { id: "fleiss",     name: "die Fleißige", m: "der Fleißige",              ok: () => gesamtStufe() >= 250, wie: "Gesamtstufe 250" },
+  { id: "drachen",    name: "die Drachenbezwingerin", m: "der Drachenbezwinger",    ok: () => besiegtMal("feuerdrache") > 0, wie: "Besiege den Feuerdrachen" },
+  { id: "geister",    name: "die Geisterflüsterin", m: "der Geisterflüsterer",      ok: () => besiegtMal("burggespenst") > 0, wie: "Besiege das Burggespenst" },
+  { id: "frost",      name: "die Frostkönigin", m: "der Frostkönig",          ok: () => besiegtMal("frostkoenig") > 0, wie: "Besiege den Frostkönig" },
+  { id: "traum",      name: "die Traumhüterin", m: "der Traumhüter",          ok: () => besiegtMal("traumkoenigin") > 0, wie: "Besiege die Traumkönigin" },
+  { id: "farben",     name: "die Retterin der Farben", m: "der Retter der Farben",   ok: () => (spiel.pfade?.["p-gipfel"] || 0) > 0, wie: "Schaffe das große Finale" },
+  { id: "koechin",    name: "die Meisterköchin", m: "der Meisterkoch",         ok: () => typeof KOCHBUCH_SEITEN !== "undefined" && KOCHBUCH_SEITEN.every(seiteVoll), wie: "Mach das Kochbuch voll" },
+  { id: "tiere",      name: "die Tierflüsterin", m: "der Tierflüsterer",         ok: () => (spiel.haustiere || []).length >= 25, wie: "Hab 25 Haustiere" },
+  { id: "zucht",      name: "die Züchterin", m: "der Züchter",             ok: () => (spiel.haustiere || []).some(id => id.startsWith("zucht")), wie: "Züchte ein Mischtier" },
+  { id: "zirkus",     name: "der Zirkusstar", m: "der Zirkusstar",            ok: () => hatHaustier("konfetti"), wie: "Hol dir Zirkuspony Konfetti" },
+  { id: "verlies",    name: "die Verlies-Heldin", m: "der Verlies-Held",        ok: () => (spiel.statistik.verliese || 0) >= 25, wie: "Schaffe 25 Verliese" },
+  { id: "titan",      name: "die Titanen-Bezwingerin", m: "der Titanen-Bezwinger",   ok: () => (spiel.statistik.bossSiege || 0) >= 1, wie: "Hilf beim Gemeinschafts-Boss" },
+  { id: "karten",     name: "die Kartenkönigin", m: "der Kartenkönig",         ok: () => typeof ALLE_KARTEN !== "undefined" && ALLE_KARTEN.every(karteDa), wie: "Sammle alle Sammelkarten" },
+  { id: "angel",      name: "die Petri-Heil-Meisterin", m: "der Petri-Heil-Meister",  ok: () => (spiel.angel?.rekord || 0) >= 10, wie: "Fang einen Riesenwels mit 10 kg" },
+  { id: "buch",       name: "der Bücherwurm", m: "der Bücherwurm",            ok: () => GESCHICHTEN.every(b => buchFertig(b.id)), wie: "Lies alle Geschichtenbücher" },
+  { id: "prestige",   name: "die Unermüdliche", m: "der Unermüdliche",          ok: () => (spiel.prestige || 0) >= 1, wie: "Erreiche Prestige 1" },
+  { id: "legende",    name: "die Legende", m: "die Legende",               ok: () => (spiel.prestige || 0) >= 5, wie: "Erreiche Prestige 5" },
+  { id: "ostern",     name: "der Osterhase", m: "der Osterhase",             ok: () => (spiel.events?.ostern?.gesamt || 0) >= 100, wie: "Finde 100 Ostereier" },
+  { id: "sommer",     name: "die Sonnenscheinin", m: "der Sonnenschein",        ok: () => (spiel.events?.sommer?.gesamt || 0) >= 100, wie: "Sammle 100 Sonnenblumen beim Sommerfest" },
+  { id: "halloween",  name: "die Kürbiskönigin", m: "der Kürbiskönig",         ok: () => (spiel.events?.halloween?.gesamt || 0) >= 100, wie: "Sammle 100 Bonbons an Halloween" },
+  ...FERTIGKEITEN.map(f => ({ id: `f-${f.id}`, name: `Meisterin: ${f.name.replaceAll("­", "")}`, m: `Meister: ${f.name.replaceAll("­", "")}`, ok: () => stufe(f.id) >= 99, wie: `${f.name.replaceAll("­", "")} Stufe 99` })),
 ];
 const titelFrei = t => { try { return t.ok(); } catch (e) { return false; } };
 const aktuellerTitel = () => TITEL.find(t => t.id === spiel.titel && titelFrei(t)) || null;
-const titelText = id => TITEL.find(t => t.id === id)?.name || "";
+// Form: spiel.titelForm "w" (weiblich, Standard) oder "m" (männlich). Online wird die ID mit "-m" angehängt gemeldet.
+const titelMaennlich = () => spiel.titelForm === "m";
+const titelName = (t, m = titelMaennlich()) => (m ? t.m || t.name : t.name);
+const titelText = id => {
+  if (!id) return "";
+  const m = id.endsWith("-m"), t = TITEL.find(x => x.id === (m ? id.slice(0, -2) : id));
+  return t ? titelName(t, m) : "";
+};
+const titelOnlineId = () => (spiel.titel ? spiel.titel + (titelMaennlich() ? "-m" : "") : "");
 async function meldeTitel() {
   if (!mitglied) return;
-  try { await rufeOnlineAuf("setze_titel", { p_spieler_id: mitglied.spielerId, p_geheimnis: mitglied.geheimnis, p_titel: spiel.titel || "" }); titelGeladen = 0; } catch (e) { /* später */ }
+  try { await rufeOnlineAuf("setze_titel", { p_spieler_id: mitglied.spielerId, p_geheimnis: mitglied.geheimnis, p_titel: titelOnlineId() }); titelGeladen = 0; } catch (e) { /* später */ }
 }
 let titelOnline = {}, titelGeladen = 0;
 async function ladeTitel() {
@@ -84,12 +92,18 @@ function zeichneTitel() {
   if (!ziel) return;
   const frei = TITEL.filter(titelFrei), an = aktuellerTitel();
   ziel.innerHTML = `<h3>🏷️ Dein Titel <small>${frei.length} / ${TITEL.length} freigeschaltet</small></h3>
-    <p class="hinweis">${figurName()} <b>${an ? an.name : "– noch kein Titel gewählt –"}</b>. Der Titel steht auch in der Bestenliste.</p>
+    <p class="hinweis">${figurName()} <b>${an ? titelName(an) : "– noch kein Titel gewählt –"}</b>. Der Titel steht auch in der Bestenliste.</p>
+    <div class="titelForm"><span>Form:</span><button type="button" class="titelFormKnopf${titelMaennlich() ? "" : " an"}" data-form="w">weiblich</button><button type="button" class="titelFormKnopf${titelMaennlich() ? " an" : ""}" data-form="m">männlich</button></div>
     <div class="titelListe">${TITEL.map(t => titelFrei(t)
-      ? `<button type="button" class="titelWahl${an?.id === t.id ? " an" : ""}" data-titel="${t.id}">${t.name}</button>`
+      ? `<button type="button" class="titelWahl${an?.id === t.id ? " an" : ""}" data-titel="${t.id}">${titelName(t)}</button>`
       : `<span class="titelWahl zu" title="${t.wie || ""}">🔒 ${t.wie || "???"}</span>`).join("")}</div>`;
   for (const b of ziel.querySelectorAll("[data-titel]")) b.addEventListener("click", () => {
-    spiel.titel = b.dataset.titel; ton.klick(); melde(`🏷️ ${figurName()} ${titelText(spiel.titel)}`); speichern(); zeichneTitel(); meldeTitel();
+    spiel.titel = b.dataset.titel; ton.klick(); melde(`🏷️ ${figurName()} ${titelText(titelOnlineId())}`); speichern(); zeichneTitel(); meldeTitel();
+  });
+  for (const b of ziel.querySelectorAll("[data-form]")) b.addEventListener("click", () => {
+    if ((b.dataset.form === "m") === titelMaennlich()) return;
+    spiel.titelForm = b.dataset.form; ton.klick(); speichern(); zeichneTitel();
+    if (spiel.titel) { melde(`🏷️ ${figurName()} ${titelText(titelOnlineId())}`); meldeTitel(); }
   });
 }
 
